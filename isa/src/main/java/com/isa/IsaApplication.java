@@ -1,4 +1,4 @@
-package com.isa.isa;
+package com.isa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
