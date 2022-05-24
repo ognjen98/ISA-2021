@@ -115,7 +115,7 @@ public class ClientService {
             throw new IllegalStateException(String.format("User with email %s already exists!", appUser.getEmail()));
         }
 
-        String encodedPassword = appUser.getPassword();
+        String encodedPassword = passwordEncoder.encode(appUser.getPassword());
         appUser.setPassword(encodedPassword);
 
         //Saving the user after encoding the password

@@ -9,16 +9,8 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AppComponent {
   title = 'frontend';
-  text: string;
-  constructor(private http : HttpClient) { }
+  
+  constructor() { }
 
-  getText(){
-    this.test().subscribe(data =>{
-      this.text = data;
-    });
-  }
-
-  test() : Observable<string>{
-    return this.http.get<string>("http://localhost:8082/test/define");
-  }
+  
 }
