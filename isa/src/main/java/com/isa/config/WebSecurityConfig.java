@@ -3,12 +3,15 @@ package com.isa.config;
 import com.isa.security.RestAuthenticationEntryPoint;
 import com.isa.security.TokenAuthenticationFilter;
 import com.isa.security.TokenUtils;
+import com.isa.users.service.JwtService;
 import com.isa.users.service.UserService;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,16 +26,27 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+
+    private final JwtService jwtUserDetailsService;
+    private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+    private final TokenUtils tokenUtils;
+
+
+
+    @Autowired
+    public WebSecurityConfig(JwtService jwtUserDetailsService, RestAuthenticationEntryPoint restAuthenticationEntryPoint,
+                             TokenUtils tokenUtils) {
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
+        this.tokenUtils = tokenUtils;
+
+    }
+
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Autowired
-    private UserService jwtUserDetailsService;
-
-    @Autowired
-    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
     @Bean
     @Override
@@ -40,14 +54,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-//    @Autowired
-//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(passwordEncoder());
-//    }
-
     @Autowired
-    private TokenUtils tokenUtils;
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(jwtUserDetailsService).passwordEncoder(bCryptPasswordEncoder());
+    }
 
+
+
+    
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http

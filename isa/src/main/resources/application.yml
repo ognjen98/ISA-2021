@@ -2,11 +2,14 @@ spring:
   profiles:
     active: development
 
+  main:
+    allow-circular-references: true
+
   mail:
     host: smtp.gmail.com
     port: 587
-    username: isaglobalpharmacy@gmail.com
-    password: Pharmacy123456!
+    username: ognjencivcic23@gmail.com
+    password: Itachiuchiha-98
     properties:
       mail:
         smtp:

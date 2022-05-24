@@ -14,6 +14,11 @@ public class Client extends User{
         this.points = points;
     }
 
+    public Client(String name, String surname, String email, Address address, String mobile, String password, Role role, Boolean enabled, Integer points) {
+        super(name, surname, email, address, mobile, password, role, enabled);
+        this.points = points;
+    }
+
     public Integer getPoints() {
         return points;
     }

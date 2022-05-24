@@ -36,9 +36,13 @@ public class User implements UserDetails {
     @Column
     private Role role;
 
+    @Column
+    private Boolean enabled;
+
     public User(){}
 
-    public User(Long id, String name,String surname, String email, String mobile, String password, Role role) {
+    public User(Long id, String name,String surname, String email, String mobile, String password, Role role,
+                Boolean enabled) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -46,6 +50,18 @@ public class User implements UserDetails {
         this.mobile = mobile;
         this.password = password;
         this.role = role;
+        this.enabled = enabled;
+    }
+
+    public User(String name, String surname, String email, Address address, String mobile, String password, Role role, Boolean enabled) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.address = address;
+        this.mobile = mobile;
+        this.password = password;
+        this.role = role;
+        this.enabled = enabled;
     }
 
     public Long getId() {
@@ -127,7 +143,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return enabled;
     }
 
     public void setPassword(String password) {
@@ -142,5 +158,11 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 }
