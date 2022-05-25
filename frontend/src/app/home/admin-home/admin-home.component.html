@@ -1,0 +1,20 @@
+<mat-toolbar color="primary">
+    
+    <span><a routerLink="/" class="logo"></a></span>
+    <span class="example-spacer"></span>
+  
+    
+    <span><a routerLink="/login" class="link">Registration requests</a></span><span class="tab"></span>
+    <span><a routerLink="/login" class="link">Add admin</a></span><span class="tab"></span>
+    <span><a routerLink="/login" class="link">Entities</a></span><span class="tab"></span>
+    <span><a routerLink="/login" class="link">Define earnings percentage</a></span><span class="tab"></span>
+    <span><a routerLink="/login" class="link">Business report</a></span><span class="tab"></span>
+    <span><a (click)="logOut()" class="link">Logout</a></span>
+   
+  
+</mat-toolbar>
+
+
+<div class="container">
+<router-outlet></router-outlet>
+</div>  
