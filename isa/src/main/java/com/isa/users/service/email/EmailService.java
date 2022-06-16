@@ -32,7 +32,7 @@ public class EmailService implements EmailSender{
             helper.setText(email, true);
             helper.setTo(to);
             helper.setSubject("Confirm your email");
-            helper.setFrom("test@email.com");
+            helper.setFrom("ognjencivcic23@outlook.com");
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             logger.error("Failed to send email for: " + email + "\n" + e);

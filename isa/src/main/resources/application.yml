@@ -6,13 +6,18 @@ spring:
     allow-circular-references: true
 
   mail:
-    host: smtp.gmail.com
+    host: smtp.office365.com
     port: 587
-    username: ognjencivcic23@gmail.com
-    password: Itachiuchiha-98
+    username: ognjencivcic23@outlook.com
+    password: itachiuchiha-98
     properties:
       mail:
+        store:
+          protocol: pop3
         smtp:
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
           auth: true
           starttls:
             enable: true
