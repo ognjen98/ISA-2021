@@ -3,11 +3,14 @@ package com.isa.users.service;
 import com.isa.users.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import com.isa.users.dto.RegistrationDTO;
 import com.isa.users.repository.AddressRepository;
 import com.isa.users.repository.ClientRepository;
+import com.isa.users.repository.RoleRepository;
 import com.isa.users.service.email.EmailSender;
 import com.isa.users.service.email.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,9 @@ public class ClientService {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -74,14 +80,15 @@ public class ClientService {
             add.setCity(request.getCity());
             add.setState(request.getState());
             addressRepository.save(add);
-
+            Set<Role> roles = new HashSet<>();
+            roles.add(roleRepository.findByName("CLIENT"));
             String tokenForNewUser = signUpUser(new Client(request.getName(),
                     request.getSurname(),
                     request.getEmail(),
                     add,
                     request.getMobile(),
                     request.getPassword(),
-                    Role.CLIENT,
+                    roles,
                     false,0));
 
             //Since, we are running the spring boot application in localhost, we are hardcoding the

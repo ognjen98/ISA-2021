@@ -2,15 +2,16 @@ package com.isa.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.*;
 
 @Entity
 @Table(name="users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +26,7 @@ public class User implements UserDetails {
     @Column
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {})
     private Address address;
 
     @Column
@@ -34,15 +35,18 @@ public class User implements UserDetails {
     @Column
     private String password;
 
-    @Column
-    private Role role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "user_roles", joinColumns = {
+            @JoinColumn(name = "user_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "role_id") })
+    private Set<Role> roles;
 
     @Column
     private Boolean enabled;
 
     public User(){}
 
-    public User(Long id, String name,String surname, String email, String mobile, String password, Role role,
+    public User(Long id, String name,String surname, String email, String mobile, String password, Set<Role> roles,
                 Boolean enabled) {
         this.id = id;
         this.name = name;
@@ -50,18 +54,20 @@ public class User implements UserDetails {
         this.email = email;
         this.mobile = mobile;
         this.password = password;
-        this.role = role;
+        this.roles = roles;
         this.enabled = enabled;
     }
 
-    public User(String name, String surname, String email, Address address, String mobile, String password, Role role, Boolean enabled) {
+    public User(String name, String surname, String email, Address address, String mobile, String password,
+                Set<Role> roles,
+                Boolean enabled) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.address = address;
         this.mobile = mobile;
         this.password = password;
-        this.role = role;
+        this.roles = roles;
         this.enabled = enabled;
     }
 
@@ -113,53 +119,61 @@ public class User implements UserDetails {
         this.mobile = mobile;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+////        Role role = getRole();
+////        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+////
+////        authorities.add(new SimpleGrantedAuthority(role.getName()));
+////
+////
+////        return authorities;
+//        return null;
+//    }
 
     public String getPassword() {
         return password;
     }
 
-    @Override
+
     public String getUsername() {
-        return null;
+        return email;
     }
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+//    @JsonIgnore
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return true;
+//    }
+//
+//    @JsonIgnore
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return true;
+//    }
+//
+//    @JsonIgnore
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return enabled;
+//    }
 
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public Role getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoles(Set<Role> role) {
+        this.roles = role;
     }
 
     public Boolean getEnabled() {

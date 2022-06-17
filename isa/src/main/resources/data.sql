@@ -12,18 +12,29 @@ insert into addresses (street_name, number, city, state) values ('Maksima Gorkog
 insert into addresses (street_name, number, city, state) values ('Strazilovska', '2', 'Novi Sad','Srbija');
 insert into addresses (street_name, number, city, state) values ('Fruskogorska', '1', 'Novi Sad','Srbija');
 
-insert into users (name, surname, email, password, role, mobile, address_id, enabled)
-values ('Ognjen', 'Civcic','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', 0,
-'21310', 1, true);
-insert into users (name, surname, email, password, role, mobile, address_id, enabled)
-values ('Stojan', 'Petrovic','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', 2,
+INSERT INTO roles (name) VALUES ('SYSTEM_ADMIN');
+INSERT INTO roles (name) VALUES ('CLIENT');
+INSERT INTO roles (name) VALUES ('COTTAGE_OWNER');
+INSERT INTO roles (name) VALUES ('SHIP_OWNER');
+INSERT INTO roles (name) VALUES ('INSTRUCTOR');
+
+insert into users (name, surname, email, password, mobile, address_id, enabled)
+values ('Ognjen', 'Civcic','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', '21310', 1, true);
+insert into users (name, surname, email, password, mobile, address_id, enabled)
+values ('Stojan', 'Petrovic','ognjen2@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 2, true);
-insert into users (name, surname, email, password, role, mobile, address_id, enabled)
-values ('Milan', 'Peric','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', 3,
+insert into users (name, surname, email, password, mobile, address_id, enabled)
+values ('Milan', 'Peric','ognjen3@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 3, true);
-insert into users (name, surname, email, password, role, mobile, address_id, enabled)
-values ('Jasmin', 'Jovanovic','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', 4,
+insert into users (name, surname, email, password, mobile, address_id, enabled)
+values ('Jasmin', 'Jovanovic','ognjen4@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 4, false);
+
+INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
+INSERT INTO user_roles (user_id, role_id) VALUES (2, 3);
+INSERT INTO user_roles (user_id, role_id) VALUES (3, 4);
+INSERT INTO user_roles (user_id, role_id) VALUES (4, 5);
+
 
 insert into sellers (points,id) values (0, 2);
 insert into sellers (points,id) values (0, 3);

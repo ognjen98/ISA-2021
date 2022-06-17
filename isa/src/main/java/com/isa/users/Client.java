@@ -2,6 +2,7 @@ package com.isa.users;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name="clients")
@@ -14,8 +15,9 @@ public class Client extends User{
         this.points = points;
     }
 
-    public Client(String name, String surname, String email, Address address, String mobile, String password, Role role, Boolean enabled, Integer points) {
-        super(name, surname, email, address, mobile, password, role, enabled);
+    public Client(String name, String surname, String email, Address address, String mobile, String password,
+                  Set<Role> roles, Boolean enabled, Integer points) {
+        super(name, surname, email, address, mobile, password, roles, enabled);
         this.points = points;
     }
 
