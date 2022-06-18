@@ -53,7 +53,7 @@ export class TokenService {
   public saveRole(token): void {
     localStorage.removeItem(ROLE);
     var decoded_token=jwtDecode(token);
-    this.roleAs =decoded_token['role'];
+    this.roleAs =decoded_token['scopes'];
     localStorage.setItem(ROLE, this.roleAs );
   }
 

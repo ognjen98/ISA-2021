@@ -4,7 +4,6 @@ public class UpdateInfoDTO {
 
     private String name;
     private String surname;
-    private String password;
     private String city;
     private String state;
     private String streetName;
@@ -13,11 +12,10 @@ public class UpdateInfoDTO {
 
     public UpdateInfoDTO(){}
 
-    public UpdateInfoDTO(String name, String surname, String password, String city, String state,
+    public UpdateInfoDTO(String name, String surname, String city, String state,
                          String streetName, String number, String mobile) {
         this.name = name;
         this.surname = surname;
-        this.password = password;
         this.city = city;
         this.state = state;
         this.streetName = streetName;
@@ -40,14 +38,6 @@ public class UpdateInfoDTO {
 
     public void setSurname(String surname) {
         this.surname = surname;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getCity() {

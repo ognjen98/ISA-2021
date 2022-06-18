@@ -19,6 +19,7 @@ import { AdminHomeComponent } from './home/admin-home/admin-home.component';
 import {MatSelectModule} from '@angular/material/select';
 import { AuthGuard } from './helpers/auth.guard';
 import { AuthInterceptor } from './helpers/auth.interceptor';
+import { UpdateInfoComponent } from './update-info/update-info.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AuthInterceptor } from './helpers/auth.interceptor';
     HomeComponent,
     LoginComponent,
     ClientHomeComponent,
-    AdminHomeComponent
+    AdminHomeComponent,
+    UpdateInfoComponent
   ],
   imports: [
     BrowserModule,

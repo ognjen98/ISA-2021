@@ -53,9 +53,9 @@ export class LoginComponent implements OnInit {
 
   goToDashBoard(){
     let role = this.tokenStorageService.getRole();
-    if (role === 'SYSTEM_ADMIN')
+    if (role === 'ROLE_SYSTEM_ADMIN')
       this.router.navigate(['admin']);
-    if (role === 'CLIENT')
+    if (role === 'ROLE_CLIENT')
       this.router.navigate(['client']);
 
   } 

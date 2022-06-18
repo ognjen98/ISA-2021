@@ -6,6 +6,7 @@ import { ClientHomeComponent } from "./home/client-home/client-home.component";
 import { HomeComponent } from "./home/home/home.component";
 import { LoginComponent } from "./login/login.component";
 import { RegistrationComponent } from "./registration/registration/registration.component";
+import { UpdateInfoComponent } from "./update-info/update-info.component";
 
 const routes: Routes = [
     {path:'', component: HomeComponent, children: [
@@ -16,12 +17,20 @@ const routes: Routes = [
   
     
     data: {
-      allowedRoles: ['CLIENT']}},
+      allowedRoles: ['ROLE_CLIENT']},
+    children: [
+      {path: 'updateInfo', component: UpdateInfoComponent}
+    ]
+  },
     {path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuard],
   
     
     data: {
-      allowedRoles: ['SYSTEM_ADMIN']}}
+      allowedRoles: ['ROLE_SYSTEM_ADMIN']},
+    children: [
+        {path: 'updateInfo', component: UpdateInfoComponent}
+    ]
+  }
     
   ];
   

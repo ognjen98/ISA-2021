@@ -30,7 +30,6 @@ public class UserService{
         u.setName(dto.getName());
         u.setSurname(dto.getSurname());
         u.setMobile(dto.getMobile());
-        u.setPassword(passwordEncoder.encode(dto.getPassword()));
         Address a = u.getAddress();
         a.setState(dto.getState());
         a.setCity(dto.getCity());
@@ -40,6 +39,15 @@ public class UserService{
         addressRepository.save(a);
         userRepository.save(u);
         return u;
+    }
+
+    public UpdateInfoDTO  getInfo(String email){
+        User u = userRepository.findByEmail(email);
+        UpdateInfoDTO dto = new UpdateInfoDTO(u.getName(),u.getSurname(),u.getAddress().getCity(),
+                u.getAddress().getState(),u.getAddress().getStreetName(),u.getAddress().getNumber(),u.getMobile());
+
+        return dto;
+
     }
 
 

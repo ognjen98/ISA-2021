@@ -1,0 +1,72 @@
+<div class="formBox">
+    <h1><b>Personal information</b></h1>
+    <form [formGroup]="infoForm" autocomplete="off" #f="ngForm">
+        <hr>
+        
+        <mat-form-field appearance="fill" >
+            <mat-label>Name</mat-label>
+            <input required matInput placeholder="Name" name="name" formControlName="name" >
+            <mat-error *ngIf="infoForm.controls['name'].hasError('required')">
+                Name is required!
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Surname</mat-label>
+            <input required matInput placeholder="Surname" name="surname" formControlName="surname">
+            <mat-error *ngIf="infoForm.controls['surname'].hasError('required')">
+                Surname is required!
+            </mat-error>
+        </mat-form-field>
+        
+        <br>
+        
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Mobile</mat-label>
+            <input matInput placeholder="Mobile" name="mobile" formControlName="mobile">
+            <mat-error *ngIf="infoForm.controls['mobile'].hasError('pattern')">
+                Must contain 9-10 numbers!
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Street name</mat-label>
+            <input matInput placeholder="Street name" name="streetName" formControlName="streetName">
+            <mat-error *ngIf="infoForm.controls['streetName'].hasError('required')">
+                Street Name is required!
+            </mat-error >
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Number</mat-label>
+            <input matInput placeholder="Number" name="number" formControlName="number">
+            <mat-error *ngIf="infoForm.controls['number'].hasError('required')">
+                Number is required!
+            </mat-error >
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>City</mat-label>
+            <input matInput placeholder="City" name="city" formControlName="city">
+            <mat-error *ngIf="infoForm.controls['city'].hasError('required')">
+                City is required!
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>State</mat-label>
+            <input matInput placeholder="State" name="state" formControlName="state">
+            <mat-error *ngIf="infoForm.controls['state'].hasError('required')">
+                State is required!
+            </mat-error>
+        </mat-form-field>
+        <br>
+
+        
+       
+        <br>
+        
+        <button mat-raised-button color="primary" (click)="submit()" [disabled]="infoForm.invalid">Submit</button>
+    </form>
+</div>
