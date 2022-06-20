@@ -28,22 +28,27 @@ values ('Milan', 'Peric','ognjen3@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhx
 '21310', 3, true);
 insert into users (name, surname, email, password, mobile, address_id, enabled)
 values ('Jasmin', 'Jovanovic','ognjen4@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 4, false);
+'21310', 4, true);
+insert into users (name, surname, email, password, mobile, address_id, enabled)
+values ('Juzba', 'Juzbasic','ognjen5@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
+'21310', 7, true);
 
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 3);
 INSERT INTO user_roles (user_id, role_id) VALUES (3, 4);
 INSERT INTO user_roles (user_id, role_id) VALUES (4, 5);
+INSERT INTO user_roles (user_id, role_id) VALUES (5, 2);
 
 
-insert into sellers (points,id) values (0, 2);
-insert into sellers (points,id) values (0, 3);
-insert into sellers (points,id) values (0, 4);
+insert into sellers (points,id,grade) values (0, 2, 0.0);
+insert into sellers (points,id,grade) values (0, 3, 0.0);
+insert into sellers (points,id,grade) values (0, 4, 0.0);
 
 insert into sys_admins(id) values (1);
 insert into cottage_owners(id) values (2);
 insert into ship_owners(id) values (3);
 insert into instructors(id) values (4);
+insert into clients(id) values (5);
 
 insert into periods (start_time, end_time) values (to_timestamp(1663221600), to_timestamp(1665813600));
 insert into periods (start_time, end_time) values (to_timestamp(1665813600), to_timestamp(1671087600));
@@ -55,24 +60,24 @@ insert into periods (start_time, end_time) values (to_timestamp(1669359600), to_
 insert into periods (start_time, end_time) values (to_timestamp(1668236400), to_timestamp(1670828400));
 insert into periods (start_time, end_time) values (to_timestamp(1665727200), to_timestamp(1671001200));
 
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id)
-values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id)
-values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id)
-values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id)
-values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id)
-values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id)
-values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id)
-values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id)
-values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id)
-values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
+values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 50);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
+values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
+values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,50);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
+values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,50);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
+values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,50);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
+values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,50);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
+values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
+values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,50);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
+values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,50);
 
 insert into services_periods (service_id, period_id) values (1,1);
 insert into services_periods (service_id, period_id) values (2,2);

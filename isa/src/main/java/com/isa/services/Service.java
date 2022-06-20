@@ -26,6 +26,12 @@ public class Service {
 
     private String rulesOfConduct;
 
+    private Float price;
+
+    private  Float grade;
+
+    private Integer noGuests;
+
     @OneToMany
     private List<AdditionalInfo> additionalInfos;
 
@@ -48,12 +54,20 @@ public class Service {
 
     public Service(){}
 
-    public Service(Long id, String name, String promoDesc, List<Image> images, String rulesOfConduct, List<AdditionalInfo> additionalInfos, List<TimePeriod> period, Seller seller, Address address, List<DiscountReservation> discountReservations) {
+    public Service(Long id, String name, String promoDesc, List<Image> images, String rulesOfConduct,
+                   Float price, Float grade, Integer noGuests, List<AdditionalInfo> additionalInfos,
+                   List<TimePeriod> period,
+                   Seller seller,
+                   Address address,
+                   List<DiscountReservation> discountReservations) {
         this.id = id;
         this.name = name;
         this.promoDesc = promoDesc;
         this.images = images;
         this.rulesOfConduct = rulesOfConduct;
+        this.price = price;
+        this.grade =grade;
+        this.noGuests = noGuests;
         this.additionalInfos = additionalInfos;
         this.period = period;
         this.seller = seller;
@@ -139,5 +153,29 @@ public class Service {
 
     public void setDiscountReservations(List<DiscountReservation> discountReservations) {
         this.discountReservations = discountReservations;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
+    }
+
+    public Float getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Float grade) {
+        this.grade = grade;
+    }
+
+    public Integer getNoGuests() {
+        return noGuests;
+    }
+
+    public void setNoGuests(Integer noGuests) {
+        this.noGuests = noGuests;
     }
 }

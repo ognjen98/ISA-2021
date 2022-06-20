@@ -70,7 +70,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
                 .authorizeRequests()
-                .anyRequest().authenticated().and()
+                .anyRequest().permitAll().and()
                 .cors().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
                         BasicAuthenticationFilter.class);
@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(HttpMethod.POST, "/login/login", "/registration/register");
+        web.ignoring().antMatchers(HttpMethod.POST, "/login/login", "/registration/register", "/service/search");
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/registration/confirm",
                 "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css", "/**/*.js");
     }

@@ -34,8 +34,13 @@ public class Ship extends Service{
 
     public Ship(){}
 
-    public Ship(Long id, String name, String promoDesc, List<Image> images, String rulesOfConduct, List<AdditionalInfo> additionalInfos, List<TimePeriod> period, Seller seller, Address address, List<DiscountReservation> discountReservations, String type, Float length, Integer noEngines, Float enginePower, Float maxSpeed, Integer capacity, List<FishEq> fishingEquipment, ReservationCancellationTerms rct, List<NavigationEquipment> navEquipments) {
-        super(id, name, promoDesc, images, rulesOfConduct, additionalInfos, period, seller, address, discountReservations);
+    public Ship(Long id, String name, String promoDesc, List<Image> images, String rulesOfConduct, Float price,
+                Float grade, Integer noGuests, List<AdditionalInfo> additionalInfos, List<TimePeriod> period,
+                Seller seller,
+                Address address, List<DiscountReservation> discountReservations, String type, Float length, Integer noEngines, Float enginePower, Float maxSpeed, Integer capacity, List<FishEq> fishingEquipment, ReservationCancellationTerms rct, List<NavigationEquipment> navEquipments) {
+        super(id, name, promoDesc, images, rulesOfConduct, price,grade, noGuests, additionalInfos, period, seller,
+                address,
+                discountReservations);
         this.type = type;
         this.length = length;
         this.noEngines = noEngines;

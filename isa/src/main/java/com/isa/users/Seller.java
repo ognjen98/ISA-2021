@@ -9,9 +9,12 @@ public class Seller extends User{
 
     private Integer points;
 
+    private  Float grade;
+
     public Seller(){}
-    public Seller(Integer points) {
+    public Seller(Integer points, Float grade) {
         this.points = points;
+        this.grade = grade;
     }
 
     public Integer getPoints() {
@@ -20,5 +23,13 @@ public class Seller extends User{
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public Float getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Float grade) {
+        this.grade = grade;
     }
 }
