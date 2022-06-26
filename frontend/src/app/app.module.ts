@@ -18,8 +18,19 @@ import { ClientHomeComponent } from './home/client-home/client-home.component';
 import { AdminHomeComponent } from './home/admin-home/admin-home.component';
 import {MatSelectModule} from '@angular/material/select';
 import { AuthGuard } from './helpers/auth.guard';
+
 import { AuthInterceptor } from './helpers/auth.interceptor';
 import { UpdateInfoComponent } from './update-info/update-info.component';
+import {MatGridListModule} from '@angular/material/grid-list';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { ReservationComponent } from './reservation/reservation.component';
+import { MatStepperModule} from '@angular/material/stepper';
+import {DatetimerangepickerModule } from "angular-datetimerangepicker";
+import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-datetimepicker';
+import { NgxDatetimeRangePickerModule } from 'ngx-datetime-range-picker';
+import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule,NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -29,28 +40,45 @@ import { UpdateInfoComponent } from './update-info/update-info.component';
     LoginComponent,
     ClientHomeComponent,
     AdminHomeComponent,
-    UpdateInfoComponent
+    UpdateInfoComponent,
+    ReservationComponent
   ],
   imports: [
+    NgxMatDatetimePickerModule,
+    MatCardModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
+    DlDateTimeDateModule,
+    DlDateTimePickerModule,
+    NgxDatetimeRangePickerModule.forRoot(),
+    DatetimerangepickerModule,
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     MatFormFieldModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
     AppRoutingModule,
     FormsModule,
     MatSelectModule,
     MatInputModule,
     MatToolbarModule,
-    MatButtonModule
+    MatDatepickerModule,
+    MatButtonModule,
+    MatStepperModule,
+    MatGridListModule
   ],
   providers: [AuthGuard,
     {
+      
       provide:HTTP_INTERCEPTORS,
       useClass:AuthInterceptor,
       multi:true
-    }],
+    },
+    MatDatepickerModule,
+    MatNativeDateModule],
+    
   bootstrap: [AppComponent]
 })
 export class AppModule { }

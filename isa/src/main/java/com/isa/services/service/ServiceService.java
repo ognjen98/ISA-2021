@@ -86,7 +86,7 @@ public class ServiceService {
     private List<ServiceDTO> serviceMapper(List<com.isa.services.Service> services){
         List<ServiceDTO> dtos = new ArrayList<>();
         for(com.isa.services.Service s: services){
-            dtos.add(new ServiceDTO(s.getName(),s.getGrade(),s.getPrice(),s.getAddress().getStreetName(),
+            dtos.add(new ServiceDTO(s.getId(), s.getName(),s.getGrade(),s.getPrice(),s.getAddress().getStreetName(),
                     s.getAddress().getNumber(),s.getAddress().getCity(),s.getAddress().getState()));
         }
 

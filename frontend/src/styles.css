@@ -76,3 +76,8 @@ h1 {
     color: grey;
     text-align: center;
 }
+
+.mat-grid-tile .mat-figure {
+    justify-content: flex-start !important ;
+    /* align-items: flex-start !important; */
+ }

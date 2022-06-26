@@ -6,6 +6,7 @@ import { ClientHomeComponent } from "./home/client-home/client-home.component";
 import { HomeComponent } from "./home/home/home.component";
 import { LoginComponent } from "./login/login.component";
 import { RegistrationComponent } from "./registration/registration/registration.component";
+import { ReservationComponent } from "./reservation/reservation.component";
 import { UpdateInfoComponent } from "./update-info/update-info.component";
 
 const routes: Routes = [
@@ -30,7 +31,8 @@ const routes: Routes = [
     children: [
         {path: 'updateInfo', component: UpdateInfoComponent}
     ]
-  }
+  },
+  {path: 'reservation', component: ReservationComponent}
     
   ];
   

@@ -2,6 +2,7 @@ package com.isa.services.dto;
 
 public class ServiceDTO {
 
+    private Long id;
     private String name;
     private Float grade;
     private Float price;
@@ -12,7 +13,8 @@ public class ServiceDTO {
 
     public ServiceDTO(){}
 
-    public ServiceDTO(String name, Float grade, Float price, String streetName, String number, String city, String state) {
+    public ServiceDTO(Long id, String name, Float grade, Float price, String streetName, String number, String city,
+                      String state) {
         this.name = name;
         this.grade = grade;
         this.price = price;
@@ -20,6 +22,15 @@ public class ServiceDTO {
         this.number = number;
         this.city = city;
         this.state = state;
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
