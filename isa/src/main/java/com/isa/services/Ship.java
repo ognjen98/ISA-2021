@@ -2,14 +2,16 @@ package com.isa.services;
 
 import com.isa.users.Address;
 import com.isa.users.Seller;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="ships")
+
 public class Ship extends Service{
 
     private String type;
@@ -24,20 +26,20 @@ public class Ship extends Service{
 
     private Integer capacity;
 
-    @OneToMany
-    private List<FishEq> fishingEquipment;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<FishEq> fishEqs;
 
     private ReservationCancellationTerms rct;
 
-    @OneToMany
-    private List<NavigationEquipment> navEquipments;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<NavigationEquipment> navigationEquipments;
 
     public Ship(){}
 
-    public Ship(Long id, String name, String promoDesc, List<Image> images, String rulesOfConduct, Float price,
-                Float grade, Integer noGuests, List<AdditionalInfo> additionalInfos, List<TimePeriod> period,
+    public Ship(Long id, String name, String promoDesc, Set<Image> images, String rulesOfConduct, Float price,
+                Float grade, Integer noGuests, Set<AdditionalInfo> additionalInfos, List<TimePeriod> period,
                 Seller seller,
-                Address address, List<DiscountReservation> discountReservations, String type, Float length, Integer noEngines, Float enginePower, Float maxSpeed, Integer capacity, List<FishEq> fishingEquipment, ReservationCancellationTerms rct, List<NavigationEquipment> navEquipments) {
+                Address address, Set<DiscountReservation> discountReservations, String type, Float length, Integer noEngines, Float enginePower, Float maxSpeed, Integer capacity, Set<FishEq> fishEqs, ReservationCancellationTerms rct, Set<NavigationEquipment> navigationEquipments) {
         super(id, name, promoDesc, images, rulesOfConduct, price,grade, noGuests, additionalInfos, period, seller,
                 address,
                 discountReservations);
@@ -47,21 +49,21 @@ public class Ship extends Service{
         this.enginePower = enginePower;
         this.maxSpeed = maxSpeed;
         this.capacity = capacity;
-        this.fishingEquipment = fishingEquipment;
+        this.fishEqs = fishEqs;
         this.rct = rct;
-        this.navEquipments = navEquipments;
+        this.navigationEquipments = navigationEquipments;
     }
 
-    public Ship(String type, Float length, Integer noEngines, Float enginePower, Float maxSpeed, Integer capacity, List<FishEq> fishingEquipment, ReservationCancellationTerms rct, List<NavigationEquipment> navEquipments) {
+    public Ship(String type, Float length, Integer noEngines, Float enginePower, Float maxSpeed, Integer capacity, Set<FishEq> fishEqs, ReservationCancellationTerms rct, Set<NavigationEquipment> navigationEquipments) {
         this.type = type;
         this.length = length;
         this.noEngines = noEngines;
         this.enginePower = enginePower;
         this.maxSpeed = maxSpeed;
         this.capacity = capacity;
-        this.fishingEquipment = fishingEquipment;
+        this.fishEqs = fishEqs;
         this.rct = rct;
-        this.navEquipments = navEquipments;
+        this.navigationEquipments = navigationEquipments;
     }
 
     public String getType() {
@@ -112,12 +114,12 @@ public class Ship extends Service{
         this.capacity = capacity;
     }
 
-    public List<FishEq> getFishingEquipment() {
-        return fishingEquipment;
+    public Set<FishEq> getFishEqs() {
+        return fishEqs;
     }
 
-    public void setFishingEquipment(List<FishEq> fishingEquipment) {
-        this.fishingEquipment = fishingEquipment;
+    public void setFishEqs(Set<FishEq> fishEqs) {
+        this.fishEqs = fishEqs;
     }
 
     public ReservationCancellationTerms getRct() {
@@ -128,11 +130,11 @@ public class Ship extends Service{
         this.rct = rct;
     }
 
-    public List<NavigationEquipment> getNavEquipments() {
-        return navEquipments;
+    public Set<NavigationEquipment> getNavigationEquipments() {
+        return navigationEquipments;
     }
 
-    public void setNavEquipments(List<NavigationEquipment> navEquipments) {
-        this.navEquipments = navEquipments;
+    public void setNavigationEquipments(Set<NavigationEquipment> navigationEquipments) {
+        this.navigationEquipments = navigationEquipments;
     }
 }

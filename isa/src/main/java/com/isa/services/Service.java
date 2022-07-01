@@ -7,6 +7,7 @@ import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="services")
@@ -21,8 +22,8 @@ public class Service {
 
     private String promoDesc;
 
-    @OneToMany
-    private List<Image> images;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Image> images;
 
     private String rulesOfConduct;
 
@@ -32,8 +33,8 @@ public class Service {
 
     private Integer noGuests;
 
-    @OneToMany
-    private List<AdditionalInfo> additionalInfos;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<AdditionalInfo> additionalInfos;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -49,17 +50,17 @@ public class Service {
     @OneToOne(fetch = FetchType.EAGER)
     private Address address;
 
-    @OneToMany
-    private List<DiscountReservation> discountReservations;
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<DiscountReservation> discountReservations;
 
     public Service(){}
 
-    public Service(Long id, String name, String promoDesc, List<Image> images, String rulesOfConduct,
-                   Float price, Float grade, Integer noGuests, List<AdditionalInfo> additionalInfos,
+    public Service(Long id, String name, String promoDesc, Set<Image> images, String rulesOfConduct,
+                   Float price, Float grade, Integer noGuests, Set<AdditionalInfo> additionalInfos,
                    List<TimePeriod> period,
                    Seller seller,
                    Address address,
-                   List<DiscountReservation> discountReservations) {
+                   Set<DiscountReservation> discountReservations) {
         this.id = id;
         this.name = name;
         this.promoDesc = promoDesc;
@@ -99,11 +100,11 @@ public class Service {
         this.promoDesc = promoDesc;
     }
 
-    public List<Image> getImages() {
+    public Set<Image> getImages() {
         return images;
     }
 
-    public void setImages(List<Image> images) {
+    public void setImages(Set<Image> images) {
         this.images = images;
     }
 
@@ -115,11 +116,11 @@ public class Service {
         this.rulesOfConduct = rulesOfConduct;
     }
 
-    public List<AdditionalInfo> getAdditionalInfos() {
+    public Set<AdditionalInfo> getAdditionalInfos() {
         return additionalInfos;
     }
 
-    public void setAdditionalInfos(List<AdditionalInfo> additionalInfos) {
+    public void setAdditionalInfos(Set<AdditionalInfo> additionalInfos) {
         this.additionalInfos = additionalInfos;
     }
 
@@ -147,11 +148,11 @@ public class Service {
         this.address = address;
     }
 
-    public List<DiscountReservation> getDiscountReservations() {
+    public Set<DiscountReservation> getDiscountReservations() {
         return discountReservations;
     }
 
-    public void setDiscountReservations(List<DiscountReservation> discountReservations) {
+    public void setDiscountReservations(Set<DiscountReservation> discountReservations) {
         this.discountReservations = discountReservations;
     }
 

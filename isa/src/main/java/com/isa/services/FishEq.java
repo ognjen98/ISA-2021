@@ -3,7 +3,7 @@ package com.isa.services;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "fish_equipment")
+@Table(name = "fish_eqs")
 public class FishEq {
 
     @Id

@@ -61,23 +61,23 @@ insert into periods (start_time, end_time) values (to_timestamp(1668236400), to_
 insert into periods (start_time, end_time) values (to_timestamp(1665727200), to_timestamp(1671001200));
 
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 50);
+values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70);
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
 values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50);
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,50);
+values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,30);
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,50);
+values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,170);
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,50);
+values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,120);
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,50);
+values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,80);
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
 values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50);
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,50);
+values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,200);
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,50);
+values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,300);
 
 insert into services_periods (service_id, period_id) values (1,1);
 insert into services_periods (service_id, period_id) values (2,2);
@@ -90,11 +90,11 @@ insert into services_periods (service_id, period_id) values (8,8);
 insert into services_periods (service_id, period_id) values (9,9);
 
 insert into ships(length, max_speed, type, capacity, rct, id)
-values (25.0, 50.0, 'katamaran', 20, 0, 1);
+values (25.0, 50.0, 'katamaran', 20, 1, 1);
 insert into ships(length, max_speed, type, capacity, rct, id)
 values (20.0, 50.0, 'jedrilica', 10, 0, 2);
 insert into ships(length, max_speed, type, capacity, rct, id)
-values (10.0, 250.0, 'gliser', 3, 0, 3);
+values (10.0, 250.0, 'gliser', 3, 1, 3);
 
 insert into cottages (no_beds_by_room, no_rooms, id)
 values (2,1,4);

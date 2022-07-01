@@ -4,8 +4,10 @@ import com.isa.services.Cottage;
 import com.isa.services.FishingLessons;
 import com.isa.services.Ship;
 import com.isa.services.TimePeriod;
+import com.isa.services.dto.FilterDTO;
 import com.isa.services.dto.SearchDataDTO;
 import com.isa.services.dto.ServiceDTO;
+import com.isa.services.dto.SortDTO;
 import com.isa.services.repository.CottageRepository;
 import com.isa.services.repository.FishingLessonsRepository;
 import com.isa.services.repository.ServiceRepository;
@@ -14,8 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -93,4 +94,73 @@ public class ServiceService {
         return dtos;
     }
 
+    public List<ServiceDTO> sort(SortDTO dto) {
+        if(dto.getSortParam().equals("NAME_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getName().toLowerCase()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("NAME_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getName().toLowerCase()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("CITY_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getCity().toLowerCase()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("CITY_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getCity().toLowerCase()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("PRICE_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getPrice()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("PRICE_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getPrice()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("GRADE_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getGrade()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("GRADE_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getGrade()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+
+
+        return dto.getDto();
+    }
+
+    public List<ServiceDTO> filter(FilterDTO dto) {
+
+        if(dto.getEntity().equals("SHIP")){
+            List<ServiceDTO> removal = new ArrayList<>();
+            for(ServiceDTO d: dto.getDtos()){
+                Ship s = shipRepository.getShipById(d.getId());
+                if(!dto.getType().contains(s.getType())){
+                    removal.add(d);
+                }
+//                if(dto.getType().contains(s.getType()) && dto.getDtos().contains(d)){
+//                    removal.add(d);
+//                }
+            }
+
+            dto.getDtos().removeAll(removal);
+            return dto.getDtos();
+        }
+        return dto.getDtos();
+    }
 }

@@ -3,7 +3,7 @@ package com.isa.services;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "nav_equipments")
+@Table(name = "navigation_equipments")
 public class NavigationEquipment {
 
     @Id

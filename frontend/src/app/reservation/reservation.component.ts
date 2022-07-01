@@ -5,6 +5,7 @@ import { ThemePalette } from '@angular/material/core';
 import { CustomeDateValidators } from '../helpers/date.validator';
 import { SearchDataDTO } from '../model/searchDataDTO';
 import { ServiceDTO } from '../model/serviceDTO';
+import { SortDTO } from '../model/sortDTO';
 import { ReservationService } from '../service/reservation.service';
 
 
@@ -22,7 +23,8 @@ export class ReservationComponent implements OnInit {
   today: Date;
   minDate = new Date();
   dto: SearchDataDTO;
-  returnData: ServiceDTO;
+  returnData: ServiceDTO[] = new Array();
+  sortDTO: SortDTO;
 
 
   
@@ -55,7 +57,7 @@ export class ReservationComponent implements OnInit {
       let date = x as Date;
       
       let da = date.toLocaleString("sr-RS")
-      console.log(da);
+      
       this.parseDate(da);
     //  // date.setDate(date.getDate()+1);
       
@@ -72,7 +74,7 @@ export class ReservationComponent implements OnInit {
       let date = x as Date;
       
       let da = date.toLocaleString()
-      console.log(da);
+     
       this.parseDate(da);
     //  // date.setDate(date.getDate()+1);
       
@@ -85,6 +87,19 @@ export class ReservationComponent implements OnInit {
     })
 
  
+  }
+
+
+  sort(event){
+    let sortParam = event.value;
+    console.log(event.value)
+    this.sortDTO = new SortDTO(this.returnData, sortParam)
+    this.service.sort(this.sortDTO).subscribe(
+      res =>{
+        this.returnData = res;
+        console.log(this.returnData)
+      }
+    )
   }
 
   search(){
@@ -106,14 +121,14 @@ export class ReservationComponent implements OnInit {
       res =>
       {
         this.returnData = res;
+        console.log(this.returnData)
       }
     )
   }
 
   parseDate(date:string){
     let parts = date.split(" ")
-    console.log(parts[0])
-    console.log(parts[1])
+   
     let dateStr = parts[0]
     let timeStr = parts[1]
     let dateParts = dateStr.split(".")
@@ -126,13 +141,7 @@ export class ReservationComponent implements OnInit {
     let result = "";
     result += dateParts[2]+"-"+dateParts[1]+"-"+dateParts[0]+"T"+timeStr
     result = result.trim();
-    console.log(result)
-    console.log(dateParts[0])
-    console.log(dateParts[1])
-    console.log(dateParts[2])
-    console.log(timeParts[0])
-    console.log(timeParts[1])
-    console.log(timeParts[2])
+
     return result;
   }
   

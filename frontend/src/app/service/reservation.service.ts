@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { SearchDataDTO } from '../model/searchDataDTO';
 import { ServiceDTO } from '../model/serviceDTO';
+import { SortDTO } from '../model/sortDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,10 @@ export class ReservationService {
 
 
   search(searchData: SearchDataDTO){
-    return this.http.post<ServiceDTO>(this._APIUrl + "/search", searchData);
+    return this.http.post<ServiceDTO[]>(this._APIUrl + "/search", searchData);
+  }
+
+  sort(sortData: SortDTO){
+    return this.http.post<ServiceDTO[]>(this._APIUrl + "/sort", sortData);
   }
 }
