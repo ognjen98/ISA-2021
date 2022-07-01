@@ -33,7 +33,12 @@ public class Service {
 
     private Integer noGuests;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "services_additional_infos",
+            joinColumns = @JoinColumn(name = "service_id"),
+            inverseJoinColumns = @JoinColumn(name = "additional_info_id")
+    )
     private Set<AdditionalInfo> additionalInfos;
 
     @ManyToMany(fetch = FetchType.EAGER)

@@ -31,6 +31,8 @@ import { DlDateTimeDateModule, DlDateTimePickerModule } from 'angular-bootstrap-
 import { NgxDatetimeRangePickerModule } from 'ngx-datetime-range-picker';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule,NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import {MatCardModule} from '@angular/material/card';
+import {MatListModule} from '@angular/material/list';
+
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import {MatCardModule} from '@angular/material/card';
     NgxMatDatetimePickerModule,
     MatCardModule,
     NgxMatTimepickerModule,
+    MatListModule,
     NgxMatNativeDateModule,
     DlDateTimeDateModule,
     DlDateTimePickerModule,

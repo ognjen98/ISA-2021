@@ -60,6 +60,14 @@ insert into periods (start_time, end_time) values (to_timestamp(1669359600), to_
 insert into periods (start_time, end_time) values (to_timestamp(1668236400), to_timestamp(1670828400));
 insert into periods (start_time, end_time) values (to_timestamp(1665727200), to_timestamp(1671001200));
 
+insert into additional_infos (info,price) values ('Pecaljka', 20);
+insert into additional_infos (info,price) values ('Sesir', 5);
+insert into additional_infos (info,price) values ('Lezaljka', 50);
+insert into additional_infos (info,price) values ('Sprej protiv komaraca', 10);
+insert into additional_infos (info,price) values ('Mamac', 5);
+insert into additional_infos (info,price) values ('Internet', 30);
+insert into additional_infos (info,price) values ('Parking', 8);
+
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
 values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70);
 insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
@@ -88,6 +96,14 @@ insert into services_periods (service_id, period_id) values (6,6);
 insert into services_periods (service_id, period_id) values (7,7);
 insert into services_periods (service_id, period_id) values (8,8);
 insert into services_periods (service_id, period_id) values (9,9);
+
+insert into services_additional_infos(service_id, additional_info_id) values(1,1);
+insert into services_additional_infos(service_id, additional_info_id) values(1,3);
+insert into services_additional_infos(service_id, additional_info_id) values(2,6);
+insert into services_additional_infos(service_id, additional_info_id) values(4,7);
+insert into services_additional_infos(service_id, additional_info_id) values(4,6);
+insert into services_additional_infos(service_id, additional_info_id) values(4,4);
+insert into services_additional_infos(service_id, additional_info_id) values(7,2);
 
 insert into ships(length, max_speed, type, capacity, rct, id)
 values (25.0, 50.0, 'katamaran', 20, 1, 1);

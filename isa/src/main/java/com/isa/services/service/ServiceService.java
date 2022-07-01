@@ -1,9 +1,6 @@
 package com.isa.services.service;
 
-import com.isa.services.Cottage;
-import com.isa.services.FishingLessons;
-import com.isa.services.Ship;
-import com.isa.services.TimePeriod;
+import com.isa.services.*;
 import com.isa.services.dto.FilterDTO;
 import com.isa.services.dto.SearchDataDTO;
 import com.isa.services.dto.ServiceDTO;
@@ -162,5 +159,12 @@ public class ServiceService {
             return dto.getDtos();
         }
         return dto.getDtos();
+    }
+
+
+    public Set<AdditionalInfo> getAdditionalInfoForService(Long serviceId){
+        com.isa.services.Service s = serviceRepository.getServiceById(serviceId);
+        Set<AdditionalInfo> addInfos = s.getAdditionalInfos();
+        return addInfos;
     }
 }

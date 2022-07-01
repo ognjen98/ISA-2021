@@ -81,7 +81,7 @@
                             <mat-option value="PRICE_DESC">Sort by price descending</mat-option>
                         </mat-select>
                     </mat-form-field>
-                            <div id="returnData" [dataSource]="returnData" class="row" *ngFor="let data of returnData" class="container center-card">  
+                            <div id="returnData" [dataSource]="returnData" class="row" *ngFor="let data of returnData;let i=index" class="container center-card">  
                                 
                                 <mat-card>
                                     <mat-card-header>
@@ -111,7 +111,7 @@
                                                 
                                                 <div class="content-paragraph">City: {{ data.city }}</div><br>
                                                 <div class="content-paragraph">State: {{ data.state }}</div><br>
-                                                <div class="content-paragraph">Price: {{ data.price }} </div><br>
+                                                <div class="content-paragraph">Price: {{ data.price }}$/hour </div><br>
                                                 <div class="content-paragraph">Grade: {{ data.grade }}</div>
                                                 
                                             </mat-card-content>
@@ -126,7 +126,7 @@
                                        
                                         <!-- <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="!feedback.approved">Approve</button>
                                         <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="feedback.approved">Deny</button> -->
-                                        <button mat-raised-button color="primary">Reserve</button>
+                                        <button mat-raised-button color="primary" (click)="getInfos(data.id)" matStepperNext>More Info</button>
                                     </mat-card-actions>
                                 </mat-card>
                                 <div style="margin-top: 20px;"></div> 
@@ -138,6 +138,24 @@
             
                 
             </div>
+    </mat-step>
+    <mat-step>
+        <div *ngIf="additionalInfos.length == 0" class="container" style="text-align: center;">
+            <h1>
+                No additional services
+            </h1>
+            <button mat-raised-button color="primary" >Reserve</button>
+        </div>
+        <div *ngIf="additionalInfos['length']>0" class="container" style="text-align: center;width: 300px;">
+            <h1>Additional services</h1>
+        <mat-selection-list>
+            <mat-list-option *ngFor="let info of additionalInfos" style="text-align: left;">
+              <pre>{{info.info}}&emsp;&emsp;               {{info.price}}$</pre>
+            </mat-list-option>
+          </mat-selection-list>
+          <button mat-raised-button color="primary" >Reserve</button>
+        </div>
+        
     </mat-step>
    
   </mat-horizontal-stepper>

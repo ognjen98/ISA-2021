@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidationErrors } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { CustomeDateValidators } from '../helpers/date.validator';
+import { AdditionalInfo } from '../model/additionalInfo';
 import { SearchDataDTO } from '../model/searchDataDTO';
 import { ServiceDTO } from '../model/serviceDTO';
 import { SortDTO } from '../model/sortDTO';
@@ -25,6 +26,7 @@ export class ReservationComponent implements OnInit {
   dto: SearchDataDTO;
   returnData: ServiceDTO[] = new Array();
   sortDTO: SortDTO;
+  additionalInfos: AdditionalInfo[] = new Array();
 
 
   
@@ -87,6 +89,16 @@ export class ReservationComponent implements OnInit {
     })
 
  
+  }
+
+  getInfos(serviceId: number){
+
+    this.service.getInfos(serviceId).subscribe(
+
+      res => {
+        this.additionalInfos = res
+      }
+    )
   }
 
 
