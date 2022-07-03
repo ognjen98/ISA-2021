@@ -30,7 +30,7 @@ insert into users (name, surname, email, password, mobile, address_id, enabled)
 values ('Jasmin', 'Jovanovic','ognjen4@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 4, true);
 insert into users (name, surname, email, password, mobile, address_id, enabled)
-values ('Juzba', 'Juzbasic','ognjen5@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
+values ('Juzba', 'Juzbasic','ognjencivcic23@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 7, true);
 
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);

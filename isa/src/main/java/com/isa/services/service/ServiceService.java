@@ -1,19 +1,20 @@
 package com.isa.services.service;
 
 import com.isa.services.*;
-import com.isa.services.dto.FilterDTO;
-import com.isa.services.dto.SearchDataDTO;
-import com.isa.services.dto.ServiceDTO;
-import com.isa.services.dto.SortDTO;
-import com.isa.services.repository.CottageRepository;
-import com.isa.services.repository.FishingLessonsRepository;
-import com.isa.services.repository.ServiceRepository;
-import com.isa.services.repository.ShipRepository;
+import com.isa.services.dto.*;
+import com.isa.services.repository.*;
+import com.isa.users.Client;
+import com.isa.users.repository.ClientRepository;
+import com.isa.users.repository.ReservationRepository;
+import com.isa.users.service.ClientService;
+import com.isa.users.service.email.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
+
+import java.time.temporal.ChronoUnit;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 
@@ -24,13 +25,26 @@ public class ServiceService {
     ShipRepository shipRepository;
 
     @Autowired
+    TimePeriodRepository timePeriodRepository;
+
+    @Autowired
     CottageRepository cottageRepository;
 
     @Autowired
     FishingLessonsRepository fishingLessonsRepository;
 
     @Autowired
+    private EmailSender emailSender;
+
+
+    @Autowired
     ServiceRepository serviceRepository;
+
+    @Autowired
+    ClientRepository clientRepository;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
     public List<ServiceDTO> search (SearchDataDTO dto){
         List<com.isa.services.Service> services;
@@ -66,8 +80,17 @@ public class ServiceService {
             }
             if(dto.getStartTime() != null && dto.getEndTime() != null){
                 for(TimePeriod tp : timePeriods){
-                    if(dto.getStartTime().isBefore(tp.getStart()) || dto.getEndTime().isAfter(tp.getEnd())){
-                        removal.add(s);
+                    if(timePeriods.size() == 1) {
+                        if (dto.getStartTime().isBefore(tp.getStart()) || dto.getEndTime().isAfter(tp.getEnd())) {
+                            removal.add(s);
+                            break;
+                        }
+                    }
+                    else{
+                        if (dto.getStartTime().isBefore(tp.getStart()) && dto.getEndTime().isAfter(tp.getEnd())) {
+                            removal.add(s);
+                            break;
+                        }
                     }
                 }
 
@@ -166,5 +189,46 @@ public class ServiceService {
         com.isa.services.Service s = serviceRepository.getServiceById(serviceId);
         Set<AdditionalInfo> addInfos = s.getAdditionalInfos();
         return addInfos;
+    }
+
+    public Reservation reserve(ReservationDTO dto, String email){
+        Client client = clientRepository.findByEmail(email);
+        com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());
+        List<TimePeriod> removal = new ArrayList<>();
+        List<TimePeriod> addition = new ArrayList<>();
+        for(TimePeriod tp: service.getPeriod()){
+            if((dto.getStart().isAfter(tp.getStart()) || dto.getStart().isEqual(tp.getStart())) && (dto.getEnd().isBefore(tp.getEnd()) || dto.getEnd().isEqual(tp.getEnd()))){
+                removal.add(tp);
+                TimePeriod first = new TimePeriod(tp.getStart(), dto.getStart());
+                TimePeriod second = new TimePeriod(dto.getEnd(), tp.getEnd());
+                timePeriodRepository.save(first);
+                timePeriodRepository.save(second);
+
+                addition.add(first);
+                addition.add(second);
+            }
+
+
+        }
+        if(addition.size() == 0){
+            return null;
+        }
+        service.getPeriod().removeAll(removal);
+        service.getPeriod().addAll(addition);
+
+        float price = 0;
+        for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
+            price += additionalInfo.getPrice();
+        }
+        float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
+        price+=service.getPrice() * hours;
+        Reservation reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
+                dto.getAdditionalInfos(), price, service.getAddress(), service, client);
+
+        serviceRepository.save(service);
+        reservationRepository.save(reservation);
+       // emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES"));
+        return reservation;
+
     }
 }

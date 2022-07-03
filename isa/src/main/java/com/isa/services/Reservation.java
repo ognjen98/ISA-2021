@@ -6,6 +6,7 @@ import com.isa.users.Client;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name="reservations")
@@ -16,18 +17,23 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime start;
+    private LocalDateTime startTime;
 
-    private Integer duration;
+    private LocalDateTime endTime;
 
     private Integer maxCapacity;
 
-    @OneToMany
-    private List<AdditionalInfo> services;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "reservations_additional_infos",
+            joinColumns = @JoinColumn(name = "reservation_id"),
+            inverseJoinColumns = @JoinColumn(name = "additional_info_id")
+    )
+    private Set<AdditionalInfo> additionalInfos;
 
     private Float price;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private Address address;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -38,12 +44,27 @@ public class Reservation {
 
     public Reservation(){}
 
-    public Reservation(Long id, LocalDateTime start, Integer duration, Integer maxCapacity, List<AdditionalInfo> services, Float price, Address address, Service service, Client client) {
+    public Reservation(Long id, LocalDateTime startTime, LocalDateTime endTime, Integer maxCapacity,
+                       Set<AdditionalInfo> additionalInfos,
+                       Float price, Address address, Service service, Client client) {
         this.id = id;
-        this.start = start;
-        this.duration = duration;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.maxCapacity = maxCapacity;
-        this.services = services;
+        this.additionalInfos = additionalInfos;
+        this.price = price;
+        this.address = address;
+        this.service = service;
+        this.client = client;
+    }
+    public Reservation(LocalDateTime startTime, LocalDateTime endTime, Integer maxCapacity,
+                       Set<AdditionalInfo> additionalInfos,
+                       Float price, Address address, Service service, Client client) {
+
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.maxCapacity = maxCapacity;
+        this.additionalInfos = additionalInfos;
         this.price = price;
         this.address = address;
         this.service = service;
@@ -58,20 +79,20 @@ public class Reservation {
         this.id = id;
     }
 
-    public LocalDateTime getStart() {
-        return start;
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
-    public void setStart(LocalDateTime start) {
-        this.start = start;
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
-    public Integer getDuration() {
-        return duration;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public Integer getMaxCapacity() {
@@ -82,12 +103,12 @@ public class Reservation {
         this.maxCapacity = maxCapacity;
     }
 
-    public List<AdditionalInfo> getServices() {
-        return services;
+    public Set<AdditionalInfo> getAdditionalInfos() {
+        return additionalInfos;
     }
 
-    public void setServices(List<AdditionalInfo> services) {
-        this.services = services;
+    public void setAdditionalInfos(Set<AdditionalInfo> additionalInfos) {
+        this.additionalInfos = Reservation.this.additionalInfos;
     }
 
     public Float getPrice() {

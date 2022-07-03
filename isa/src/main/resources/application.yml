@@ -29,6 +29,9 @@ spring:
     initialization-mode: always
 
   jpa:
+#    properties:
+#      hibernate:
+#        globally-quoted-identifiers: true
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: create-drop

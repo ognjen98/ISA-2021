@@ -1,16 +1,17 @@
 package com.isa.services.controller;
 
+import com.isa.security.TokenUtils;
 import com.isa.services.AdditionalInfo;
-import com.isa.services.dto.FilterDTO;
-import com.isa.services.dto.SearchDataDTO;
-import com.isa.services.dto.ServiceDTO;
-import com.isa.services.dto.SortDTO;
+import com.isa.services.Reservation;
+import com.isa.services.dto.*;
 import com.isa.services.service.ServiceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,9 @@ public class ServiceController {
 
     @Autowired
     private ServiceService serviceService;
+
+    @Autowired
+    TokenUtils tokenUtils;
 
 
     @PostMapping("/search")
@@ -41,5 +45,15 @@ public class ServiceController {
     @GetMapping("/getInfos/{serviceId}")
     public ResponseEntity<Set<AdditionalInfo>> getInfosForService(@PathVariable Long serviceId){
         return new ResponseEntity(serviceService.getAdditionalInfoForService(serviceId), HttpStatus.OK);
+    }
+
+    @PostMapping("/reserve")
+    public ResponseEntity<Reservation> reserve(@RequestBody ReservationDTO dto, HttpServletRequest request){
+        String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        Reservation r = serviceService.reserve(dto,email);
+        if(r == null){
+            return new ResponseEntity("Reservation is null, bad period entered", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(r, HttpStatus.OK);
     }
 }

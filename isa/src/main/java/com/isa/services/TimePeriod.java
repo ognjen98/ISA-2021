@@ -13,6 +13,7 @@ public class TimePeriod {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
@@ -20,6 +21,12 @@ public class TimePeriod {
 
     public TimePeriod(Long id, LocalDateTime start, LocalDateTime end) {
         this.id = id;
+        this.startTime = start;
+        this.endTime = end;
+    }
+
+    public TimePeriod(LocalDateTime start, LocalDateTime end) {
+
         this.startTime = start;
         this.endTime = end;
     }
