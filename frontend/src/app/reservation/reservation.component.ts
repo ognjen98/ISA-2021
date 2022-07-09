@@ -1,9 +1,10 @@
 import { NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ThemePalette } from '@angular/material/core';
 import { CustomeDateValidators } from '../helpers/date.validator';
 import { AdditionalInfo } from '../model/additionalInfo';
+import { ReservationDTO } from '../model/reservationDTO';
 import { SearchDataDTO } from '../model/searchDataDTO';
 import { ServiceDTO } from '../model/serviceDTO';
 import { SortDTO } from '../model/sortDTO';
@@ -27,6 +28,8 @@ export class ReservationComponent implements OnInit {
   returnData: ServiceDTO[] = new Array();
   sortDTO: SortDTO;
   additionalInfos: AdditionalInfo[] = new Array();
+  reservationDTO: ReservationDTO;
+  serviceId: number;
 
 
   
@@ -42,8 +45,8 @@ export class ReservationComponent implements OnInit {
       location: ["", ],
       noGuests: ["", ],
       grade: ["", ],
-      start: [""],
-      end: [""]
+      start: ["", ],
+      end: ["", ]
       
      
     }, { validator: [
@@ -91,8 +94,10 @@ export class ReservationComponent implements OnInit {
  
   }
 
-  getInfos(serviceId: number){
+  
 
+  getInfos(serviceId: number){
+    this.serviceId = serviceId;
     this.service.getInfos(serviceId).subscribe(
 
       res => {
@@ -101,6 +106,25 @@ export class ReservationComponent implements OnInit {
     )
   }
 
+  reserve(){
+    let start = this.searchForm.get('start').value;
+    let end = this.searchForm.get('end').value;
+    if(start != "" && end != ""){
+      start = start.toLocaleString("sr-RS")
+      end = end.toLocaleString("sr-RS")
+      
+      start = this.parseDate(start)
+      end = this.parseDate(end)
+    }
+    let noGuests = this.searchForm.get('noGuests').value;
+    this.reservationDTO = new ReservationDTO(start,end,this.additionalInfos,this.serviceId, noGuests);
+    this.service.reserve(this.reservationDTO).subscribe(
+      res => {
+
+      }
+    )
+
+  }
 
   sort(event){
     let sortParam = event.value;

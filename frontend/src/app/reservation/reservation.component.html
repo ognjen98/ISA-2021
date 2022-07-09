@@ -93,7 +93,7 @@
                                         </mat-card-title>
                                             
                                         <mat-card-subtitle>
-                                            <span style="visibility: hidden;"> {{data.id}}</span>
+                                            <span style="visibility: hidden;" >{{data.id}}</span>
                                         </mat-card-subtitle>
                                         
                                    
@@ -144,7 +144,7 @@
             <h1>
                 No additional services
             </h1>
-            <button mat-raised-button color="primary" >Reserve</button>
+            <button mat-raised-button color="primary" (click)="reserve()">Reserve</button>
         </div>
         <div *ngIf="additionalInfos['length']>0" class="container" style="text-align: center;width: 300px;">
             <h1>Additional services</h1>
@@ -153,7 +153,7 @@
               <pre>{{info.info}}&emsp;&emsp;               {{info.price}}$</pre>
             </mat-list-option>
           </mat-selection-list>
-          <button mat-raised-button color="primary" >Reserve</button>
+          <button mat-raised-button color="primary" (click)="reserve()">Reserve</button>
         </div>
         
     </mat-step>

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdditionalInfo } from '../model/additionalInfo';
+import { ReservationDTO } from '../model/reservationDTO';
 import { SearchDataDTO } from '../model/searchDataDTO';
 import { ServiceDTO } from '../model/serviceDTO';
 import { SortDTO } from '../model/sortDTO';
@@ -26,5 +27,9 @@ export class ReservationService {
 
   getInfos(serviceId: number){
     return this.http.get<AdditionalInfo[]>(this._APIUrl+ "/getInfos/"+ serviceId);
+  }
+
+  reserve(reservationDTO: ReservationDTO){
+    return this.http.post(this._APIUrl + "/reserve", reservationDTO);
   }
 }
