@@ -50,7 +50,8 @@ insert into ship_owners(id) values (3);
 insert into instructors(id) values (4);
 insert into clients(id) values (5);
 
-insert into periods (start_time, end_time) values (to_timestamp(1663221600), to_timestamp(1665813600));
+insert into periods (start_time, end_time) values (to_timestamp(1663221600), to_timestamp(1663653600));
+insert into periods (start_time, end_time) values (to_timestamp(1664085600), to_timestamp(1665813600));
 insert into periods (start_time, end_time) values (to_timestamp(1665813600), to_timestamp(1671087600));
 insert into periods (start_time, end_time) values (to_timestamp(1666159200), to_timestamp(1671433200));
 insert into periods (start_time, end_time) values (to_timestamp(1671433200), to_timestamp(1672470000));
@@ -68,34 +69,36 @@ insert into additional_infos (info,price) values ('Mamac', 5);
 insert into additional_infos (info,price) values ('Internet', 30);
 insert into additional_infos (info,price) values ('Parking', 8);
 
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,30);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,170);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,120);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,80);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,200);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price)
-values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,300);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
+values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70, 5);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
+values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50, 3);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
+values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,30, 2);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
+values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,170, 3);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
+values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,120, 5);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
+values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,80, 10);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
+values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50,1)
+;
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
+values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,200, 2);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
+values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,300,3);
 
 insert into services_periods (service_id, period_id) values (1,1);
-insert into services_periods (service_id, period_id) values (2,2);
-insert into services_periods (service_id, period_id) values (3,3);
-insert into services_periods (service_id, period_id) values (4,4);
-insert into services_periods (service_id, period_id) values (5,5);
-insert into services_periods (service_id, period_id) values (6,6);
-insert into services_periods (service_id, period_id) values (7,7);
-insert into services_periods (service_id, period_id) values (8,8);
-insert into services_periods (service_id, period_id) values (9,9);
+insert into services_periods (service_id, period_id) values (1,2);
+insert into services_periods (service_id, period_id) values (2,3);
+insert into services_periods (service_id, period_id) values (3,4);
+insert into services_periods (service_id, period_id) values (4,5);
+insert into services_periods (service_id, period_id) values (5,6);
+insert into services_periods (service_id, period_id) values (6,7);
+insert into services_periods (service_id, period_id) values (7,8);
+insert into services_periods (service_id, period_id) values (8,9);
+insert into services_periods (service_id, period_id) values (9,10);
 
 insert into services_additional_infos(service_id, additional_info_id) values(1,1);
 insert into services_additional_infos(service_id, additional_info_id) values(1,3);

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,8 +48,12 @@ public class ServiceController {
         return new ResponseEntity(serviceService.getAdditionalInfoForService(serviceId), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @PostMapping("/reserve")
     public ResponseEntity<Reservation> reserve(@RequestBody ReservationDTO dto, HttpServletRequest request){
+        if(dto.getStart().equals("") || dto.getStart().equals(null) || dto.getEnd().equals("") || dto.getEnd().equals(null)){
+            return new ResponseEntity("Start or end date can't be null", HttpStatus.BAD_REQUEST);
+        }
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         Reservation r = serviceService.reserve(dto,email);
         if(r == null){

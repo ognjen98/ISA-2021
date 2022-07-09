@@ -51,6 +51,7 @@ public class ServiceService {
         if(dto.getEntity().equals("SHIP")){
             List<com.isa.services.Service> ships = serviceRepository.findAll().stream().filter(s-> s instanceof Ship).collect(Collectors.toList());
             services = ships;
+
         }
         else if(dto.getEntity().equals("COTTAGE")){
             List<com.isa.services.Service> cottages =
@@ -62,44 +63,51 @@ public class ServiceService {
                     serviceRepository.findAll().stream().filter(s-> s instanceof FishingLessons).collect(Collectors.toList());
             services = fishingLessons;
         }
-        List<com.isa.services.Service> removal = new ArrayList<>();
+        List<com.isa.services.Service> result = new ArrayList<>();
 
         for(com.isa.services.Service s : services){
             List<TimePeriod> timePeriods = s.getPeriod();
-            if(!dto.getLocation().equals("") && !s.getAddress().getCity().toLowerCase().contains(dto.getLocation().toLowerCase())){
-                removal.add(s);
 
-            }
-            if(!dto.getGrade().equals("") && s.getGrade() != Double.parseDouble(dto.getGrade())){
-                removal.add(s);
 
-            }
-            if(!dto.getNoGuests().equals("") && s.getNoGuests() != Integer.parseInt(dto.getNoGuests())){
-                removal.add(s);
-
-            }
             if(dto.getStartTime() != null && dto.getEndTime() != null){
                 for(TimePeriod tp : timePeriods){
-                    if(timePeriods.size() == 1) {
-                        if (dto.getStartTime().isBefore(tp.getStart()) || dto.getEndTime().isAfter(tp.getEnd())) {
-                            removal.add(s);
+
+                    if(dto.getStartTime().isAfter(tp.getStart()) && dto.getEndTime().isBefore(tp.getEnd())){
+                        if(result.contains(s)) {
+                            result.remove(s);
                             break;
                         }
+                        break;
                     }
-                    else{
-                        if (dto.getStartTime().isBefore(tp.getStart()) && dto.getEndTime().isAfter(tp.getEnd())) {
-                            removal.add(s);
-                            break;
-                        }
+                    if ((dto.getStartTime().isBefore(tp.getStart()) && dto.getEndTime().isAfter(tp.getEnd()))
+                            || (dto.getStartTime().isAfter(tp.getStart()) && dto.getEndTime().isAfter(tp.getEnd()))
+                            || (dto.getStartTime().isBefore(tp.getStart()) && dto.getEndTime().isBefore(tp.getEnd()))) {
+                        result.add(s);
+
                     }
+
+
                 }
 
             }
+            if(!dto.getLocation().equals("") && !s.getAddress().getCity().toLowerCase().contains(dto.getLocation().toLowerCase())){
+                result.add(s);
+
+            }
+            if(!dto.getGrade().equals("") && s.getGrade() != Double.parseDouble(dto.getGrade())){
+                result.add(s);
+
+            }
+            if(!dto.getNoGuests().equals("") && s.getNoGuests() < Integer.parseInt(dto.getNoGuests())){
+                result.add(s);
+
+            }
+
 
 
         }
-        services.removeAll(removal);
 
+        services.removeAll(result);
         return serviceMapper(services);
     }
 
@@ -192,6 +200,7 @@ public class ServiceService {
     }
 
     public Reservation reserve(ReservationDTO dto, String email){
+
         Client client = clientRepository.findByEmail(email);
         com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());
         List<TimePeriod> removal = new ArrayList<>();
