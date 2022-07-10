@@ -45,8 +45,8 @@ export class ReservationComponent implements OnInit {
       location: ["", ],
       noGuests: ["", ],
       grade: ["", ],
-      start: ["", ],
-      end: ["", ]
+      start: ["", Validators.required],
+      end: ["", Validators.required]
       
      
     }, { validator: [
@@ -62,8 +62,8 @@ export class ReservationComponent implements OnInit {
       let date = x as Date;
       
       let da = date.toLocaleString("sr-RS")
-      
-      this.parseDate(da);
+      console.log(da)
+      console.log(this.parseDate(da));
     //  // date.setDate(date.getDate()+1);
       
     //   console.log(this.searchForm.get('start').value)
@@ -173,6 +173,13 @@ export class ReservationComponent implements OnInit {
     for(let i = 0; i< dateParts.length; i++){
       dateParts[i].trim()
       
+    }
+    if(dateParts[0].length === 1){
+      dateParts[0] = "0"+dateParts[0]
+    }
+    
+    if(dateParts[1].length === 1){
+      dateParts[1] = "0"+dateParts[1]
     }
     let result = "";
     result += dateParts[2]+"-"+dateParts[1]+"-"+dateParts[0]+"T"+timeStr

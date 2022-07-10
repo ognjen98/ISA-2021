@@ -20,7 +20,8 @@ const routes: Routes = [
     data: {
       allowedRoles: ['ROLE_CLIENT']},
     children: [
-      {path: 'updateInfo', component: UpdateInfoComponent}
+      {path: 'updateInfo', component: UpdateInfoComponent},
+      {path: 'reservation', component: ReservationComponent}
     ]
   },
     {path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuard],
@@ -32,7 +33,7 @@ const routes: Routes = [
         {path: 'updateInfo', component: UpdateInfoComponent}
     ]
   },
-  {path: 'reservation', component: ReservationComponent}
+  
     
   ];
   

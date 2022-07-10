@@ -3,8 +3,8 @@
 
 <mat-horizontal-stepper linear #stepper style="visibility: hidden;">
     <mat-step [stepControl]="searchForm" [editable]="true">
-        <form [formGroup]="searchForm" autocomplete="off" style="margin: 25px" (ngSubmit)="search()">
-            <mat-grid-list cols="6" rowHeight="100px" row-width="100%">
+        <form [formGroup]="searchForm" autocomplete="off"  (ngSubmit)="search()">
+            <mat-grid-list cols="6" rowHeight="100px" row-width="1000px">
             <mat-grid-tile class="align">
                 <mat-form-field appearance="fill">
                     <mat-label>Entity</mat-label>
@@ -37,7 +37,7 @@
                
                   <mat-form-field appearance="fill" >
                     <input matInput [ngxMatDatetimePicker]="picker" placeholder="Start date" name="start" formControlName="start" [min]="minDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
                     <ngx-mat-datetime-picker #picker [showSeconds]="true">
                         
                     </ngx-mat-datetime-picker>
@@ -50,7 +50,7 @@
             <mat-grid-tile>
                 <mat-form-field appearance="fill">
                     <input matInput [ngxMatDatetimePicker]="picker2" placeholder="End date" name="end" formControlName="end" [min]="minDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker-toggle matPrefix [for]="picker2"></mat-datepicker-toggle>
                     <ngx-mat-datetime-picker #picker2 [showSeconds]="true">
                         
                     </ngx-mat-datetime-picker>

@@ -94,7 +94,7 @@ public class ClientService {
             //Since, we are running the spring boot application in localhost, we are hardcoding the
             //url of the server. We are creating a POST request with token param
             String link = "http://localhost:8082/registration/confirm?token=" + tokenForNewUser;
-            emailSender.sendEmail(request.getEmail(), buildEmail(request.getName(), link, "REG"));
+            emailSender.sendEmail(request.getEmail(), buildEmail(request.getName(), link, "REG"), "REG");
             return tokenForNewUser;
         } else {
             throw new IllegalStateException(String.format("Email %s, not valid", request.getEmail()));

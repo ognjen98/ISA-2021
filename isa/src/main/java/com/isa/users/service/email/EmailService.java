@@ -25,13 +25,16 @@ public class EmailService implements EmailSender{
 
     @Override
     @Async
-    public void sendEmail(String to, String email) {
+    public void sendEmail(String to, String email, String type) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(email, true);
             helper.setTo(to);
-            helper.setSubject("Confirm your email");
+            if(type.equals("REG"))
+                helper.setSubject("Confirm your email");
+            else if(type.equals("RES"))
+                helper.setSubject("Reservation made");
             helper.setFrom("ognjencivcic23@outlook.com");
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {

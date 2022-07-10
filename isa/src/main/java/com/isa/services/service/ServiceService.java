@@ -236,7 +236,7 @@ public class ServiceService {
 
         serviceRepository.save(service);
         reservationRepository.save(reservation);
-       // emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES"));
+        emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES"), "RES");
         return reservation;
 
     }
