@@ -48,7 +48,7 @@ public class ServiceController {
         return new ResponseEntity(serviceService.getAdditionalInfoForService(serviceId), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+//    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @PostMapping("/reserve")
     public ResponseEntity<Reservation> reserve(@RequestBody ReservationDTO dto, HttpServletRequest request){
         if(dto.getStart().equals("") || dto.getStart().equals(null) || dto.getEnd().equals("") || dto.getEnd().equals(null)){

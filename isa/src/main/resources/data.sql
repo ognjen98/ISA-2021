@@ -32,12 +32,16 @@ values ('Jasmin', 'Jovanovic','ognjen4@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfO
 insert into users (name, surname, email, password, mobile, address_id, enabled)
 values ('Juzba', 'Juzbasic','ognjencivcic23@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 7, true);
+insert into users (name, surname, email, password, mobile, address_id, enabled)
+values ('Juzba', 'Juzbasic','ognjen5@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
+'21310', 7, true);
 
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 3);
 INSERT INTO user_roles (user_id, role_id) VALUES (3, 4);
 INSERT INTO user_roles (user_id, role_id) VALUES (4, 5);
 INSERT INTO user_roles (user_id, role_id) VALUES (5, 2);
+INSERT INTO user_roles (user_id, role_id) VALUES (6, 2);
 
 
 insert into sellers (points,id,grade) values (0, 2, 0.0);
@@ -49,6 +53,7 @@ insert into cottage_owners(id) values (2);
 insert into ship_owners(id) values (3);
 insert into instructors(id) values (4);
 insert into clients(id) values (5);
+insert into clients(id) values (6);
 
 insert into periods (start_time, end_time) values (to_timestamp(1663221600), to_timestamp(1663653600));
 insert into periods (start_time, end_time) values (to_timestamp(1664085600), to_timestamp(1665813600));

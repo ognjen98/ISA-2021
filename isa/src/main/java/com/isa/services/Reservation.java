@@ -21,6 +21,9 @@ public class Reservation {
 
     private LocalDateTime endTime;
 
+    @Version
+    private Long version;
+
     private Integer maxCapacity;
 
     @ManyToMany(fetch = FetchType.EAGER)
