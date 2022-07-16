@@ -1,7 +1,9 @@
 package com.isa.users;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.isa.services.Reservation;
+
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -9,6 +11,10 @@ import java.util.Set;
 public class Client extends User{
 
     private Integer points;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER)
+    private Set<Reservation> cancelledReservations;
 
     public Client(){}
     public Client(Integer points) {
@@ -19,6 +25,7 @@ public class Client extends User{
                   Set<Role> roles, Boolean enabled, Integer points) {
         super(name, surname, email, address, mobile, password, roles, enabled);
         this.points = points;
+
     }
 
     public Integer getPoints() {
@@ -27,5 +34,13 @@ public class Client extends User{
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public Set<Reservation> getCancelledReservations() {
+        return cancelledReservations;
+    }
+
+    public void setCancelledReservations(Set<Reservation> cancelledReservations) {
+        this.cancelledReservations = cancelledReservations;
     }
 }

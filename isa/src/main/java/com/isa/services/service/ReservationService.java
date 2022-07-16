@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class ServiceService {
+public class ReservationService {
 
     @Autowired
     ShipRepository shipRepository;
@@ -202,7 +203,13 @@ public class ServiceService {
     public Reservation reserve(ReservationDTO dto, String email){
 
         Client client = clientRepository.findByEmail(email);
+
         com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());
+        for(Reservation r : client.getCancelledReservations()){
+            if(r.getStartTime().isEqual(dto.getStart()) && r.getEndTime().isEqual(dto.getEnd()) && r.getService().getId() == service.getId()){
+                return null;
+            }
+        }
         List<TimePeriod> removal = new ArrayList<>();
         List<TimePeriod> addition = new ArrayList<>();
         for(TimePeriod tp: service.getPeriod()){
@@ -232,12 +239,56 @@ public class ServiceService {
         float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
         price+=service.getPrice() * hours;
         Reservation reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
-                dto.getAdditionalInfos(), price, service.getAddress(), service, client);
+                dto.getAdditionalInfos(), price, service.getAddress(), service, client, false);
 
         serviceRepository.save(service);
         reservationRepository.save(reservation);
         emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES"), "RES");
         return reservation;
 
+    }
+
+    public Reservation cancel(Long resId){
+        Reservation reservation = reservationRepository.getReservationById(resId);
+
+        LocalDateTime now = LocalDateTime.now();
+        float days = ChronoUnit.DAYS.between(now, reservation.getStartTime());
+        if(days >= 3){
+            return null;
+        }
+        com.isa.services.Service service = reservation.getService();
+        Client client = reservation.getClient();
+
+        TimePeriod t1 = new TimePeriod();
+        TimePeriod t2 = new TimePeriod();
+        for(TimePeriod tp: service.getPeriod()){
+            if(reservation.getStartTime().isEqual(tp.getEnd())){
+                t1 = tp;
+
+            }
+            else if(reservation.getEndTime().isEqual(tp.getStart())){
+                t2 = tp;
+            }
+
+
+        }
+        TimePeriod newPeriod = new TimePeriod(t1.getStart(), t2.getEnd());
+        timePeriodRepository.save(newPeriod);
+
+        service.getPeriod().remove(t1);
+        service.getPeriod().remove(t2);
+        service.getPeriod().add(newPeriod);
+
+        serviceRepository.save(service);
+
+        client.getCancelledReservations().add(reservation);
+        reservation.setCancelled(true);
+        clientRepository.save(client);
+        reservationRepository.save(reservation);
+
+
+
+
+        return reservation;
     }
 }

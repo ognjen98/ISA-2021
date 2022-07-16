@@ -35,7 +35,7 @@ public class EmailService implements EmailSender{
                 helper.setSubject("Confirm your email");
             else if(type.equals("RES"))
                 helper.setSubject("Reservation made");
-            helper.setFrom("ognjencivcic23@outlook.com");
+            helper.setFrom("civcic.ognjen98@outlook.com");
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             logger.error("Failed to send email for: " + email + "\n" + e);

@@ -134,3 +134,8 @@ values ('Dobar covek, prvak Srbije u pecanju u svim kategorijama', 2, 0, 8);
 insert into lessons (instructor_bio, max_persons, terms, id)
 values ('Dobar covek, prvak Srbije u pecanju u svim kategorijama', 2, 0, 9);
 
+insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id)
+values ('Reservation', to_timestamp(1663480800), to_timestamp(1663567200), true, 5, 1);
+
+insert into clients_cancelled_reservations (client_id, cancelled_reservations_id) values (5, 1);
+
