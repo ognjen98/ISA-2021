@@ -9,6 +9,7 @@ import { LessonsComponent } from "./lessons/lessons.component";
 import { LoginComponent } from "./login/login.component";
 import { RegistrationComponent } from "./registration/registration/registration.component";
 import { ReservationComponent } from "./reservation/reservation.component";
+import { ServicePageComponent } from "./service-page/service-page.component";
 import { ShipsComponent } from "./ships/ships.component";
 import { UpdateInfoComponent } from "./update-info/update-info.component";
 
@@ -19,6 +20,9 @@ const routes: Routes = [
       {path: 'ships', component: ShipsComponent},
       {path: 'lessons', component: LessonsComponent},
       {path: 'cottages', component: CottagesComponent},
+      {path: 'lessons/servicePage/:id', component: ServicePageComponent},
+      {path: 'ships/servicePage/:id', component: ServicePageComponent},
+      {path: 'cottages/servicePage/:id', component: ServicePageComponent},
     ]},
     {path: 'client', component: ClientHomeComponent, canActivate: [AuthGuard],
   

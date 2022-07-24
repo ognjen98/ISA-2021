@@ -3,6 +3,7 @@ package com.isa.services.controller;
 import com.isa.services.Cottage;
 import com.isa.services.FishingLessons;
 import com.isa.services.Ship;
+import com.isa.services.dto.ServiceDTO;
 import com.isa.services.dto.ShipDTO;
 import com.isa.services.service.ServicesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +23,17 @@ public class ServiceController {
     private ServicesService servicesService;
 
     @GetMapping("/getShips")
-    public ResponseEntity<List<ShipDTO>> getShips(){
+    public ResponseEntity<List<ServiceDTO>> getShips(){
         return new ResponseEntity(servicesService.getShips(), HttpStatus.OK);
     }
 
     @GetMapping("/getLessons")
-    public ResponseEntity<List<FishingLessons>> getLessons(){
+    public ResponseEntity<List<ServiceDTO>> getLessons(){
         return new ResponseEntity(servicesService.getLessons(), HttpStatus.OK);
     }
 
     @GetMapping("/getCottages")
-    public ResponseEntity<List<Cottage>> getCottages(){
+    public ResponseEntity<List<ServiceDTO>> getCottages(){
         return new ResponseEntity(servicesService.getCottages(), HttpStatus.OK);
     }
 }

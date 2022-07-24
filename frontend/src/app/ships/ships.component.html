@@ -1,6 +1,20 @@
+<div class="container">
 <div>
+    <mat-form-field appearance="fill">
+        <mat-label>Sort</mat-label>
+        <mat-select id="sort" name="sort" (selectionChange)="sort($event)">
+            <mat-option value="NAME_ASC">Sort by name ascending</mat-option>
+            <mat-option value="NAME_DESC">Sort by name descending</mat-option>
+            <mat-option value="CITY_ASC">Sort by city ascending</mat-option>
+            <mat-option value="CITY_DESC">Sort by city descending</mat-option>
+            <mat-option value="GRADE_ASC">Sort by grade ascending</mat-option>
+            <mat-option value="GRADE_DESC">Sort by grade descending</mat-option>
+            <mat-option value="PRICE_ASC">Sort by price ascending</mat-option>
+            <mat-option value="PRICE_DESC">Sort by price descending</mat-option>
+        </mat-select>
+    </mat-form-field>
     <div id="returnData" [dataSource]="returnData" class="row" *ngFor="let data of returnData;let i=index" class="container center-card">  
-                                
+        <a href="#" [routerLink]="['servicePage', data.id]" style="text-decoration:none">              
     <mat-card>
         <mat-card-header>
             
@@ -47,6 +61,8 @@
             <!-- <button mat-raised-button color="primary" (click)="getInfos(data.id)">More Info</button> -->
         </mat-card-actions>
     </mat-card>
+        </a>
     <div style="margin-top: 20px;"></div> 
+</div>
 </div>
 </div>

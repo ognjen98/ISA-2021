@@ -35,6 +35,7 @@ import {MatListModule} from '@angular/material/list';
 import { ShipsComponent } from './ships/ships.component';
 import { LessonsComponent } from './lessons/lessons.component';
 import { CottagesComponent } from './cottages/cottages.component';
+import { ServicePageComponent } from './service-page/service-page.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { CottagesComponent } from './cottages/cottages.component';
     ReservationComponent,
     ShipsComponent,
     LessonsComponent,
-    CottagesComponent
+    CottagesComponent,
+    ServicePageComponent
   ],
   imports: [
     NgxMatDatetimePickerModule,

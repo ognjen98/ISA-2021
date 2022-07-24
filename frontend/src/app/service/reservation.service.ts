@@ -13,7 +13,7 @@ import { SortDTO } from '../model/sortDTO';
 })
 export class ReservationService {
 
-  private readonly _APIUrl="http://localhost:8082/service";
+  private readonly _APIUrl="http://localhost:8082/reservation";
   constructor(private http: HttpClient, private router: Router) { }
 
 
