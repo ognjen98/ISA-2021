@@ -32,6 +32,9 @@ import { NgxDatetimeRangePickerModule } from 'ngx-datetime-range-picker';
 import { NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule,NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import {MatCardModule} from '@angular/material/card';
 import {MatListModule} from '@angular/material/list';
+import { ShipsComponent } from './ships/ships.component';
+import { LessonsComponent } from './lessons/lessons.component';
+import { CottagesComponent } from './cottages/cottages.component';
 
 
 @NgModule({
@@ -43,7 +46,10 @@ import {MatListModule} from '@angular/material/list';
     ClientHomeComponent,
     AdminHomeComponent,
     UpdateInfoComponent,
-    ReservationComponent
+    ReservationComponent,
+    ShipsComponent,
+    LessonsComponent,
+    CottagesComponent
   ],
   imports: [
     NgxMatDatetimePickerModule,

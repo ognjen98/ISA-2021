@@ -1,18 +1,24 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { CottagesComponent } from "./cottages/cottages.component";
 import { AuthGuard } from "./helpers/auth.guard";
 import { AdminHomeComponent } from "./home/admin-home/admin-home.component";
 import { ClientHomeComponent } from "./home/client-home/client-home.component";
 import { HomeComponent } from "./home/home/home.component";
+import { LessonsComponent } from "./lessons/lessons.component";
 import { LoginComponent } from "./login/login.component";
 import { RegistrationComponent } from "./registration/registration/registration.component";
 import { ReservationComponent } from "./reservation/reservation.component";
+import { ShipsComponent } from "./ships/ships.component";
 import { UpdateInfoComponent } from "./update-info/update-info.component";
 
 const routes: Routes = [
     {path:'', component: HomeComponent, children: [
       {path: 'register', component: RegistrationComponent},
-      {path: 'login', component: LoginComponent}
+      {path: 'login', component: LoginComponent},
+      {path: 'ships', component: ShipsComponent},
+      {path: 'lessons', component: LessonsComponent},
+      {path: 'cottages', component: CottagesComponent},
     ]},
     {path: 'client', component: ClientHomeComponent, canActivate: [AuthGuard],
   
