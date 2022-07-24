@@ -136,6 +136,8 @@ values ('Dobar covek, prvak Srbije u pecanju u svim kategorijama', 2, 0, 9);
 
 insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id)
 values ('Reservation', to_timestamp(1663480800), to_timestamp(1663567200), true, 5, 1);
+insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id, reserved)
+values ('DiscountReservation', to_timestamp(1663480800), to_timestamp(1663567200), false, 5, 1, false);
 
 insert into clients_cancelled_reservations (client_id, cancelled_reservations_id) values (5, 1);
 

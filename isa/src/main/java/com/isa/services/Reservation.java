@@ -28,6 +28,8 @@ public class Reservation {
 
     private Boolean cancelled;
 
+    private Boolean reserved;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "reservations_additional_infos",
@@ -51,7 +53,7 @@ public class Reservation {
 
     public Reservation(Long id, LocalDateTime startTime, LocalDateTime endTime, Integer maxCapacity,
                        Set<AdditionalInfo> additionalInfos,
-                       Float price, Address address, Service service, Client client, Boolean cancelled) {
+                       Float price, Address address, Service service, Client client, Boolean cancelled, Boolean reserved) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -62,10 +64,11 @@ public class Reservation {
         this.service = service;
         this.client = client;
         this.cancelled = cancelled;
+        this.reserved = reserved;
     }
     public Reservation(LocalDateTime startTime, LocalDateTime endTime, Integer maxCapacity,
                        Set<AdditionalInfo> additionalInfos,
-                       Float price, Address address, Service service, Client client, Boolean cancelled) {
+                       Float price, Address address, Service service, Client client, Boolean cancelled, Boolean reserved) {
 
         this.startTime = startTime;
         this.endTime = endTime;
@@ -76,6 +79,7 @@ public class Reservation {
         this.service = service;
         this.client = client;
         this.cancelled = cancelled;
+        this.reserved = reserved;
     }
 
     public Long getId() {
@@ -164,5 +168,13 @@ public class Reservation {
 
     public void setCancelled(Boolean cancelled) {
         this.cancelled = cancelled;
+    }
+
+    public Boolean getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(Boolean reserved) {
+        this.reserved = reserved;
     }
 }

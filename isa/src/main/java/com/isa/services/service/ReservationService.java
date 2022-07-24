@@ -201,6 +201,10 @@ public class ReservationService {
     }
 
     public Reservation reserve(ReservationDTO dto, String email){
+        Reservation reservation = null;
+        if(dto.getId() != null){
+            reservation = reservationRepository.getReservationById(dto.getId());
+        }
 
         Client client = clientRepository.findByEmail(email);
 
@@ -231,22 +235,31 @@ public class ReservationService {
         }
         service.getPeriod().removeAll(removal);
         service.getPeriod().addAll(addition);
-
-        float price = 0;
-        for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
-            price += additionalInfo.getPrice();
+        if(reservation ==null){
+            float price = 0;
+            for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
+                price += additionalInfo.getPrice();
+            }
+            float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
+            price+=service.getPrice() * hours;
+            reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
+                    dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true);
+            serviceRepository.save(service);
+            reservationRepository.save(reservation);
         }
-        float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
-        price+=service.getPrice() * hours;
-        Reservation reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
-                dto.getAdditionalInfos(), price, service.getAddress(), service, client, false);
+        else {
 
-        serviceRepository.save(service);
-        reservationRepository.save(reservation);
+            serviceRepository.save(service);
+            reservationRepository.update(reservation.getId(), false, true);
+        }
+
+
+
         emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES"), "RES");
         return reservation;
 
     }
+
 
     public Reservation cancel(Long resId){
         Reservation reservation = reservationRepository.getReservationById(resId);
@@ -283,6 +296,7 @@ public class ReservationService {
 
         client.getCancelledReservations().add(reservation);
         reservation.setCancelled(true);
+        reservation.setReserved(false);
         clientRepository.save(client);
         reservationRepository.save(reservation);
 

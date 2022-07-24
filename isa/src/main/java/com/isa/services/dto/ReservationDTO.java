@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class ReservationDTO {
 
+    private Long id;
     private LocalDateTime start;
     private LocalDateTime end;
     private Set<AdditionalInfo> additionalInfos;
@@ -16,12 +17,22 @@ public class ReservationDTO {
 
     public ReservationDTO(){}
 
-    public ReservationDTO(LocalDateTime start, LocalDateTime end, Set<AdditionalInfo> additionalInfos, Long serviceId, Integer noPersons) {
+    public ReservationDTO(Long id, LocalDateTime start, LocalDateTime end, Set<AdditionalInfo> additionalInfos,
+                          Long serviceId, Integer noPersons) {
+        this.id = id;
         this.start = start;
         this.end = end;
         this.additionalInfos = additionalInfos;
         this.serviceId = serviceId;
         this.noPersons = noPersons;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDateTime getStart() {
