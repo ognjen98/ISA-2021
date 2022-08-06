@@ -7,6 +7,7 @@ import { ClientHomeComponent } from "./home/client-home/client-home.component";
 import { HomeComponent } from "./home/home/home.component";
 import { LessonsComponent } from "./lessons/lessons.component";
 import { LoginComponent } from "./login/login.component";
+import { PendingReservationsComponent } from "./pending-reservations/pending-reservations.component";
 import { RegistrationComponent } from "./registration/registration/registration.component";
 import { ReservationComponent } from "./reservation/reservation.component";
 import { ServicePageComponent } from "./service-page/service-page.component";
@@ -23,6 +24,7 @@ const routes: Routes = [
       {path: 'lessons/servicePage/:id', component: ServicePageComponent},
       {path: 'ships/servicePage/:id', component: ServicePageComponent},
       {path: 'cottages/servicePage/:id', component: ServicePageComponent},
+      {path: 'pendingRes', component: PendingReservationsComponent}
     ]},
     {path: 'client', component: ClientHomeComponent, canActivate: [AuthGuard],
   

@@ -37,6 +37,7 @@ import { LessonsComponent } from './lessons/lessons.component';
 import { CottagesComponent } from './cottages/cottages.component';
 import { ServicePageComponent } from './service-page/service-page.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { PendingReservationsComponent } from './pending-reservations/pending-reservations.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     ShipsComponent,
     LessonsComponent,
     CottagesComponent,
-    ServicePageComponent
+    ServicePageComponent,
+    PendingReservationsComponent
   ],
   imports: [
     MatExpansionModule,

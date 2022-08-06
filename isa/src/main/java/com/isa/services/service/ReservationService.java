@@ -10,8 +10,12 @@ import com.isa.users.service.ClientService;
 import com.isa.users.service.email.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 
+//import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -30,6 +34,13 @@ public class ReservationService {
 
     @Autowired
     CottageRepository cottageRepository;
+
+    @Autowired
+    EarningPercentageRepository earningPercentageRepository;
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+
 
     @Autowired
     FishingLessonsRepository fishingLessonsRepository;
@@ -200,6 +211,9 @@ public class ReservationService {
         return addInfos;
     }
 
+
+
+    @Transactional
     public Reservation reserve(ReservationDTO dto, String email){
         Reservation reservation = null;
         if(dto.getId() != null){
@@ -244,33 +258,35 @@ public class ReservationService {
             price+=service.getPrice() * hours;
             reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
                     dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true);
-            serviceRepository.save(service);
-            reservationRepository.save(reservation);
-        }
-        else {
 
-            serviceRepository.save(service);
-            reservationRepository.update(reservation.getId(), false, true);
         }
 
+        reservation.setReserved(true);
+        reservation.setCancelled(false);
+        reservation.setClient(client);
+        serviceRepository.save(service);
+//        reservation.get().setClient(client);
+        reservationRepository.save(reservation);
 
-
-        emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES"), "RES");
+        //emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES"), "RES");
         return reservation;
 
     }
 
 
-    public Reservation cancel(Long resId){
+    @Transactional
+    public String cancel(Long resId, String email){
         Reservation reservation = reservationRepository.getReservationById(resId);
-
+        if(reservation.getCancelled() == true){
+            return "It is already cancelled";
+        }
         LocalDateTime now = LocalDateTime.now();
         float days = ChronoUnit.DAYS.between(now, reservation.getStartTime());
-        if(days >= 3){
+        if(days <= 3){
             return null;
         }
         com.isa.services.Service service = reservation.getService();
-        Client client = reservation.getClient();
+        Client client = clientRepository.findByEmail(email);
 
         TimePeriod t1 = new TimePeriod();
         TimePeriod t2 = new TimePeriod();
@@ -293,16 +309,40 @@ public class ReservationService {
         service.getPeriod().add(newPeriod);
 
         serviceRepository.save(service);
-
-        client.getCancelledReservations().add(reservation);
-        reservation.setCancelled(true);
         reservation.setReserved(false);
-        clientRepository.save(client);
+        reservation.setCancelled(true);
+        reservation.setClient(null);
+        //transactionTemplate.execute(transactionStatus -> reservationRepository.save(reservation.get()));
+        client.getCancelledReservations().add(reservation);
         reservationRepository.save(reservation);
+        clientRepository.save(client);
 
-
-
-
-        return reservation;
+        return "Cancelled successfully";
     }
+
+    public List<GetReservationDTO> getReservationsForClient(String email){
+        Client client = clientRepository.findByEmail(email);
+        List<Reservation> reservations = reservationRepository.getReservationsByClientId(client.getId());
+
+        return discountReservationDTOMapper(reservations);
+    }
+
+    private List<GetReservationDTO> discountReservationDTOMapper(List<Reservation> discountReservations){
+        List<GetReservationDTO> dtos = new ArrayList<>();
+        int i = 0;
+        for(Reservation discountReservation: discountReservations){
+            if(!discountReservation.getCancelled()) {
+                GetReservationDTO dto = new GetReservationDTO(discountReservation.getId(),
+                        discountReservation.getStartTime(), discountReservation.getEndTime(),
+                        discountReservation.getMaxCapacity(), discountReservation.getPrice(),
+                        discountReservation.getAddress().getCity(), discountReservation.getAdditionalInfos());
+                dtos.add(dto);
+            }
+        }
+
+        return dtos;
+    }
+
+
+
 }

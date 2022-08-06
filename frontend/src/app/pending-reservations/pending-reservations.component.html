@@ -1,0 +1,61 @@
+<div id="returnData" [dataSource]="returnData" class="row" *ngFor="let data of returnData;let i=index" class="container center-card">  
+                                
+    <mat-card>
+        <mat-card-header>
+                
+            <mat-card-subtitle>
+                <span style="visibility: hidden;"  id="{{'id' + i}}">{{data.id}}</span>
+            </mat-card-subtitle>
+            
+       
+        </mat-card-header> 
+
+        
+        <mat-card-content>
+            <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
+                <mat-grid-tile>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXC8KB-1CchePhUhYS-QEPN_4UEwSZus1ByA&usqp=CAU" alt="" height="250px" width="500px">
+                </mat-grid-tile>
+                <mat-grid-tile >
+                    <mat-card-content style="text-align: left;">
+                    <div class="content-paragraph" id="{{'start' + i}}">From: {{ data.startTime | date:'MM/dd/yyyy hh:mm:ss'}} </div><br>
+                    <div class="content-paragraph" id="{{'end' + i}}">To: {{ data.endTime | date:'MM/dd/yyyy hh:mm:ss'}}</div><br>
+                    <div class="content-paragraph" id="{{'cap' + i}}">Capacity: {{ data.maxCapacity}}</div><br>
+                    <div class="content-paragraph" id="{{'price' + i}}">Price: {{ data.price }} </div><br>
+                    <div class="content-paragraph" id="{{'discPrice' + i}}">Discount price: {{ data.discPrice }} </div><br>
+                    <div class="content-paragraph" id="{{'city' + i}}">City: {{ data.city }} </div><br>
+                    
+                    
+                </mat-card-content>
+                
+                </mat-grid-tile>
+                
+            </mat-grid-list>
+            <mat-expansion-panel hideToggle>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    Additional info
+                  </mat-panel-title>
+                  <mat-panel-description>
+                    
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+                <p *ngFor="let info of returnData[i].additionalInfoSet;let ind=index" class="{{'addInfo' + i}}">
+                    {{info.info}}:  {{info.price}}$
+                </p>
+              </mat-expansion-panel>
+           
+        </mat-card-content>
+        
+        <mat-divider></mat-divider>   
+       <mat-card-actions style="text-align: right;">
+           
+            <!-- <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="!feedback.approved">Approve</button>
+            <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="feedback.approved">Deny</button> -->
+            <div *ngIf="diff[i] > 3">
+            <button  mat-raised-button color="primary" (click)="cancel(data.id)">Cancel</button>
+            </div>
+        </mat-card-actions>
+    </mat-card>
+    <div style="margin-top: 20px;"></div> 
+</div>

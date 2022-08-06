@@ -5,13 +5,16 @@ import com.isa.services.AdditionalInfo;
 import com.isa.services.Reservation;
 import com.isa.services.dto.*;
 import com.isa.services.service.ReservationService;
+import com.isa.users.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -23,6 +26,9 @@ public class ReservationController {
 
     @Autowired
     TokenUtils tokenUtils;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
 
     @PostMapping("/search")
@@ -59,8 +65,16 @@ public class ReservationController {
         return new ResponseEntity(r, HttpStatus.OK);
     }
 
-    @PostMapping("/cancel/{resId}")
-    public ResponseEntity<Reservation> cancel(@PathVariable Long resId){
-        return new ResponseEntity(reservationService.cancel(resId), HttpStatus.OK);
+    @GetMapping("/cancel/{resId}")
+    public ResponseEntity<Reservation> cancel(@PathVariable Long resId, HttpServletRequest request){
+        String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        return new ResponseEntity(reservationService.cancel(resId, email), HttpStatus.OK);
     }
+
+    @GetMapping("/getResForClient")
+    public ResponseEntity<List<Reservation>>  getReservationsForClient(HttpServletRequest request){
+        String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        return new ResponseEntity(reservationService.getReservationsForClient(email), HttpStatus.OK);
+    }
+
 }
