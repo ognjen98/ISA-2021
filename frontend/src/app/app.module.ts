@@ -36,6 +36,7 @@ import { ShipsComponent } from './ships/ships.component';
 import { LessonsComponent } from './lessons/lessons.component';
 import { CottagesComponent } from './cottages/cottages.component';
 import { ServicePageComponent } from './service-page/service-page.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import { ServicePageComponent } from './service-page/service-page.component';
     ServicePageComponent
   ],
   imports: [
+    MatExpansionModule,
     NgxMatDatetimePickerModule,
     MatCardModule,
     NgxMatTimepickerModule,

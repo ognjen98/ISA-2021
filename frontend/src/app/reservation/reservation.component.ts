@@ -117,7 +117,7 @@ export class ReservationComponent implements OnInit {
       end = this.parseDate(end)
     }
     let noGuests = this.searchForm.get('noGuests').value;
-    this.reservationDTO = new ReservationDTO(start,end,this.additionalInfos,this.serviceId, noGuests);
+    this.reservationDTO = new ReservationDTO(null,start,end,this.additionalInfos,this.serviceId, noGuests);
     this.service.reserve(this.reservationDTO).subscribe(
       res => {
 

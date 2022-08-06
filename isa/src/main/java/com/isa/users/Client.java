@@ -13,7 +13,12 @@ public class Client extends User{
     private Integer points;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "clients_cancelled_reservations",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "reservation_id")
+    )
     private Set<Reservation> cancelledReservations;
 
     public Client(){}

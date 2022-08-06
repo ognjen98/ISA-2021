@@ -1,5 +1,6 @@
 package com.isa.services;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.isa.users.Address;
 import com.isa.users.Client;
 
@@ -43,6 +44,7 @@ public class Reservation {
     @OneToOne(fetch = FetchType.EAGER)
     private Address address;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Service service;
 
@@ -80,6 +82,11 @@ public class Reservation {
         this.client = client;
         this.cancelled = cancelled;
         this.reserved = reserved;
+    }
+
+    public Reservation(Reservation reservation){
+        this.cancelled = reservation.cancelled;
+        this.reserved = reservation.reserved;
     }
 
     public Long getId() {

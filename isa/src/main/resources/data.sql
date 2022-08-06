@@ -134,10 +134,21 @@ values ('Dobar covek, prvak Srbije u pecanju u svim kategorijama', 2, 0, 8);
 insert into lessons (instructor_bio, max_persons, terms, id)
 values ('Dobar covek, prvak Srbije u pecanju u svim kategorijama', 2, 0, 9);
 
-insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id)
-values ('Reservation', to_timestamp(1663480800), to_timestamp(1663567200), true, 5, 1);
-insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id, reserved)
-values ('DiscountReservation', to_timestamp(1663480800), to_timestamp(1663567200), false, 5, 1, false);
+insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id, version, address_id)
+values ('Reservation', to_timestamp(1663480800), to_timestamp(1663567200), true, 5, 1,0, 5);
+insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
+price, disc_price, max_capacity)
+values ('DiscountReservation', to_timestamp(1663308000), to_timestamp(1663394400), false, null, 1, false,0, 5, 50, 25,
+3);
+insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
+price, disc_price, max_capacity)
+values ('DiscountReservation', to_timestamp(1664949600), to_timestamp(1665036000), false, null, 1, false,0, 5, 20, 10,
+5);
 
-insert into clients_cancelled_reservations (client_id, cancelled_reservations_id) values (5, 1);
+
+insert into services_discount_reservations(service_id, discount_reservations_id) values (1, 2);
+insert into services_discount_reservations(service_id, discount_reservations_id) values (1, 3);
+
+insert into reservations_additional_infos(reservation_id, additional_info_id) values (2, 1);
+--insert into clients_cancelled_reservations (client_id, cancelled_reservations_id) values (5, 1);
 

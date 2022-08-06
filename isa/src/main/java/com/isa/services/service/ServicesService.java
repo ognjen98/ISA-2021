@@ -1,12 +1,10 @@
 package com.isa.services.service;
 
 import com.isa.services.Cottage;
+import com.isa.services.DiscountReservation;
 import com.isa.services.FishingLessons;
 import com.isa.services.Ship;
-import com.isa.services.dto.CottageDTO;
-import com.isa.services.dto.LessonDTO;
-import com.isa.services.dto.ServiceDTO;
-import com.isa.services.dto.ShipDTO;
+import com.isa.services.dto.*;
 import com.isa.services.repository.CottageRepository;
 import com.isa.services.repository.FishingLessonsRepository;
 import com.isa.services.repository.ServiceRepository;
@@ -15,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -96,4 +95,23 @@ public class ServicesService {
     }
 
 
+    public Set<DiscountReservationDTO> getAllDiscountReservationsForService(Long id){
+        com.isa.services.Service service = serviceRepository.getServiceById(id);
+
+        return discountReservationDTOMapper(service.getDiscountReservations());
+    }
+
+    private Set<DiscountReservationDTO> discountReservationDTOMapper(Set<DiscountReservation> discountReservations){
+        Set<DiscountReservationDTO> dtos = new HashSet<>();
+        for(DiscountReservation discountReservation: discountReservations){
+            DiscountReservationDTO dto = new DiscountReservationDTO(discountReservation.getId(),
+                    discountReservation.getStartTime(), discountReservation.getEndTime(),
+                    discountReservation.getMaxCapacity(), discountReservation.getPrice(),
+                    discountReservation.getAddress().getCity(), discountReservation.getDiscPrice(),
+                    discountReservation.getAdditionalInfos());
+            dtos.add(dto);
+        }
+
+        return dtos;
+    }
 }

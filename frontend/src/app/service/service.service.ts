@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CottageDTO } from '../model/cottageDTO';
+import { DiscountReservationDTO } from '../model/discountReservation';
 import { LessonDTO } from '../model/lessonDTO';
 import { ServiceDTO } from '../model/serviceDTO';
 import { ShipDTO } from '../model/shipDTO';
@@ -25,5 +26,9 @@ export class ServiceService {
 
   getCottages(){
     return this.http.get<ServiceDTO[]>(this._APIUrl+ "/getCottages");
+  }
+
+  getDiscountReservations(serviceId: number){
+    return this.http.get<DiscountReservationDTO[]>(this._APIUrl+ "/getDiscRes/"+serviceId)
   }
 }
