@@ -2,6 +2,7 @@ package com.isa.services.controller;
 
 import com.isa.security.TokenUtils;
 import com.isa.services.AdditionalInfo;
+import com.isa.services.EarningPercentage;
 import com.isa.services.Reservation;
 import com.isa.services.dto.*;
 import com.isa.services.service.ReservationService;
@@ -9,6 +10,7 @@ import com.isa.users.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,6 +77,12 @@ public class ReservationController {
     public ResponseEntity<List<Reservation>>  getReservationsForClient(HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(reservationService.getReservationsForClient(email), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
+    @GetMapping("/definePercentage")
+    public ResponseEntity<EarningPercentage> defineEarningPercentage(@RequestParam Float percentage){
+        return new ResponseEntity(reservationService.defineEarningPercentage(percentage), HttpStatus.OK);
     }
 
 }

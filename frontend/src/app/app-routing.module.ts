@@ -1,6 +1,7 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { CottagesComponent } from "./cottages/cottages.component";
+import { DefinePercentageComponent } from "./define-percentage/define-percentage.component";
 import { AuthGuard } from "./helpers/auth.guard";
 import { AdminHomeComponent } from "./home/admin-home/admin-home.component";
 import { ClientHomeComponent } from "./home/client-home/client-home.component";
@@ -24,7 +25,8 @@ const routes: Routes = [
       {path: 'lessons/servicePage/:id', component: ServicePageComponent},
       {path: 'ships/servicePage/:id', component: ServicePageComponent},
       {path: 'cottages/servicePage/:id', component: ServicePageComponent},
-      {path: 'pendingRes', component: PendingReservationsComponent}
+      {path: 'pendingRes', component: PendingReservationsComponent},
+      {path: 'percentage', component: DefinePercentageComponent}
     ]},
     {path: 'client', component: ClientHomeComponent, canActivate: [AuthGuard],
   

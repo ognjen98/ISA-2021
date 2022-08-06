@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -40,5 +40,10 @@ export class ReservationService {
 
   cancel(resId:number){
     return this.http.get(this._APIUrl+ "/cancel/"+ resId);
+  }
+
+  definePercentage(perc:number){
+    // let queryParams = new HttpParams().append("percentage",perc);
+    return this.http.get(this._APIUrl+ "/definePercentage?percentage="+ perc);
   }
 }

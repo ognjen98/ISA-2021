@@ -39,15 +39,16 @@ public class ReservationService {
     EarningPercentageRepository earningPercentageRepository;
 
     @Autowired
-    private TransactionTemplate transactionTemplate;
+    EarningsRepository earningsRepository;
 
+    @Autowired
+    private TransactionTemplate transactionTemplate;
 
     @Autowired
     FishingLessonsRepository fishingLessonsRepository;
 
     @Autowired
     private EmailSender emailSender;
-
 
     @Autowired
     ServiceRepository serviceRepository;
@@ -256,6 +257,9 @@ public class ReservationService {
             }
             float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
             price+=service.getPrice() * hours;
+            EarningPercentage ep = earningPercentageRepository.getById(1L);
+            Earnings earnings = new Earnings(LocalDateTime.now(), price*(ep.getPercentage()/100));
+            earningsRepository.save(earnings);
             reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
                     dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true);
 
@@ -343,6 +347,11 @@ public class ReservationService {
         return dtos;
     }
 
-
+    @Transactional
+    public EarningPercentage defineEarningPercentage(Float percentage){
+        EarningPercentage ep = new EarningPercentage(1L, percentage);
+        earningPercentageRepository.save(ep);
+        return ep;
+    }
 
 }

@@ -1,0 +1,21 @@
+<div class="formBox">
+    <h1><b>Earnings percentage</b></h1>
+    <form [formGroup]="loginForm" #f="ngForm">
+        <hr>
+        
+        <mat-form-field>
+            <input matInput placeholder="Percentage" formControlName="percentage">
+            <!--<mat-error *ngIf="loginForm.controls['email'].hasError('email')">
+                Email not valid!
+            </mat-error >-->
+        </mat-form-field>
+        <br>
+      
+    
+        <br>
+        <button mat-raised-button  (click)="definePercentage()">Submit</button>
+        <br>
+        
+    
+    </form>
+</div>

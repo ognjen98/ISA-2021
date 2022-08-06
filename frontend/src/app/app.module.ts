@@ -38,6 +38,7 @@ import { CottagesComponent } from './cottages/cottages.component';
 import { ServicePageComponent } from './service-page/service-page.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { PendingReservationsComponent } from './pending-reservations/pending-reservations.component';
+import { DefinePercentageComponent } from './define-percentage/define-percentage.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { PendingReservationsComponent } from './pending-reservations/pending-res
     LessonsComponent,
     CottagesComponent,
     ServicePageComponent,
-    PendingReservationsComponent
+    PendingReservationsComponent,
+    DefinePercentageComponent
   ],
   imports: [
     MatExpansionModule,
