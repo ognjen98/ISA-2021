@@ -3,10 +3,8 @@ package com.isa.users.service;
 import com.isa.users.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+
 import com.isa.users.dto.RegistrationDTO;
 import com.isa.users.repository.AddressRepository;
 import com.isa.users.repository.ClientRepository;
@@ -80,7 +78,7 @@ public class ClientService {
             add.setCity(request.getCity());
             add.setState(request.getState());
             addressRepository.save(add);
-            Set<Role> roles = new HashSet<>();
+            List<Role> roles = new ArrayList<>();
             roles.add(roleRepository.findByName("CLIENT"));
             String tokenForNewUser = signUpUser(new Client(request.getName(),
                     request.getSurname(),
@@ -89,7 +87,9 @@ public class ClientService {
                     request.getMobile(),
                     request.getPassword(),
                     roles,
-                    false,0));
+                    false,
+                    false,
+                    0));
 
             //Since, we are running the spring boot application in localhost, we are hardcoding the
             //url of the server. We are creating a POST request with token param

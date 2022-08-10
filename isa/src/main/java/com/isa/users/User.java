@@ -39,15 +39,17 @@ public class User {
     @JoinTable(name = "user_roles", joinColumns = {
             @JoinColumn(name = "user_id") }, inverseJoinColumns = {
             @JoinColumn(name = "role_id") })
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @Column
     private Boolean enabled;
 
+    private Boolean deleted;
+
     public User(){}
 
-    public User(Long id, String name,String surname, String email, String mobile, String password, Set<Role> roles,
-                Boolean enabled) {
+    public User(Long id, String name,String surname, String email, String mobile, String password, List<Role> roles,
+                Boolean enabled, Boolean deleted) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -56,11 +58,12 @@ public class User {
         this.password = password;
         this.roles = roles;
         this.enabled = enabled;
+        this.deleted = deleted;
     }
 
     public User(String name, String surname, String email, Address address, String mobile, String password,
-                Set<Role> roles,
-                Boolean enabled) {
+                List<Role> roles,
+                Boolean enabled, Boolean deleted) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -69,6 +72,7 @@ public class User {
         this.password = password;
         this.roles = roles;
         this.enabled = enabled;
+        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -168,11 +172,11 @@ public class User {
         this.password = password;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> role) {
+    public void setRoles(List<Role> role) {
         this.roles = role;
     }
 
@@ -184,5 +188,11 @@ public class User {
         this.enabled = enabled;
     }
 
+    public Boolean getDeleted() {
+        return deleted;
+    }
 
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 }

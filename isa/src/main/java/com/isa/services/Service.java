@@ -33,7 +33,7 @@ public class Service {
 
     private Integer noGuests;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "services_additional_infos",
             joinColumns = @JoinColumn(name = "service_id"),
@@ -41,7 +41,7 @@ public class Service {
     )
     private Set<AdditionalInfo> additionalInfos;
 
-    @ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER,  cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(
             name = "services_periods",
             joinColumns = @JoinColumn(name = "service_id"),
@@ -55,7 +55,7 @@ public class Service {
     @OneToOne(fetch = FetchType.EAGER)
     private Address address;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private Set<DiscountReservation> discountReservations;
 
     public Service(){}

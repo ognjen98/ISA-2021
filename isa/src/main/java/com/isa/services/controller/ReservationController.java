@@ -74,7 +74,7 @@ public class ReservationController {
     }
 
     @GetMapping("/getResForClient")
-    public ResponseEntity<List<Reservation>>  getReservationsForClient(HttpServletRequest request){
+    public ResponseEntity<List<GetReservationDTO>>  getReservationsForClient(HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(reservationService.getReservationsForClient(email), HttpStatus.OK);
     }

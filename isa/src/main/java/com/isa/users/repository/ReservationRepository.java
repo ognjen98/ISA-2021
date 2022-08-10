@@ -12,12 +12,7 @@ import java.util.List;
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     Reservation getReservationById(Long id);
 
-    @Transactional
-    @Modifying
-    @Query(value = "update reservations set cancelled = ?2, reserved = ?3, client_id = ?4, service_id = ?5 where id =" +
-            " ?1", nativeQuery =
-            true)
-    void update(Long id, Boolean cancelled, Boolean reserved, Long clientId, Long serviceId);
-
     List<Reservation> getReservationsByClientId(Long id);
+
+    List<Reservation> getReservationsByServiceId(Long id);
 }

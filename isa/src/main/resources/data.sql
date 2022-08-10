@@ -152,5 +152,6 @@ insert into services_discount_reservations(service_id, discount_reservations_id)
 insert into reservations_additional_infos(reservation_id, additional_info_id) values (2, 1);
 
 insert into earning_percentage(percentage) values (25.0);
---insert into clients_cancelled_reservations (client_id, cancelled_reservations_id) values (5, 1);
+insert into clients_cancelled_reservations (client_id, reservation_id) values (5, 1);
+insert into clients_all_reservations (client_id, reservation_id) values (5, 1);
 

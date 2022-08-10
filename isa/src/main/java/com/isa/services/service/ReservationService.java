@@ -229,6 +229,14 @@ public class ReservationService {
                 return null;
             }
         }
+
+        List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
+        for(Reservation res : serviceReservations){
+            if(((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
+            || ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))){
+                return null;
+            }
+        }
         List<TimePeriod> removal = new ArrayList<>();
         List<TimePeriod> addition = new ArrayList<>();
         for(TimePeriod tp: service.getPeriod()){
