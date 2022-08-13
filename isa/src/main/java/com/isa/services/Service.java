@@ -33,6 +33,8 @@ public class Service {
 
     private Integer noGuests;
 
+    private Boolean deleted;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "services_additional_infos",
@@ -55,8 +57,8 @@ public class Service {
     @OneToOne(fetch = FetchType.EAGER)
     private Address address;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    private Set<DiscountReservation> discountReservations;
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
+    private Set<Reservation> discountReservations;
 
     public Service(){}
 
@@ -65,7 +67,7 @@ public class Service {
                    List<TimePeriod> period,
                    Seller seller,
                    Address address,
-                   Set<DiscountReservation> discountReservations) {
+                   Set<Reservation> discountReservations) {
         this.id = id;
         this.name = name;
         this.promoDesc = promoDesc;
@@ -153,11 +155,11 @@ public class Service {
         this.address = address;
     }
 
-    public Set<DiscountReservation> getDiscountReservations() {
+    public Set<Reservation> getReservations() {
         return discountReservations;
     }
 
-    public void setDiscountReservations(Set<DiscountReservation> discountReservations) {
+    public void setReservations(Set<Reservation> discountReservations) {
         this.discountReservations = discountReservations;
     }
 
@@ -183,5 +185,13 @@ public class Service {
 
     public void setNoGuests(Integer noGuests) {
         this.noGuests = noGuests;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

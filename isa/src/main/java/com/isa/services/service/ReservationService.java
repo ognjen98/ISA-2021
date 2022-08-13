@@ -16,6 +16,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 
 //import javax.transaction.Transactional;
+import javax.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -42,6 +43,9 @@ public class ReservationService {
     EarningsRepository earningsRepository;
 
     @Autowired
+    EntityManager entityManager;
+
+    @Autowired
     private TransactionTemplate transactionTemplate;
 
     @Autowired
@@ -62,18 +66,19 @@ public class ReservationService {
     public List<ServiceDTO> search (SearchDataDTO dto){
         List<com.isa.services.Service> services;
         if(dto.getEntity().equals("SHIP")){
-            List<com.isa.services.Service> ships = serviceRepository.findAll().stream().filter(s-> s instanceof Ship).collect(Collectors.toList());
+            List<com.isa.services.Service> ships =
+                    serviceRepository.findAll().stream().filter(s-> s instanceof Ship && !s.getDeleted()).collect(Collectors.toList());
             services = ships;
 
         }
         else if(dto.getEntity().equals("COTTAGE")){
             List<com.isa.services.Service> cottages =
-                    serviceRepository.findAll().stream().filter(s-> s instanceof Cottage).collect(Collectors.toList());
+                    serviceRepository.findAll().stream().filter(s-> s instanceof Cottage && !s.getDeleted()).collect(Collectors.toList());
             services = cottages;
         }
         else {
             List<com.isa.services.Service> fishingLessons =
-                    serviceRepository.findAll().stream().filter(s-> s instanceof FishingLessons).collect(Collectors.toList());
+                    serviceRepository.findAll().stream().filter(s-> s instanceof FishingLessons && !s.getDeleted()).collect(Collectors.toList());
             services = fishingLessons;
         }
         List<com.isa.services.Service> result = new ArrayList<>();
@@ -208,6 +213,9 @@ public class ReservationService {
 
     public Set<AdditionalInfo> getAdditionalInfoForService(Long serviceId){
         com.isa.services.Service s = serviceRepository.getServiceById(serviceId);
+        if(s.getDeleted()){
+            return null;
+        }
         Set<AdditionalInfo> addInfos = s.getAdditionalInfos();
         return addInfos;
     }
@@ -217,13 +225,23 @@ public class ReservationService {
     @Transactional
     public Reservation reserve(ReservationDTO dto, String email){
         Reservation reservation = null;
+        Client client = clientRepository.findByEmail(email);
+        if(client.getDeleted()){
+            return null;
+        }
         if(dto.getId() != null){
             reservation = reservationRepository.getReservationById(dto.getId());
+            if(reservation.getDeleted()){
+                return null;
+            }
         }
 
-        Client client = clientRepository.findByEmail(email);
+
 
         com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());
+        if(service.getDeleted()){
+            return null;
+        }
         for(Reservation r : client.getCancelledReservations()){
             if(r.getStartTime().isEqual(dto.getStart()) && r.getEndTime().isEqual(dto.getEnd()) && r.getService().getId() == service.getId()){
                 return null;
@@ -232,9 +250,11 @@ public class ReservationService {
 
         List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
         for(Reservation res : serviceReservations){
-            if(((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
-            || ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))){
-                return null;
+            if(dto.getId() == null) {
+                if (((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
+                        || ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))) {
+                    return null;
+                }
             }
         }
         List<TimePeriod> removal = new ArrayList<>();
@@ -269,16 +289,18 @@ public class ReservationService {
             Earnings earnings = new Earnings(LocalDateTime.now(), price*(ep.getPercentage()/100));
             earningsRepository.save(earnings);
             reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
-                    dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true);
+                    dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true, false);
 
         }
+
 
         reservation.setReserved(true);
         reservation.setCancelled(false);
         reservation.setClient(client);
+        reservation.setDeleted(false);
         serviceRepository.save(service);
 //        reservation.get().setClient(client);
-        reservationRepository.save(reservation);
+        entityManager.persist(reservation);
 
         //emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES"), "RES");
         return reservation;
@@ -289,16 +311,21 @@ public class ReservationService {
     @Transactional
     public String cancel(Long resId, String email){
         Reservation reservation = reservationRepository.getReservationById(resId);
-        if(reservation.getCancelled() == true){
-            return "It is already cancelled";
+        Client client = clientRepository.findByEmail(email);
+        if(reservation.getDeleted()){
+            return "Reservation is deleted";
         }
+        if(reservation.getCancelled() == true){
+            return "Reservation is already cancelled";
+        }
+
         LocalDateTime now = LocalDateTime.now();
         float days = ChronoUnit.DAYS.between(now, reservation.getStartTime());
         if(days <= 3){
             return null;
         }
         com.isa.services.Service service = reservation.getService();
-        Client client = clientRepository.findByEmail(email);
+
 
         TimePeriod t1 = new TimePeriod();
         TimePeriod t2 = new TimePeriod();
@@ -334,6 +361,9 @@ public class ReservationService {
 
     public List<GetReservationDTO> getReservationsForClient(String email){
         Client client = clientRepository.findByEmail(email);
+        if(client.getDeleted()){
+            return null;
+        }
         List<Reservation> reservations = reservationRepository.getReservationsByClientId(client.getId());
 
         return discountReservationDTOMapper(reservations);
@@ -343,7 +373,7 @@ public class ReservationService {
         List<GetReservationDTO> dtos = new ArrayList<>();
         int i = 0;
         for(Reservation discountReservation: discountReservations){
-            if(!discountReservation.getCancelled()) {
+            if(!discountReservation.getCancelled() || !discountReservation.getDeleted()) {
                 GetReservationDTO dto = new GetReservationDTO(discountReservation.getId(),
                         discountReservation.getStartTime(), discountReservation.getEndTime(),
                         discountReservation.getMaxCapacity(), discountReservation.getPrice(),

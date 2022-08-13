@@ -18,23 +18,23 @@ INSERT INTO roles (name) VALUES ('COTTAGE_OWNER');
 INSERT INTO roles (name) VALUES ('SHIP_OWNER');
 INSERT INTO roles (name) VALUES ('INSTRUCTOR');
 
-insert into users (name, surname, email, password, mobile, address_id, enabled)
-values ('Ognjen', 'Civcic','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', '21310', 1, true);
-insert into users (name, surname, email, password, mobile, address_id, enabled)
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
+values ('Ognjen', 'Civcic','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', '21310', 1, true,false);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
 values ('Stojan', 'Petrovic','ognjen2@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 2, true);
-insert into users (name, surname, email, password, mobile, address_id, enabled)
+'21310', 2, true,false);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
 values ('Milan', 'Peric','ognjen3@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 3, true);
-insert into users (name, surname, email, password, mobile, address_id, enabled)
+'21310', 3, true,false);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
 values ('Jasmin', 'Jovanovic','ognjen4@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 4, true);
-insert into users (name, surname, email, password, mobile, address_id, enabled)
+'21310', 4, true,false);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
 values ('Juzba', 'Juzbasic','ognjencivcic23@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 7, true);
-insert into users (name, surname, email, password, mobile, address_id, enabled)
+'21310', 7, true,false);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
 values ('Juzba', 'Juzbasic','ognjen5@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 7, true);
+'21310', 7, true,false);
 
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 3);
@@ -74,25 +74,25 @@ insert into additional_infos (info,price) values ('Mamac', 5);
 insert into additional_infos (info,price) values ('Internet', 30);
 insert into additional_infos (info,price) values ('Parking', 8);
 
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
-values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70, 5);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
-values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50, 3);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
-values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,30, 2);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
-values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,170, 3);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
-values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,120, 5);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
-values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,80, 10);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
-values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50,1)
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
+values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70, 5,false);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
+values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50, 3,false);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
+values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,30, 2,false);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
+values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,170, 3,false);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
+values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,120, 5,false);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
+values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,80, 10,false);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
+values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50,1,false)
 ;
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
-values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,200, 2);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests)
-values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,300,3);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
+values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,200, 2,false);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
+values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,300,3,false);
 
 insert into services_periods (service_id, period_id) values (1,1);
 insert into services_periods (service_id, period_id) values (1,2);
@@ -134,24 +134,26 @@ values ('Dobar covek, prvak Srbije u pecanju u svim kategorijama', 2, 0, 8);
 insert into lessons (instructor_bio, max_persons, terms, id)
 values ('Dobar covek, prvak Srbije u pecanju u svim kategorijama', 2, 0, 9);
 
-insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id, version, address_id)
-values ('Reservation', to_timestamp(1663480800), to_timestamp(1663567200), true, 5, 1,0, 5);
-insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
-price, disc_price, max_capacity)
-values ('DiscountReservation', to_timestamp(1663308000), to_timestamp(1663394400), false, null, 1, false,0, 5, 50, 25,
-3);
-insert into reservations (dtype, start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
-price, disc_price, max_capacity)
-values ('DiscountReservation', to_timestamp(1664949600), to_timestamp(1665036000), false, null, 1, false,0, 5, 20, 10,
-5);
+--insert into reservations (start_time, end_time, cancelled, client_id, service_id, version, address_id)
+--values ('Reservation', to_timestamp(1663480800), to_timestamp(1663567200), true, 5, 1,0, 5);
+insert into reservations (start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
+price, disc_price, max_capacity, deleted)
+values (to_timestamp(1663308000), to_timestamp(1663394400), false, null, 1, false,0, 5, 50, 25,
+3, false);
+insert into reservations (start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
+price, disc_price, max_capacity,deleted)
+values (to_timestamp(1664949600), to_timestamp(1665036000), false, null, 1, false,0, 5, 20, 10,
+5, false);
 
 
+insert into services_discount_reservations(service_id, discount_reservations_id) values (1, 1);
 insert into services_discount_reservations(service_id, discount_reservations_id) values (1, 2);
-insert into services_discount_reservations(service_id, discount_reservations_id) values (1, 3);
 
-insert into reservations_additional_infos(reservation_id, additional_info_id) values (2, 1);
+--insert into reservations_additional_infos(reservation_id, additional_info_id) values (1, 1);
 
-insert into earning_percentage(percentage) values (25.0);
+
 insert into clients_cancelled_reservations (client_id, reservation_id) values (5, 1);
+
 insert into clients_all_reservations (client_id, reservation_id) values (5, 1);
 
+insert into earning_percentage(percentage) values (25.0);

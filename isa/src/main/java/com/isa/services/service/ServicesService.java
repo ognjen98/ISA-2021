@@ -1,14 +1,12 @@
 package com.isa.services.service;
 
-import com.isa.services.Cottage;
-import com.isa.services.DiscountReservation;
-import com.isa.services.FishingLessons;
-import com.isa.services.Ship;
+import com.isa.services.*;
 import com.isa.services.dto.*;
 import com.isa.services.repository.CottageRepository;
 import com.isa.services.repository.FishingLessonsRepository;
 import com.isa.services.repository.ServiceRepository;
 import com.isa.services.repository.ShipRepository;
+import com.isa.users.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +23,9 @@ public class ServicesService {
     private ServiceRepository serviceRepository;
 
     @Autowired
+    ReservationRepository reservationRepository;
+
+    @Autowired
     private ShipRepository shipRepository;
 
     @Autowired
@@ -34,7 +35,8 @@ public class ServicesService {
     private FishingLessonsRepository fishingLessonsRepository;
 
     public List<ServiceDTO> getShips(){
-        List<com.isa.services.Service> ships = serviceRepository.findAll().stream().filter(s-> s instanceof Ship).collect(Collectors.toList());
+        List<com.isa.services.Service> ships =
+                serviceRepository.findAll().stream().filter(s-> s instanceof Ship && !s.getDeleted()).collect(Collectors.toList());
         return serviceMapper(ships);
     }
 
@@ -51,7 +53,7 @@ public class ServicesService {
 
     public List<ServiceDTO> getLessons(){
         List<com.isa.services.Service> fishingLessons =
-                serviceRepository.findAll().stream().filter(s-> s instanceof FishingLessons).collect(Collectors.toList());
+                serviceRepository.findAll().stream().filter(s-> s instanceof FishingLessons && !s.getDeleted()).collect(Collectors.toList());
         return serviceMapper(fishingLessons);
     }
 
@@ -68,7 +70,7 @@ public class ServicesService {
 
     public List<ServiceDTO> getCottages(){
         List<com.isa.services.Service> cottages =
-                serviceRepository.findAll().stream().filter(s-> s instanceof Cottage).collect(Collectors.toList());
+                serviceRepository.findAll().stream().filter(s-> s instanceof Cottage && !s.getDeleted()).collect(Collectors.toList());
         return serviceMapper(cottages);
     }
 
@@ -97,21 +99,41 @@ public class ServicesService {
 
     public Set<DiscountReservationDTO> getAllDiscountReservationsForService(Long id){
         com.isa.services.Service service = serviceRepository.getServiceById(id);
-
-        return discountReservationDTOMapper(service.getDiscountReservations());
+        if(service.getDeleted()){
+            return null;
+        }
+        return discountReservationDTOMapper(service.getReservations());
     }
 
-    private Set<DiscountReservationDTO> discountReservationDTOMapper(Set<DiscountReservation> discountReservations){
+    private Set<DiscountReservationDTO> discountReservationDTOMapper(Set<Reservation> discountReservations){
         Set<DiscountReservationDTO> dtos = new HashSet<>();
-        for(DiscountReservation discountReservation: discountReservations){
-            DiscountReservationDTO dto = new DiscountReservationDTO(discountReservation.getId(),
-                    discountReservation.getStartTime(), discountReservation.getEndTime(),
-                    discountReservation.getMaxCapacity(), discountReservation.getPrice(),
-                    discountReservation.getAddress().getCity(), discountReservation.getDiscPrice(),
-                    discountReservation.getAdditionalInfos());
-            dtos.add(dto);
+        for(Reservation discountReservation: discountReservations){
+            if(discountReservation.getDiscPrice() != null) {
+                DiscountReservationDTO dto = new DiscountReservationDTO(discountReservation.getId(),
+                        discountReservation.getStartTime(), discountReservation.getEndTime(),
+                        discountReservation.getMaxCapacity(), discountReservation.getPrice(),
+                        discountReservation.getAddress().getCity(), discountReservation.getDiscPrice(),
+                        discountReservation.getAdditionalInfos());
+                dtos.add(dto);
+            }
         }
 
         return dtos;
     }
+
+    public com.isa.services.Service deleteService(Long id){
+        com.isa.services.Service service = serviceRepository.getServiceById(id);
+        List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
+        if(reservations != null) {
+            for (Reservation r : reservations) {
+                r.setReserved(false);
+                r.setCancelled(true);
+                r.setClient(null);
+                r.setDeleted(true);
+            }
+        }
+        service.setDeleted(true);
+        return service;
+    }
+
 }

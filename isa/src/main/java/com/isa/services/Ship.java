@@ -39,7 +39,8 @@ public class Ship extends Service{
     public Ship(Long id, String name, String promoDesc, Set<Image> images, String rulesOfConduct, Float price,
                 Float grade, Integer noGuests, Set<AdditionalInfo> additionalInfos, List<TimePeriod> period,
                 Seller seller,
-                Address address, Set<DiscountReservation> discountReservations, String type, Float length, Integer noEngines, Float enginePower, Float maxSpeed, Integer capacity, Set<FishEq> fishEqs, ReservationCancellationTerms rct, Set<NavigationEquipment> navigationEquipments) {
+                Address address, Set<Reservation> discountReservations, String type, Float length, Integer noEngines,
+                Float enginePower, Float maxSpeed, Integer capacity, Set<FishEq> fishEqs, ReservationCancellationTerms rct, Set<NavigationEquipment> navigationEquipments) {
         super(id, name, promoDesc, images, rulesOfConduct, price,grade, noGuests, additionalInfos, period, seller,
                 address,
                 discountReservations);

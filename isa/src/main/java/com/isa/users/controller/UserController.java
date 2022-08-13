@@ -1,6 +1,7 @@
 package com.isa.users.controller;
 
 import com.isa.security.TokenUtils;
+import com.isa.services.Reservation;
 import com.isa.users.User;
 import com.isa.users.dto.UpdateInfoDTO;
 import com.isa.users.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -37,5 +39,10 @@ public class UserController {
     public ResponseEntity<UpdateInfoDTO> getInfo(HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(userService.getInfo(email), HttpStatus.OK);
+    }
+
+    @DeleteMapping("deleteUser/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable Long id){
+        return new ResponseEntity(userService.deleteUser(id), HttpStatus.OK);
     }
 }

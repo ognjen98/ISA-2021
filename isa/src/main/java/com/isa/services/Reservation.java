@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Entity
 @Table(name="reservations")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Reservation {
 
     @Id
@@ -31,7 +30,11 @@ public class Reservation {
 
     private Boolean reserved;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    private Boolean deleted;
+
+    private Float discPrice;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
     @JoinTable(
             name = "reservations_additional_infos",
             joinColumns = @JoinColumn(name = "reservation_id"),
@@ -55,7 +58,8 @@ public class Reservation {
 
     public Reservation(Long id, LocalDateTime startTime, LocalDateTime endTime, Integer maxCapacity,
                        Set<AdditionalInfo> additionalInfos,
-                       Float price, Address address, Service service, Client client, Boolean cancelled, Boolean reserved) {
+                       Float price, Float discPrice, Address address, Service service, Client client, Boolean cancelled,
+                       Boolean reserved) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -67,10 +71,12 @@ public class Reservation {
         this.client = client;
         this.cancelled = cancelled;
         this.reserved = reserved;
+        this.discPrice = discPrice;
     }
     public Reservation(LocalDateTime startTime, LocalDateTime endTime, Integer maxCapacity,
                        Set<AdditionalInfo> additionalInfos,
-                       Float price, Address address, Service service, Client client, Boolean cancelled, Boolean reserved) {
+                       Float price, Address address, Service service, Client client, Boolean cancelled,
+                       Boolean reserved, Boolean deleted) {
 
         this.startTime = startTime;
         this.endTime = endTime;
@@ -82,6 +88,7 @@ public class Reservation {
         this.client = client;
         this.cancelled = cancelled;
         this.reserved = reserved;
+        this.deleted = deleted;
     }
 
     public Reservation(Reservation reservation){
@@ -183,5 +190,21 @@ public class Reservation {
 
     public void setReserved(Boolean reserved) {
         this.reserved = reserved;
+    }
+
+    public Float getDiscPrice() {
+        return discPrice;
+    }
+
+    public void setDiscPrice(Float discPrice) {
+        this.discPrice = discPrice;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

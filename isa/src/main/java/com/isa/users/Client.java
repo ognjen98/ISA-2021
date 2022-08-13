@@ -33,6 +33,15 @@ public class Client extends User{
     )
     private Set<Reservation> allReservations;
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "clients_deleted_reservations",
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "reservation_id")
+    )
+    private Set<Reservation> deletedReservations;
+
     public Client(){}
     public Client(Integer points) {
         this.points = points;
@@ -67,5 +76,13 @@ public class Client extends User{
 
     public void setAllReservations(Set<Reservation> allReservations) {
         this.allReservations = allReservations;
+    }
+
+    public Set<Reservation> getDeletedReservations() {
+        return deletedReservations;
+    }
+
+    public void setDeletedReservations(Set<Reservation> deletedReservations) {
+        this.deletedReservations = deletedReservations;
     }
 }

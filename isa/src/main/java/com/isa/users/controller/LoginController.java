@@ -39,6 +39,9 @@ public class LoginController {
     public ResponseEntity<?> createAuthenticationToken(
             @RequestBody TokenAuthenticationRequest authenticationRequest, HttpServletResponse response) {
         User u = userRepository.findByEmail(authenticationRequest.getUsername());
+        if(u.getDeleted()){
+            return new ResponseEntity<>("User is deleted", HttpStatus.BAD_REQUEST);
+        }
         if(!u.getEnabled()){
             return new ResponseEntity<>("Email not verified", HttpStatus.BAD_REQUEST);
         }
