@@ -31,4 +31,12 @@ export class ServiceService {
   getDiscountReservations(serviceId: number){
     return this.http.get<DiscountReservationDTO[]>(this._APIUrl+ "/getDiscRes/"+serviceId)
   }
+
+  getServices(){
+    return this.http.get<ServiceDTO[]>(this._APIUrl+ "/allServices")
+  }
+
+  delete(id: number){
+    return this.http.delete(this._APIUrl + "/deleteService/"+ id);
+  }
 }

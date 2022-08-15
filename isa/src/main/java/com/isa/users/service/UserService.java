@@ -6,6 +6,7 @@ import com.isa.services.repository.ServiceRepository;
 import com.isa.services.repository.TimePeriodRepository;
 import com.isa.users.*;
 import com.isa.users.dto.UpdateInfoDTO;
+import com.isa.users.dto.UserDTO;
 import com.isa.users.repository.AddressRepository;
 import com.isa.users.repository.ClientRepository;
 import com.isa.users.repository.ReservationRepository;
@@ -16,9 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService{
@@ -153,4 +156,14 @@ public class UserService{
         return null;
     }
 
+
+    public List<UserDTO> getAllUsers(){
+        List<User> users =
+                userRepository.findAll().stream().filter(u -> !(u instanceof SystemAdmin) && !u.getDeleted()).collect(Collectors.toList());
+        List<UserDTO> dtos = new ArrayList<>();
+        for(User u : users){
+            dtos.add(new UserDTO(u.getId(), u.getEmail(),u.getName(),u.getSurname()));
+        }
+        return dtos;
+    }
 }

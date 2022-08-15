@@ -1,4 +1,5 @@
 export class ServiceDTO {
+	private id: number;
     private name: string;
     private grade: number;
     private price: number;
@@ -7,7 +8,9 @@ export class ServiceDTO {
     private city: string;
     private state: string;
 
-	constructor($name: string, $grade: number, $price: number, $streetName: string, $number: string, $city: string, $state: string) {
+
+	constructor($id: number, $name: string, $grade: number, $price: number, $streetName: string, $number: string, $city: string, $state: string) {
+		this.id = $id;
 		this.name = $name;
 		this.grade = $grade;
 		this.price = $price;
@@ -16,5 +19,6 @@ export class ServiceDTO {
 		this.city = $city;
 		this.state = $state;
 	}
+	
 
 }

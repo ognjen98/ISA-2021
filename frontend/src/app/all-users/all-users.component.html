@@ -1,0 +1,15 @@
+<table class="table">
+    <th> Id </th>
+    <th> Email </th>
+    <th> Name </th>
+    <th> Surname </th>
+ 
+    <tr *ngFor="let element of data">
+        <td> {{ element.id }} </td>
+        <td> {{ element.email }} </td>
+        <td> {{ element.name }} </td>
+        <td> {{ element.surname }} </td>
+        <td><button mat-raised-button  (click)="delete(element.id)">Delete</button></td>
+       
+    </tr>
+</table>

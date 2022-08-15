@@ -9,6 +9,7 @@ import com.isa.services.repository.ShipRepository;
 import com.isa.users.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -121,6 +122,7 @@ public class ServicesService {
         return dtos;
     }
 
+    @Transactional
     public com.isa.services.Service deleteService(Long id){
         com.isa.services.Service service = serviceRepository.getServiceById(id);
         List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
@@ -134,6 +136,18 @@ public class ServicesService {
         }
         service.setDeleted(true);
         return service;
+    }
+
+    public List<ServiceDTO> getAllServices(){
+        List<com.isa.services.Service> services = serviceRepository.findAll().stream().filter(s -> !s.getDeleted()).collect(Collectors.toList());
+        List<ServiceDTO> dtos = new ArrayList<>();
+        for(com.isa.services.Service service : services){
+
+            dtos.add(new ServiceDTO(service.getId(), service.getName(), service.getGrade(), service.getPrice(),
+                    service.getAddress().getStreetName(), service.getAddress().getNumber(),
+                    service.getAddress().getCity(), service.getAddress().getState()));
+        }
+        return dtos;
     }
 
 }

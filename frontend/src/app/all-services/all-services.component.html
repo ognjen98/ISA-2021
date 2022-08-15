@@ -1,0 +1,22 @@
+<table class="table">
+    <th> Id </th>
+    <th> Name </th>
+    <th> Grade </th>
+    <th> Price </th>
+    <th> Street name </th>
+    <th> Street number </th>
+    <th> City </th>
+    <th> State </th>
+    <tr *ngFor="let element of data">
+        <td> {{ element.id }} </td>
+        <td> {{ element.name }} </td>
+        <td> {{ element.grade }} </td>
+        <td> {{ element.price }} </td>
+        <td> {{ element.streetName }} </td>
+        <td> {{ element.number }} </td>
+        <td> {{ element.city }} </td>
+        <td> {{ element.state }} </td>
+        <td><button mat-raised-button  (click)="delete(element.id)">Delete</button></td>
+       
+    </tr>
+</table>

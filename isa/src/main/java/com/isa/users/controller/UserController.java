@@ -2,8 +2,10 @@ package com.isa.users.controller;
 
 import com.isa.security.TokenUtils;
 import com.isa.services.Reservation;
+import com.isa.services.dto.ServiceDTO;
 import com.isa.users.User;
 import com.isa.users.dto.UpdateInfoDTO;
+import com.isa.users.dto.UserDTO;
 import com.isa.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,8 +43,14 @@ public class UserController {
         return new ResponseEntity(userService.getInfo(email), HttpStatus.OK);
     }
 
-    @DeleteMapping("deleteUser/{id}")
+    @CrossOrigin
+    @DeleteMapping("/deleteUser/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id){
         return new ResponseEntity(userService.deleteUser(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/allUsers")
+    public ResponseEntity<List<UserDTO>> allUsers(){
+        return new ResponseEntity(userService.getAllUsers(), HttpStatus.OK);
     }
 }

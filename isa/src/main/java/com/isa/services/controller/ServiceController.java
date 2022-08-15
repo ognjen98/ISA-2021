@@ -39,8 +39,14 @@ public class ServiceController {
         return new ResponseEntity(servicesService.getAllDiscountReservationsForService(serviceId), HttpStatus.OK);
     }
 
-    @DeleteMapping("deleteService{id}")
+    @CrossOrigin
+    @DeleteMapping("/deleteService/{id}")
     public ResponseEntity<Service> deleteService(@PathVariable Long id){
         return new ResponseEntity(servicesService.deleteService(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/allServices")
+    public ResponseEntity<List<ServiceDTO>> allServices(){
+        return new ResponseEntity(servicesService.getAllServices(), HttpStatus.OK);
     }
 }

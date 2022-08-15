@@ -39,6 +39,9 @@ import { ServicePageComponent } from './service-page/service-page.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import { PendingReservationsComponent } from './pending-reservations/pending-reservations.component';
 import { DefinePercentageComponent } from './define-percentage/define-percentage.component';
+import { AllServicesComponent } from './all-services/all-services.component';
+import { AllUsersComponent } from './all-users/all-users.component';
+import {MatTableModule} from '@angular/material/table';
 
 
 @NgModule({
@@ -56,9 +59,12 @@ import { DefinePercentageComponent } from './define-percentage/define-percentage
     CottagesComponent,
     ServicePageComponent,
     PendingReservationsComponent,
-    DefinePercentageComponent
+    DefinePercentageComponent,
+    AllServicesComponent,
+    AllUsersComponent
   ],
   imports: [
+    MatTableModule,
     MatExpansionModule,
     NgxMatDatetimePickerModule,
     MatCardModule,
