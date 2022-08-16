@@ -392,4 +392,24 @@ public class ReservationService {
         return ep;
     }
 
+    public List<Earnings> getReport(ReportDTO dto){
+        if(dto.getType().equals("YEAR")){
+            List<Earnings> earnings =
+                    earningsRepository.findAll().stream().filter(e -> e.getDateTime().getYear() == dto.getYear()).collect(Collectors.toList());
+            return earnings;
+        }
+        else if(dto.getType().equals("MONTH")){
+            List<Earnings> earnings =
+                    earningsRepository.findAll().stream().filter(e -> e.getDateTime().getYear() == dto.getYear() && e.getDateTime().getMonthValue() == dto.getMonth()).collect(Collectors.toList());
+            return earnings;
+        }
+        else{
+            List<Earnings> earnings =
+                    earningsRepository.findAll().stream().filter(e -> (e.getDateTime().isAfter(dto.getStartTime()) || e.getDateTime().isEqual(dto.getStartTime())) && e.getDateTime().isBefore(dto.getEndTime()) ).collect(Collectors.toList());
+            return earnings;
+        }
+
+
+    }
+
 }

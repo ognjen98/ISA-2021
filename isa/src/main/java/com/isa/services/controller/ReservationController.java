@@ -3,6 +3,7 @@ package com.isa.services.controller;
 import com.isa.security.TokenUtils;
 import com.isa.services.AdditionalInfo;
 import com.isa.services.EarningPercentage;
+import com.isa.services.Earnings;
 import com.isa.services.Reservation;
 import com.isa.services.dto.*;
 import com.isa.services.service.ReservationService;
@@ -83,6 +84,11 @@ public class ReservationController {
     @GetMapping("/definePercentage")
     public ResponseEntity<EarningPercentage> defineEarningPercentage(@RequestParam Float percentage){
         return new ResponseEntity(reservationService.defineEarningPercentage(percentage), HttpStatus.OK);
+    }
+
+    @PostMapping("/getReport")
+    public ResponseEntity<List<Earnings>> getReport(@RequestBody ReportDTO dto){
+        return new ResponseEntity(reservationService.getReport(dto),HttpStatus.OK);
     }
 
 }
