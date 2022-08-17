@@ -26,6 +26,8 @@ public class User {
     @Column
     private String email;
 
+    private Boolean firstTimeLogin;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = {})
     private Address address;
 
@@ -166,6 +168,7 @@ public class User {
 //    public boolean isEnabled() {
 //        return enabled;
 //    }
+
 
 
     public void setPassword(String password) {
