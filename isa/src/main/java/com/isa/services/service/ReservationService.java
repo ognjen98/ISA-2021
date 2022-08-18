@@ -226,6 +226,9 @@ public class ReservationService {
     public Reservation reserve(ReservationDTO dto, String email){
         Reservation reservation = null;
         Client client = clientRepository.findByEmail(email);
+        if(client.getPenalties()>3){
+            return null;
+        }
         if(client.getDeleted()){
             return null;
         }
@@ -353,6 +356,9 @@ public class ReservationService {
         reservation.setClient(null);
         //transactionTemplate.execute(transactionStatus -> reservationRepository.save(reservation.get()));
         client.getCancelledReservations().add(reservation);
+        int penalties = client.getPenalties();
+
+        client.setPenalties(++penalties);
         reservationRepository.save(reservation);
         clientRepository.save(client);
 

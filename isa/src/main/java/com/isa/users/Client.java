@@ -42,15 +42,18 @@ public class Client extends User{
     )
     private Set<Reservation> deletedReservations;
 
+    private Integer penalties;
+
     public Client(){}
     public Client(Integer points) {
         this.points = points;
     }
 
     public Client(String name, String surname, String email, Address address, String mobile, String password,
-                  List<Role> roles, Boolean enabled, Boolean deleted, Integer points) {
+                  List<Role> roles, Boolean enabled, Boolean deleted, Integer points, Integer penalties) {
         super(name, surname, email, address, mobile, password, roles, enabled,deleted);
         this.points = points;
+        this.penalties = penalties;
 
     }
 
@@ -84,5 +87,13 @@ public class Client extends User{
 
     public void setDeletedReservations(Set<Reservation> deletedReservations) {
         this.deletedReservations = deletedReservations;
+    }
+
+    public Integer getPenalties() {
+        return penalties;
+    }
+
+    public void setPenalties(Integer penalties) {
+        this.penalties = penalties;
     }
 }
