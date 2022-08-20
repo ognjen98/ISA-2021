@@ -17,6 +17,7 @@ import { LoginComponent } from './login/login.component';
 import { ClientHomeComponent } from './home/client-home/client-home.component';
 import { AdminHomeComponent } from './home/admin-home/admin-home.component';
 import {MatSelectModule} from '@angular/material/select';
+import {MatRadioModule} from '@angular/material/radio';
 import { AuthGuard } from './helpers/auth.guard';
 
 import { AuthInterceptor } from './helpers/auth.interceptor';
@@ -42,7 +43,9 @@ import { DefinePercentageComponent } from './define-percentage/define-percentage
 import { AllServicesComponent } from './all-services/all-services.component';
 import { AllUsersComponent } from './all-users/all-users.component';
 import {MatTableModule} from '@angular/material/table';
-
+import { ChartsModule } from 'ng2-charts';
+import { ChartsComponent } from './charts/charts.component';
+import { CreateAdminComponent } from './create-admin/create-admin.component';
 
 @NgModule({
   declarations: [
@@ -61,10 +64,14 @@ import {MatTableModule} from '@angular/material/table';
     PendingReservationsComponent,
     DefinePercentageComponent,
     AllServicesComponent,
-    AllUsersComponent
+    AllUsersComponent,
+    ChartsComponent,
+    CreateAdminComponent
   ],
   imports: [
+    MatRadioModule,
     MatTableModule,
+    ChartsModule,
     MatExpansionModule,
     NgxMatDatetimePickerModule,
     MatCardModule,

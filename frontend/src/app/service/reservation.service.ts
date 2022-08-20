@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdditionalInfo } from '../model/additionalInfo';
+import { DayMonthValueDTO } from '../model/dayMontValueDTO';
 import { GetReservationDTO } from '../model/getReservationDTO';
+import { ReportDTO } from '../model/reportDTO';
 import { ReservationDTO } from '../model/reservationDTO';
 import { SearchDataDTO } from '../model/searchDataDTO';
 import { ServiceDTO } from '../model/serviceDTO';
@@ -45,5 +47,9 @@ export class ReservationService {
   definePercentage(perc:number){
     // let queryParams = new HttpParams().append("percentage",perc);
     return this.http.get(this._APIUrl+ "/definePercentage?percentage="+ perc);
+  }
+
+  getReport(dto: ReportDTO){
+    return this.http.post<DayMonthValueDTO[]>(this._APIUrl + "/getReport", dto);
   }
 }

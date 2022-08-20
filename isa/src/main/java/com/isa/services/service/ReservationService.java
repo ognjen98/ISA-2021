@@ -17,7 +17,9 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 //import javax.transaction.Transactional;
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -281,27 +283,38 @@ public class ReservationService {
         }
         service.getPeriod().removeAll(removal);
         service.getPeriod().addAll(addition);
+
+
+        serviceRepository.save(service);
+
         if(reservation ==null){
             float price = 0;
+            float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
+            price+=service.getPrice() * hours;
             for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
                 price += additionalInfo.getPrice();
             }
-            float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
-            price+=service.getPrice() * hours;
             EarningPercentage ep = earningPercentageRepository.getById(1L);
-            Earnings earnings = new Earnings(LocalDateTime.now(), price*(ep.getPercentage()/100));
+            Earnings earnings = new Earnings(LocalDate.now(), price*(ep.getPercentage()/100));
             earningsRepository.save(earnings);
+
             reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
                     dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true, false);
+            reservationRepository.save(reservation);
+            return  reservation;
 
         }
 
 
+
+        EarningPercentage ep = earningPercentageRepository.getById(1L);
+        Earnings earnings = new Earnings(LocalDate.now(), reservation.getDiscPrice()*(ep.getPercentage()/100));
+        earningsRepository.save(earnings);
         reservation.setReserved(true);
         reservation.setCancelled(false);
         reservation.setClient(client);
         reservation.setDeleted(false);
-        serviceRepository.save(service);
+
 //        reservation.get().setClient(client);
         entityManager.persist(reservation);
 
@@ -398,21 +411,129 @@ public class ReservationService {
         return ep;
     }
 
-    public List<Earnings> getReport(ReportDTO dto){
-        if(dto.getType().equals("YEAR")){
+    public List<DayMonthValueDTO> getReport(ReportDTO dto){
+        if(dto.getType().equals("Year")){
             List<Earnings> earnings =
                     earningsRepository.findAll().stream().filter(e -> e.getDateTime().getYear() == dto.getYear()).collect(Collectors.toList());
-            return earnings;
+            Collections.sort(earnings, Comparator.comparing(e -> e.getDateTime()));
+            List<Float> result = new ArrayList<>();
+
+            float count = 0;
+            float sum = 0;
+            List<DayMonthValueDTO> dayMonthValueDTOList = new ArrayList<>();
+
+            for(int i = 1; i <= 12; i++){
+                int finalI = i;
+                dayMonthValueDTOList.add(new DayMonthValueDTO(0, i,0, 0 ));
+                List<Earnings> earningByMonth =
+                        earnings.stream().filter(e -> e.getDateTime().getMonthValue() == finalI).collect(Collectors.toList());
+                if(earningByMonth != null || earningByMonth.size() != 0){
+                    for(Earnings earnings1: earningByMonth){
+                        sum += earnings1.getMoney();
+                        count++;
+
+
+                    }
+                    if(sum != 0 && count != 0){
+                        dayMonthValueDTOList.get(i-1).setValue(sum);
+                        dayMonthValueDTOList.get(i-1).setCount(count);
+                        dayMonthValueDTOList.get(i-1).setAvg(sum/count);
+                        sum = 0;
+                        count = 0;
+                    }
+
+                }
+
+
+
+            }
+//            for(int i = 1; i <= 12; i++){
+//                YearMonth yearMonthObject = YearMonth.of(dto.getYear(), i);
+//                int daysInMonth = yearMonthObject.lengthOfMonth(); //28
+//                for(int j =0; j < daysInMonth; j++){
+//                    if(earnings.get())
+//                }
+//            }
+//
+//
+//            for(Earnings e : earnings){
+//
+//                if(e.getDateTime().getMonthValue() == dayMonthValueDTOList.contains()){
+//                    sum += e.getMoney();
+//                    count++;
+//                }
+//
+//            }
+//
+//            if(sum != 0 && count != 0){
+//                result.add(sum/count);
+//                sum = 0;
+//                count = 0;
+//            }
+//            else{
+//                result.add(0F);
+//            }
+
+
+
+            return dayMonthValueDTOList;
         }
-        else if(dto.getType().equals("MONTH")){
+        else if(dto.getType().equals("Month")){
             List<Earnings> earnings =
                     earningsRepository.findAll().stream().filter(e -> e.getDateTime().getYear() == dto.getYear() && e.getDateTime().getMonthValue() == dto.getMonth()).collect(Collectors.toList());
-            return earnings;
+            Collections.sort(earnings, Comparator.comparing(e -> e.getDateTime()));
+            YearMonth yearMonthObject = YearMonth.of(dto.getYear(), dto.getMonth());
+            int daysInMonth = yearMonthObject.lengthOfMonth(); //28
+            List<DayMonthValueDTO> dayMonthValueDTOList = new ArrayList<>();
+            List<Float> result = new ArrayList<>();
+            for(int i = 0; i < daysInMonth; i++){
+                int finalI = i;
+                dayMonthValueDTOList.add(new DayMonthValueDTO(0, i+1,0, 0 ));
+                List<Earnings> earningByDay =
+                        earnings.stream().filter(e -> e.getDateTime().getDayOfMonth() == finalI+1).collect(Collectors.toList());
+                if(earningByDay != null || earningByDay.size() != 0){
+                    for(Earnings earnings1 : earningByDay){
+                        float earn = dayMonthValueDTOList.get(i).getValue();
+                        float earnIncr = earn + earnings1.getMoney();
+                        dayMonthValueDTOList.get(i).setValue(earnIncr);
+                    }
+                }
+
+
+            }
+//            for(Earnings e : earnings){
+//                result.add(e.getMoney());
+//            }
+            return dayMonthValueDTOList;
         }
         else{
             List<Earnings> earnings =
                     earningsRepository.findAll().stream().filter(e -> (e.getDateTime().isAfter(dto.getStartTime()) || e.getDateTime().isEqual(dto.getStartTime())) && e.getDateTime().isBefore(dto.getEndTime()) ).collect(Collectors.toList());
-            return earnings;
+            Collections.sort(earnings, Comparator.comparing(e -> e.getDateTime()));
+
+            List<Float> result = new ArrayList<>();
+            List<DayMonthValueDTO> dayMonthValueDTOList = new ArrayList<>();
+            long days = ChronoUnit.DAYS.between(dto.getStartTime(), dto.getEndTime());
+            for(int i = 0; i < days; i++){
+                int finalI = i;
+                dayMonthValueDTOList.add(new DayMonthValueDTO(0, i+1,0, 0 ));
+
+                if(earnings != null || earnings.size() != 0){
+                    for(Earnings earnings1 : earnings){
+                        YearMonth yearMonthObject = YearMonth.of(dto.getStartTime().getYear(), dto.getStartTime().getMonthValue());
+                        int daysInMonth = yearMonthObject.lengthOfMonth(); //28
+                        if(dto.getStartTime().plusDays(i).isEqual(earnings1.getDateTime())) {
+                            float earn = dayMonthValueDTOList.get(i).getValue();
+                            float earnIncr = earn + earnings1.getMoney();
+                            dayMonthValueDTOList.get(i).setValue(earnIncr);
+                        }
+
+                    }
+                }
+
+
+            }
+            return dayMonthValueDTOList;
         }
 
 

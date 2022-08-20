@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,19 +16,19 @@ public class Earnings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime dateTime;
+    private LocalDate dateTime;
 
     private Float money;
 
     public Earnings(){}
 
-    public Earnings(Long id, LocalDateTime dateTime, Float money) {
+    public Earnings(Long id, LocalDate dateTime, Float money) {
         this.id = id;
         this.dateTime = dateTime;
         this.money = money;
     }
 
-    public Earnings(LocalDateTime dateTime, Float money) {
+    public Earnings(LocalDate dateTime, Float money) {
         this.dateTime = dateTime;
         this.money = money;
     }
@@ -40,11 +41,11 @@ public class Earnings {
         this.id = id;
     }
 
-    public LocalDateTime getDateTime() {
+    public LocalDate getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(LocalDate dateTime) {
         this.dateTime = dateTime;
     }
 

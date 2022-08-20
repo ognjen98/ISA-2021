@@ -2,7 +2,9 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { AllServicesComponent } from "./all-services/all-services.component";
 import { AllUsersComponent } from "./all-users/all-users.component";
+import { ChartsComponent } from "./charts/charts.component";
 import { CottagesComponent } from "./cottages/cottages.component";
+import { CreateAdminComponent } from "./create-admin/create-admin.component";
 import { DefinePercentageComponent } from "./define-percentage/define-percentage.component";
 import { AuthGuard } from "./helpers/auth.guard";
 import { AdminHomeComponent } from "./home/admin-home/admin-home.component";
@@ -21,16 +23,8 @@ const routes: Routes = [
     {path:'', component: HomeComponent, children: [
       {path: 'register', component: RegistrationComponent},
       {path: 'login', component: LoginComponent},
-      {path: 'ships', component: ShipsComponent},
-      {path: 'lessons', component: LessonsComponent},
-      {path: 'cottages', component: CottagesComponent},
-      {path: 'lessons/servicePage/:id', component: ServicePageComponent},
-      {path: 'ships/servicePage/:id', component: ServicePageComponent},
-      {path: 'cottages/servicePage/:id', component: ServicePageComponent},
-      {path: 'pendingRes', component: PendingReservationsComponent},
-      {path: 'percentage', component: DefinePercentageComponent},
-      {path: 'allServices', component: AllServicesComponent},
-      {path: 'allUsers', component: AllUsersComponent}
+
+
     ]},
     {path: 'client', component: ClientHomeComponent, canActivate: [AuthGuard],
   
@@ -39,7 +33,14 @@ const routes: Routes = [
       allowedRoles: ['ROLE_CLIENT']},
     children: [
       {path: 'updateInfo', component: UpdateInfoComponent},
-      {path: 'reservation', component: ReservationComponent}
+      {path: 'reservation', component: ReservationComponent},
+      {path: 'ships', component: ShipsComponent},
+      {path: 'lessons', component: LessonsComponent},
+      {path: 'cottages', component: CottagesComponent},
+      {path: 'lessons/servicePage/:id', component: ServicePageComponent},
+      {path: 'ships/servicePage/:id', component: ServicePageComponent},
+      {path: 'cottages/servicePage/:id', component: ServicePageComponent},
+      {path: 'pendingRes', component: PendingReservationsComponent},
     ]
   },
     {path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuard],
@@ -48,7 +49,12 @@ const routes: Routes = [
     data: {
       allowedRoles: ['ROLE_SYSTEM_ADMIN']},
     children: [
-        {path: 'updateInfo', component: UpdateInfoComponent}
+        {path: 'updateInfo', component: UpdateInfoComponent},
+        {path: 'percentage', component: DefinePercentageComponent},
+      {path: 'allServices', component: AllServicesComponent},
+      {path: 'allUsers', component: AllUsersComponent},
+      {path: 'charts', component: ChartsComponent},
+      {path: 'createAdmin', component: CreateAdminComponent}
     ]
   },
   

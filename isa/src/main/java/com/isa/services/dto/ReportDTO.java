@@ -1,17 +1,18 @@
 package com.isa.services.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ReportDTO {
     private String type;
     private Integer year;
     private Integer month;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private LocalDate startTime;
+    private LocalDate endTime;
 
     public ReportDTO(){}
 
-    public ReportDTO(String type, Integer year, Integer month, LocalDateTime startTime, LocalDateTime endTime) {
+    public ReportDTO(String type, Integer year, Integer month, LocalDate startTime, LocalDate endTime) {
         this.type = type;
         this.year = year;
         this.month = month;
@@ -43,19 +44,19 @@ public class ReportDTO {
         this.month = month;
     }
 
-    public LocalDateTime getStartTime() {
+    public LocalDate getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(LocalDate startTime) {
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime() {
+    public LocalDate getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(LocalDate endTime) {
         this.endTime = endTime;
     }
 }

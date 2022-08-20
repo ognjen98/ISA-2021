@@ -87,7 +87,7 @@ public class ReservationController {
     }
 
     @PostMapping("/getReport")
-    public ResponseEntity<List<Earnings>> getReport(@RequestBody ReportDTO dto){
+    public ResponseEntity<List<DayMonthValueDTO>> getReport(@RequestBody ReportDTO dto){
         return new ResponseEntity(reservationService.getReport(dto),HttpStatus.OK);
     }
 
