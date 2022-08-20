@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AdminDTO } from '../model/adminDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +17,9 @@ export class AdminService {
 
   changePass(pass:string){
     return this.http.get(this._APIUrl + "/changePass?pass="+pass);
+  }
+
+  createAdmin(adminDto: AdminDTO){
+    return this.http.post(this._APIUrl + "/createAdmin", adminDto);
   }
 }

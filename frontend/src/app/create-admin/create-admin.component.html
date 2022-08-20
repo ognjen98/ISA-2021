@@ -1,0 +1,29 @@
+
+<div class="formBox">
+    <h1><b>Create admin</b></h1>
+    <form action="" [formGroup]="adminForm" >
+    <mat-form-field appearance="fill" >
+      <input matInput placeholder="Name" name="name" formControlName="name">
+      
+      
+      <!-- <mat-error *ngIf="reportFormRange['controls'].start.hasError('matStartDateInvalid')">Invalid start date</mat-error> -->
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="fill" >
+  <input matInput placeholder="Surname" name="surname" formControlName="surname">
+      
+      
+      <!-- <mat-error *ngIf="reportFormRange['controls'].start.hasError('matStartDateInvalid')">Invalid start date</mat-error> -->
+  </mat-form-field>
+  <br>
+  <mat-form-field appearance="fill" >
+  <input matInput placeholder="Email" name="email" formControlName="email">
+      
+      
+      <!-- <mat-error *ngIf="reportFormRange['controls'].start.hasError('matStartDateInvalid')">Invalid start date</mat-error> -->
+  </mat-form-field>
+  <br>
+  <br>
+  <button mat-raised-button color="primary" [disabled]="adminForm.invalid" (click)="createAdmin()" >Submit</button>
+  </form>
+</div>
