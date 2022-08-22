@@ -16,13 +16,23 @@ public class Category {
 
     private Integer points;
 
+    private String type;
+
     public Category(){}
 
-    public Category(Long id, String name, Float discount, Integer points) {
+    public Category(Long id, String name, Float discount, Integer points, String type) {
         this.id = id;
         this.name = name;
         this.discount = discount;
         this.points = points;
+        this.type = type;
+    }
+
+    public Category(String name, Float discount, Integer points, String type) {
+        this.name = name;
+        this.discount = discount;
+        this.points = points;
+        this.type = type;
     }
 
     public Long getId() {
@@ -55,5 +65,14 @@ public class Category {
 
     public void setPoints(Integer points) {
         this.points = points;
+    }
+
+    public String getType() {
+
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

@@ -1,5 +1,8 @@
 package com.isa.users.controller;
 
+import com.isa.loyalties.Category;
+import com.isa.loyalties.Points;
+import com.isa.loyalties.dto.CategoryDTO;
 import com.isa.security.TokenUtils;
 import com.isa.users.dto.AdminDTO;
 import com.isa.users.service.SystemAdminService;
@@ -35,5 +38,15 @@ public class SystemAdminController {
     public ResponseEntity changePass(@RequestParam String pass, HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(service.changePass(pass, email), HttpStatus.OK);
+    }
+
+    @PostMapping("/createCategory")
+    public ResponseEntity createCategory(@RequestBody Category dto){
+        return new ResponseEntity(service.createCategory(dto),HttpStatus.OK);
+    }
+
+    @PostMapping("/setPoints")
+    public ResponseEntity setPoints(@RequestBody Points dto){
+        return new ResponseEntity(service.setPoints(dto), HttpStatus.OK);
     }
 }

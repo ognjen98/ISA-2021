@@ -1,11 +1,17 @@
 package com.isa.services.service;
 
+import com.isa.loyalties.Category;
+import com.isa.loyalties.Points;
+import com.isa.loyalties.repository.CategoryRepository;
+import com.isa.loyalties.repository.PointsRepository;
 import com.isa.services.*;
 import com.isa.services.dto.*;
 import com.isa.services.repository.*;
 import com.isa.users.Client;
+import com.isa.users.Seller;
 import com.isa.users.repository.ClientRepository;
 import com.isa.users.repository.ReservationRepository;
+import com.isa.users.repository.SellerRepository;
 import com.isa.users.service.ClientService;
 import com.isa.users.service.email.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +39,12 @@ public class ReservationService {
     ShipRepository shipRepository;
 
     @Autowired
+    CategoryRepository categoryRepository;
+
+    @Autowired
+    PointsRepository pointsRepository;
+
+    @Autowired
     TimePeriodRepository timePeriodRepository;
 
     @Autowired
@@ -40,6 +52,9 @@ public class ReservationService {
 
     @Autowired
     EarningPercentageRepository earningPercentageRepository;
+
+    @Autowired
+    SellerRepository sellerRepository;
 
     @Autowired
     EarningsRepository earningsRepository;
@@ -71,6 +86,10 @@ public class ReservationService {
             List<com.isa.services.Service> ships =
                     serviceRepository.findAll().stream().filter(s-> s instanceof Ship && !s.getDeleted()).collect(Collectors.toList());
             services = ships;
+            List<Ship> ships1 = new ArrayList<>();
+            for(com.isa.services.Service s: services){
+                ships1.add((Ship) s);
+            }
 
         }
         else if(dto.getEntity().equals("COTTAGE")){
@@ -296,8 +315,45 @@ public class ReservationService {
             }
             EarningPercentage ep = earningPercentageRepository.getById(1L);
             Earnings earnings = new Earnings(LocalDate.now(), price*(ep.getPercentage()/100));
-            earningsRepository.save(earnings);
+            Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
+            Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
+            Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
+            if(client.getPoints()>goldClient.getPoints()){
+                price = price - price * goldClient.getDiscount();
+            }
+            else if(client.getPoints() > silverClient.getPoints()){
+               price = price - price * silverClient.getDiscount();
+            }
+            else if(client.getPoints() > bronzeClient.getPoints()){
+                price = price - price * bronzeClient.getDiscount();
+            }
+            Category goldSeller = categoryRepository.findCategoryByNameAndType("GOLD", "SELLER");
+            Category silverSeller = categoryRepository.findCategoryByNameAndType("SILVER", "SELLER");
+            Category bronzeSeller = categoryRepository.findCategoryByNameAndType("BRONZE", "SELLER");
+            Seller seller = service.getSeller();
+            float sellerMoney = 0;
+            if(seller.getPoints()>goldSeller.getPoints()){
+                sellerMoney = price - price * goldSeller.getDiscount()/100;
+            }
+            else if(seller.getPoints() > silverSeller.getPoints()){
+                sellerMoney = price - price * silverSeller.getDiscount()/100;
+            }
+            else if(seller.getPoints() > bronzeSeller.getPoints()){
+                sellerMoney = price - price * bronzeSeller.getDiscount()/100;
+            }
+            seller.setMoney(sellerMoney);
 
+            earningsRepository.save(earnings);
+            Optional<Points> points = pointsRepository.findById(1L);
+            int sellerPoints = seller.getPoints();
+            int clientPoints = client.getPoints();
+            sellerPoints += points.get().getSellerPoints();
+            clientPoints += points.get().getClientPoints();
+
+            client.setPoints(clientPoints);
+            seller.setPoints(sellerPoints);
+            sellerRepository.save(seller);
+            clientRepository.save(client);
             reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
                     dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true, false);
             reservationRepository.save(reservation);
@@ -310,6 +366,45 @@ public class ReservationService {
         EarningPercentage ep = earningPercentageRepository.getById(1L);
         Earnings earnings = new Earnings(LocalDate.now(), reservation.getDiscPrice()*(ep.getPercentage()/100));
         earningsRepository.save(earnings);
+        float discPrice = reservation.getDiscPrice();
+        Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
+        Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
+        Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
+        if(client.getPoints()>goldClient.getPoints()){
+            discPrice = discPrice - discPrice * goldClient.getDiscount();
+        }
+        else if(client.getPoints() > silverClient.getPoints()){
+            discPrice = discPrice - discPrice * silverClient.getDiscount();
+        }
+        else if(client.getPoints() > bronzeClient.getPoints()){
+            discPrice = discPrice - discPrice * bronzeClient.getDiscount();
+        }
+        Category goldSeller = categoryRepository.findCategoryByNameAndType("GOLD", "SELLER");
+        Category silverSeller = categoryRepository.findCategoryByNameAndType("SILVER", "SELLER");
+        Category bronzeSeller = categoryRepository.findCategoryByNameAndType("BRONZE", "SELLER");
+        Seller seller = service.getSeller();
+        float sellerMoney = discPrice - 50*discPrice/100;
+        if(seller.getPoints()>goldSeller.getPoints()){
+            sellerMoney = discPrice - discPrice * goldSeller.getDiscount()/100;
+        }
+        else if(seller.getPoints() > silverSeller.getPoints()){
+            sellerMoney = discPrice - discPrice * silverSeller.getDiscount()/100;
+        }
+        else if(seller.getPoints() > bronzeSeller.getPoints()){
+            sellerMoney = discPrice - discPrice * bronzeSeller.getDiscount()/100;
+        }
+        seller.setMoney(sellerMoney);
+        Optional<Points> points = pointsRepository.findById(1L);
+        int sellerPoints = seller.getPoints();
+        int clientPoints = client.getPoints();
+        sellerPoints += points.get().getSellerPoints();
+        clientPoints += points.get().getClientPoints();
+        client.setPoints(clientPoints);
+        seller.setPoints(sellerPoints);
+        clientRepository.save(client);
+        sellerRepository.save(seller);
+
+        reservation.setDiscPrice(discPrice);
         reservation.setReserved(true);
         reservation.setCancelled(false);
         reservation.setClient(client);
@@ -393,9 +488,14 @@ public class ReservationService {
         int i = 0;
         for(Reservation discountReservation: discountReservations){
             if(!discountReservation.getCancelled() || !discountReservation.getDeleted()) {
+                Float discPrice = discountReservation.getDiscPrice();
+                if(discPrice == null){
+                    discPrice = 0F;
+                }
                 GetReservationDTO dto = new GetReservationDTO(discountReservation.getId(),
                         discountReservation.getStartTime(), discountReservation.getEndTime(),
                         discountReservation.getMaxCapacity(), discountReservation.getPrice(),
+                        discPrice,
                         discountReservation.getAddress().getCity(), discountReservation.getAdditionalInfos());
                 dtos.add(dto);
             }

@@ -13,6 +13,7 @@ public class GetReservationDTO {
     private LocalDateTime endTime;
     private Integer maxCapacity;
     private Float price;
+    private Float discPrice;
     private String city;
     private Set<AdditionalInfo> additionalInfoSet;
 
@@ -20,12 +21,13 @@ public class GetReservationDTO {
     public GetReservationDTO(){}
 
     public GetReservationDTO(Long id, LocalDateTime startTime, LocalDateTime endTime, Integer maxCapacity,
-                                  Float price, String city, Set<AdditionalInfo> additionalInfoSet) {
+                                  Float price,Float discPrice, String city, Set<AdditionalInfo> additionalInfoSet) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
         this.maxCapacity = maxCapacity;
         this.price = price;
+        this.discPrice = discPrice;
         this.city = city;
         this.additionalInfoSet = additionalInfoSet;
 
@@ -86,5 +88,13 @@ public class GetReservationDTO {
 
     public void setAdditionalInfoSet(Set<AdditionalInfo> additionalInfoSet) {
         this.additionalInfoSet = additionalInfoSet;
+    }
+
+    public Float getDiscPrice() {
+        return discPrice;
+    }
+
+    public void setDiscPrice(Float discPrice) {
+        this.discPrice = discPrice;
     }
 }

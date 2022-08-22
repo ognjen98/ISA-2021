@@ -11,6 +11,8 @@ public class Seller extends User{
 
     private  Float grade;
 
+    private Float money;
+
     public Seller(){}
     public Seller(Integer points, Float grade) {
         this.points = points;
@@ -31,5 +33,13 @@ public class Seller extends User{
 
     public void setGrade(Float grade) {
         this.grade = grade;
+    }
+
+    public Float getMoney() {
+        return money;
+    }
+
+    public void setMoney(Float money) {
+        this.money = money;
     }
 }

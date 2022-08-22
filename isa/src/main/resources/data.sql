@@ -52,8 +52,8 @@ insert into sys_admins(id) values (1);
 insert into cottage_owners(id) values (2);
 insert into ship_owners(id) values (3);
 insert into instructors(id) values (4);
-insert into clients(id, penalties) values (5, 0);
-insert into clients(id, penalties) values (6, 0);
+insert into clients(id, penalties, points) values (5, 0, 0);
+insert into clients(id, penalties, points) values (6, 0, 0);
 
 insert into periods (start_time, end_time) values (to_timestamp(1663221600), to_timestamp(1663653600));
 insert into periods (start_time, end_time) values (to_timestamp(1664085600), to_timestamp(1665813600));
@@ -157,3 +157,10 @@ insert into clients_cancelled_reservations (client_id, reservation_id) values (5
 insert into clients_all_reservations (client_id, reservation_id) values (5, 1);
 
 insert into earning_percentage(percentage) values (25.0);
+
+insert into categories(name, type, points, discount) values ('GOLD', 'CLIENT', 2000, 50);
+insert into categories(name, type, points, discount) values ('SILVER', 'CLIENT', 1500, 30);
+insert into categories(name, type, points, discount) values ('BRONZE', 'CLIENT', 1000, 20);
+insert into categories(name, type, points, discount) values ('GOLD', 'SELLER', 2000, 100);
+insert into categories(name, type, points, discount) values ('SILVER', 'SELLER', 1500, 90);
+insert into categories(name, type, points, discount) values ('BRONZE', 'SELLER', 1000, 80);
