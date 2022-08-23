@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AdminDTO } from '../model/adminDTO';
+import { Category } from '../model/category';
+import { Points } from '../model/points';
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +23,13 @@ export class AdminService {
 
   createAdmin(adminDto: AdminDTO){
     return this.http.post(this._APIUrl + "/createAdmin", adminDto);
+  }
+
+  createCategory(dto: Category){
+    return this.http.post(this._APIUrl + "/createCategory", dto)
+  }
+
+  setPoints(dto: Points){
+    return this.http.post(this._APIUrl + "/setPoints", dto)
   }
 }

@@ -1,0 +1,32 @@
+<div class="formBox">
+    <h1><b>Personal information</b></h1>
+    <form [formGroup]="searchForm" autocomplete="off" #f="ngForm">
+        <hr>
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Client points</mat-label>
+            <input required matInput placeholder="Client points" name="client" formControlName="client">
+            <mat-error *ngIf="searchForm.controls['client'].hasError('required')">
+                Client points are required!
+            </mat-error>
+        </mat-form-field>
+        
+        <br>
+        
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Seller points</mat-label>
+            <input matInput placeholder="Seller points" name="seller" formControlName="seller">
+            <mat-error *ngIf="searchForm.controls['seller'].hasError('required')">
+                Seller points are required!
+            </mat-error >
+        </mat-form-field>
+        <br>
+
+        
+       
+        <br>
+        
+        <button mat-raised-button color="primary" (click)="setPoints()" [disabled]="searchForm.invalid">Submit</button>
+    </form>
+</div>

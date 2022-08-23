@@ -46,6 +46,8 @@ import {MatTableModule} from '@angular/material/table';
 import { ChartsModule } from 'ng2-charts';
 import { ChartsComponent } from './charts/charts.component';
 import { CreateAdminComponent } from './create-admin/create-admin.component';
+import { CategoryComponent } from './category/category.component';
+import { PointsComponent } from './points/points.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +68,9 @@ import { CreateAdminComponent } from './create-admin/create-admin.component';
     AllServicesComponent,
     AllUsersComponent,
     ChartsComponent,
-    CreateAdminComponent
+    CreateAdminComponent,
+    CategoryComponent,
+    PointsComponent
   ],
   imports: [
     MatRadioModule,

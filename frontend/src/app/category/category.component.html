@@ -1,0 +1,48 @@
+<div class="formBox">
+    <h1><b>Personal information</b></h1>
+    <form [formGroup]="searchForm" autocomplete="off" #f="ngForm">
+        <hr>
+        <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select id="type" name="type" formControlName="type">
+                <mat-option value="CLIENT">Client</mat-option>
+                <mat-option value="SELLER">Seller</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        
+        <mat-form-field appearance="fill" >
+            <mat-label>Name</mat-label>
+            <input required matInput placeholder="Name" name="name" formControlName="name" >
+            <mat-error *ngIf="searchForm.controls['name'].hasError('required')">
+                Name is required!
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Discount</mat-label>
+            <input required matInput placeholder="Discount" name="discount" formControlName="discount">
+            <mat-error *ngIf="searchForm.controls['discount'].hasError('required')">
+                Discount is required!
+            </mat-error>
+        </mat-form-field>
+        
+        <br>
+        
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Points</mat-label>
+            <input matInput placeholder="Points" name="points" formControlName="points">
+            <mat-error *ngIf="searchForm.controls['points'].hasError('required')">
+                Points are required!
+            </mat-error >
+        </mat-form-field>
+        <br>
+
+        
+       
+        <br>
+        
+        <button mat-raised-button color="primary" (click)="createCategory()" [disabled]="searchForm.invalid">Submit</button>
+    </form>
+</div>
