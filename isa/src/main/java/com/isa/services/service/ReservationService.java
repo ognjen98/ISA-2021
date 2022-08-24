@@ -487,7 +487,7 @@ public class ReservationService {
         List<GetReservationDTO> dtos = new ArrayList<>();
         int i = 0;
         for(Reservation discountReservation: discountReservations){
-            if(!discountReservation.getCancelled() || !discountReservation.getDeleted()) {
+            if(!discountReservation.getCancelled() || !discountReservation.getDeleted() || discountReservation.getStartTime().isAfter(LocalDateTime.now())) {
                 Float discPrice = discountReservation.getDiscPrice();
                 if(discPrice == null){
                     discPrice = 0F;
@@ -496,7 +496,8 @@ public class ReservationService {
                         discountReservation.getStartTime(), discountReservation.getEndTime(),
                         discountReservation.getMaxCapacity(), discountReservation.getPrice(),
                         discPrice,
-                        discountReservation.getAddress().getCity(), discountReservation.getAdditionalInfos());
+                        discountReservation.getAddress().getCity(), discountReservation.getAdditionalInfos(),
+                        discountReservation.getService().getName());
                 dtos.add(dto);
             }
         }
@@ -637,6 +638,68 @@ public class ReservationService {
         }
 
 
+    }
+
+
+    public List<GetReservationDTO> getPastShipReservations(String email){
+        List<Reservation> reservations =
+                reservationRepository.findAll().stream().filter(r -> r.getEndTime().isBefore(LocalDateTime.now()) && r.getClient().getEmail().equals(email)).collect(Collectors.toList());
+        List<GetReservationDTO> result = new ArrayList<>();
+
+        for(Reservation r : reservations){
+            Float discPrice = r.getDiscPrice();
+            if(discPrice == null){
+                discPrice = 0F;
+            }
+            if(r.getService() instanceof Ship){
+                result.add(new GetReservationDTO(r.getId(),r.getStartTime(),r.getEndTime(),r.getMaxCapacity(),
+                        r.getPrice(),discPrice,r.getAddress().getCity(), r.getAdditionalInfos(),
+                        r.getService().getName()));
+            }
+        }
+
+        return result;
+    }
+
+    public List<GetReservationDTO> getPastLessonsReservations(String email){
+        List<Reservation> reservations =
+                reservationRepository.findAll().stream().filter(r -> r.getEndTime().isBefore(LocalDateTime.now()) && r.getClient().getEmail().equals(email)).collect(Collectors.toList());
+        List<GetReservationDTO> result = new ArrayList<>();
+
+        for(Reservation r : reservations){
+            Float discPrice = r.getDiscPrice();
+            if(discPrice == null){
+                discPrice = 0F;
+            }
+            if(r.getService() instanceof FishingLessons){
+                result.add(new GetReservationDTO(r.getId(),r.getStartTime(),r.getEndTime(),r.getMaxCapacity(),
+                        r.getPrice(),discPrice,r.getAddress().getCity(), r.getAdditionalInfos(),
+                        r.getService().getName()));
+            }
+        }
+
+        return result;
+    }
+
+    public List<GetReservationDTO> getPastCottageReservations(String email){
+        List<Reservation> reservations =
+                reservationRepository.findAll().stream().filter(r -> r.getEndTime().isBefore(LocalDateTime.now()) && r.getClient().getEmail().equals(email)).collect(Collectors.toList());
+        List<GetReservationDTO> result = new ArrayList<>();
+
+        for(Reservation r : reservations){
+            if(r.getService() instanceof Cottage){
+                Float discPrice = r.getDiscPrice();
+                if(discPrice == null){
+                    discPrice = 0F;
+                }
+                GetReservationDTO dto =new GetReservationDTO(r.getId(),r.getStartTime(),r.getEndTime(),r.getMaxCapacity(),
+                r.getPrice(),discPrice,r.getAddress().getCity(), r.getAdditionalInfos(),
+                r.getService().getName());
+                result.add(dto);
+            }
+        }
+
+        return result;
     }
 
 }

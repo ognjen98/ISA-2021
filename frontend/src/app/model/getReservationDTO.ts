@@ -8,9 +8,11 @@ export class GetReservationDTO {
 	 price: number;
 	 city: string;
 	 additionalInfoSet: AdditionalInfo[];
+	 serviceName: string;
 
 
-	constructor($id: number, $startTime: Date, $endTime: Date, $maxCapacity: number, $price: number, $city: string, $additionalInfoSet: AdditionalInfo[]) {
+	constructor($id: number, $startTime: Date, $endTime: Date, $maxCapacity: number, $price: number, $city: string, $additionalInfoSet: AdditionalInfo[],
+		$serviceName: string) {
 		this.id = $id;
 		this.startTime = $startTime;
 		this.endTime = $endTime;
@@ -18,6 +20,7 @@ export class GetReservationDTO {
 		this.price = $price;
 		this.city = $city;
 		this.additionalInfoSet = $additionalInfoSet;
+		this.serviceName = $serviceName;
 	}
 	
 

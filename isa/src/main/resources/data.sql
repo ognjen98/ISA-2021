@@ -136,6 +136,8 @@ values ('Dobar covek, prvak Srbije u pecanju u svim kategorijama', 2, 0, 9);
 
 --insert into reservations (start_time, end_time, cancelled, client_id, service_id, version, address_id)
 --values ('Reservation', to_timestamp(1663480800), to_timestamp(1663567200), true, 5, 1,0, 5);
+
+
 insert into reservations (start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
 price, disc_price, max_capacity, deleted)
 values (to_timestamp(1663308000), to_timestamp(1663394400), false, null, 1, false,0, 5, 50, 25,
@@ -144,6 +146,14 @@ insert into reservations (start_time, end_time, cancelled, client_id, service_id
 price, disc_price, max_capacity,deleted)
 values (to_timestamp(1664949600), to_timestamp(1665036000), false, null, 1, false,0, 5, 20, 10,
 5, false);
+insert into reservations (start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
+price, disc_price, max_capacity, deleted)
+values (to_timestamp(1660543200), to_timestamp(1660629600), false, 5, 2, true,0, 5, 50, null,
+3, false);
+insert into reservations (start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
+price, disc_price, max_capacity, deleted)
+values (to_timestamp(1657951200), to_timestamp(1658124000), false, 5, 5, true,0, 5, 50, null,
+3, false);
 
 
 insert into services_discount_reservations(service_id, discount_reservations_id) values (1, 1);

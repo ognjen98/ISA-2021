@@ -52,4 +52,16 @@ export class ReservationService {
   getReport(dto: ReportDTO){
     return this.http.post<DayMonthValueDTO[]>(this._APIUrl + "/getReport", dto);
   }
+
+  getShipReservations(){
+    return this.http.get<GetReservationDTO[]>(this._APIUrl + "/getShipReservations")
+  }
+
+  getLessonsReservations(){
+    return this.http.get<GetReservationDTO[]>(this._APIUrl + "/getLessonsReservations")
+  }
+
+  getCottageReservations(){
+    return this.http.get<GetReservationDTO[]>(this._APIUrl + "/getCottageReservations")
+  }
 }

@@ -91,6 +91,23 @@ public class ReservationController {
         return new ResponseEntity(reservationService.getReport(dto),HttpStatus.OK);
     }
 
+    @GetMapping("/getShipReservations")
+    public ResponseEntity getShipReservations(HttpServletRequest request){
+        String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        return new ResponseEntity(reservationService.getPastShipReservations(email), HttpStatus.OK);
+    }
+
+    @GetMapping("/getLessonsReservations")
+    public ResponseEntity getLessonsReservations(HttpServletRequest request){
+        String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        return new ResponseEntity(reservationService.getPastLessonsReservations(email), HttpStatus.OK);
+    }
+
+    @GetMapping("/getCottageReservations")
+    public ResponseEntity getCottageReservations(HttpServletRequest request){
+        String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        return new ResponseEntity(reservationService.getPastCottageReservations(email), HttpStatus.OK);
+    }
 
 
 }

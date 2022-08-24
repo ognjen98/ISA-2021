@@ -48,6 +48,9 @@ import { ChartsComponent } from './charts/charts.component';
 import { CreateAdminComponent } from './create-admin/create-admin.component';
 import { CategoryComponent } from './category/category.component';
 import { PointsComponent } from './points/points.component';
+import { ShipReservationsComponent } from './ship-reservations/ship-reservations.component';
+import { CottageReservationsComponent } from './cottage-reservations/cottage-reservations.component';
+import { LessonReservationsComponent } from './lesson-reservations/lesson-reservations.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +73,10 @@ import { PointsComponent } from './points/points.component';
     ChartsComponent,
     CreateAdminComponent,
     CategoryComponent,
-    PointsComponent
+    PointsComponent,
+    ShipReservationsComponent,
+    CottageReservationsComponent,
+    LessonReservationsComponent
   ],
   imports: [
     MatRadioModule,
