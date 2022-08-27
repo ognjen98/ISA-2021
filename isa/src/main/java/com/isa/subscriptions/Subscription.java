@@ -19,12 +19,21 @@ public class Subscription {
     @ManyToOne(fetch = FetchType.EAGER)
     private Client client;
 
+    private Boolean cancelled;
+
     public Subscription(){}
 
-    public Subscription(Long id, Service service, Client client) {
+    public Subscription(Long id, Service service, Client client, Boolean cancelled) {
         this.id = id;
         this.service = service;
         this.client = client;
+        this.cancelled = cancelled;
+    }
+
+    public Subscription(Service service, Client client, Boolean cancelled) {
+        this.service = service;
+        this.client = client;
+        this.cancelled = cancelled;
     }
 
     public Long getId() {
@@ -49,5 +58,13 @@ public class Subscription {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Boolean getCancelled() {
+        return cancelled;
+    }
+
+    public void setCancelled(Boolean cancelled) {
+        this.cancelled = cancelled;
     }
 }

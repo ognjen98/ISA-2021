@@ -96,6 +96,12 @@ public class Reservation {
         this.reserved = reservation.reserved;
     }
 
+    public Reservation(Float price, Float discPrice, Service service){
+        this.price = price;
+        this.discPrice = discPrice;
+        this.service = service;
+    }
+
     public Long getId() {
         return id;
     }
