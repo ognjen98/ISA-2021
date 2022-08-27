@@ -1,6 +1,7 @@
 package com.isa.revisions;
 
 import com.isa.services.Service;
+import com.isa.users.Client;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +19,11 @@ public class ServiceRevision extends Revision{
     public ServiceRevision(){}
 
     public ServiceRevision(Service service) {
+        this.service = service;
+    }
+
+    public ServiceRevision(Integer grade, String text, Integer status, Client client, Service service) {
+        super(grade, text, status, client);
         this.service = service;
     }
 

@@ -24,7 +24,7 @@ insert into users (name, surname, email, password, mobile, address_id, enabled, 
 values ('Stojan', 'Petrovic','ognjen2@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 2, true,false);
 insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
-values ('Milan', 'Peric','ognjen3@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
+values ('Milan', 'Peric','civic.ognjen98@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 3, true,false);
 insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
 values ('Jasmin', 'Jovanovic','ognjen4@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
@@ -174,3 +174,6 @@ insert into categories(name, type, points, discount) values ('BRONZE', 'CLIENT',
 insert into categories(name, type, points, discount) values ('GOLD', 'SELLER', 2000, 100);
 insert into categories(name, type, points, discount) values ('SILVER', 'SELLER', 1500, 90);
 insert into categories(name, type, points, discount) values ('BRONZE', 'SELLER', 1000, 80);
+
+--insert into revisions(grade, text, status, client_id) values (3, 'Cao', 0, null);
+--insert into service_revisions(id, service_id) values (1, 2);

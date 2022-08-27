@@ -1,5 +1,6 @@
 package com.isa.revisions;
 
+import com.isa.users.Client;
 import com.isa.users.Seller;
 
 import javax.persistence.Entity;
@@ -17,6 +18,11 @@ public class SellerRevision extends Revision{
     public SellerRevision(){}
 
     public SellerRevision(Seller seller) {
+        this.seller = seller;
+    }
+
+    public SellerRevision(Integer grade, String text, Integer status, Client client, Seller seller) {
+        super(grade, text, status, client);
         this.seller = seller;
     }
 

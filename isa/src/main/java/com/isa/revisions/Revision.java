@@ -31,6 +31,13 @@ public class Revision {
         this.status = status;
         this.client = client;
     }
+    public Revision(Integer grade, String text, Integer status, Client client) {
+        this.grade = grade;
+        this.text = text;
+        this.status = status;
+        this.client = client;
+    }
+
 
     public Long getId() {
         return id;

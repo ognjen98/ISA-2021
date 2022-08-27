@@ -6,9 +6,9 @@ spring:
     allow-circular-references: true
 
   mail:
-    host: smtp.office365.com
+    host: smtp.mail.yahoo.com
     port: 587
-    username: civcic.ognjen98@outlook.com
+    username: ognjencivcic@yahoo.com
     password: itachiuchiha-98
     properties:
       mail:
@@ -16,9 +16,11 @@ spring:
           protocol: pop3
         smtp:
           connectiontimeout: 5000
-          timeout: 3000
+          timeout: 25000
           writetimeout: 5000
           auth: true
+#          ssl:
+#            enable: true
           starttls:
             enable: true
 
