@@ -1,0 +1,26 @@
+<table class="table">
+    <th> Id </th>
+    <th> Email </th>
+    <th> Name </th>
+    <th> Surname </th>
+ 
+    <tr *ngFor="let element of data;let i = index">
+        <td> {{ element.id }} </td>
+        <td> {{ element.email }} </td>
+        <td> {{ element.name }} </td>
+        <td> {{ element.surname }} </td>
+        <td><button mat-raised-button  (click)="accept(element.id)">Accept</button></td>
+        <td><button mat-raised-button  (click)="reject(i)">Reject</button></td>
+        <td ><form id="{{'form' + i}}" style="visibility:hidden" [formGroup]="sellerForm"><mat-form-field appearance="fill" >
+            <textarea rows="1" matInput placeholder="Reason" name="message" formControlName="message"></textarea>
+                
+                
+                <!-- <mat-error *ngIf="reportFormRange['controls'].start.hasError('matStartDateInvalid')">Invalid start date</mat-error> -->
+            </mat-form-field>
+            &nbsp;
+            <button mat-raised-button  (click)="submit(element.id)">Submit</button>
+        
+        </form></td>
+    </tr>
+
+</table>

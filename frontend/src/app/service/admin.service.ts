@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AdminDTO } from '../model/adminDTO';
 import { Category } from '../model/category';
 import { Points } from '../model/points';
+import { UserDTO } from '../model/userDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,17 @@ export class AdminService {
 
   setPoints(dto: Points){
     return this.http.post(this._APIUrl + "/setPoints", dto)
+  }
+
+  regRequests(){
+    return this.http.get<UserDTO[]>(this._APIUrl + "/regRequests");
+  }
+
+  accept(id:number){
+    return this.http.get(this._APIUrl + "/acceptReg/"+ id);
+  }
+
+  reject(id:number, message:string){
+    return this.http.get(this._APIUrl + "/rejectReg/"+id + "?message="+message);
   }
 }
