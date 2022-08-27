@@ -1,0 +1,45 @@
+<div id="returnData" [dataSource]="returnData" class="row" *ngFor="let data of returnData;let i=index" class="container center-card">  
+                                
+    <mat-card>
+        <mat-card-header>
+            
+            <mat-card-title>
+                <p class="title-paragraph">{{data.serviceName}}</p>
+                
+               
+            </mat-card-title>
+                
+            
+       
+        </mat-card-header> 
+
+        
+        <mat-card-content>
+            <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
+                <mat-grid-tile>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXC8KB-1CchePhUhYS-QEPN_4UEwSZus1ByA&usqp=CAU" alt="" height="250px" width="500px">
+                </mat-grid-tile>
+                <mat-grid-tile >
+                    <mat-card-content style="text-align: left;">
+                    
+                    
+                    <div class="content-paragraph">City: {{ data.city }}</div><br>
+
+                    
+                </mat-card-content>
+                </mat-grid-tile>
+            </mat-grid-list>
+            
+           
+        </mat-card-content>
+        
+        <mat-divider></mat-divider>   
+       <mat-card-actions style="text-align: right;">
+           
+            <!-- <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="!feedback.approved">Approve</button>
+            <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="feedback.approved">Deny</button> -->
+            <button mat-raised-button color="primary" (click)="cancelSub(data.id)">Cancel</button>
+        </mat-card-actions>
+    </mat-card>
+    <div style="margin-top: 20px;"></div> 
+</div>

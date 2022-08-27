@@ -51,6 +51,8 @@ import { PointsComponent } from './points/points.component';
 import { ShipReservationsComponent } from './ship-reservations/ship-reservations.component';
 import { CottageReservationsComponent } from './cottage-reservations/cottage-reservations.component';
 import { LessonReservationsComponent } from './lesson-reservations/lesson-reservations.component';
+import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
+import { RegRequestsComponent } from './reg-requests/reg-requests.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,9 @@ import { LessonReservationsComponent } from './lesson-reservations/lesson-reserv
     PointsComponent,
     ShipReservationsComponent,
     CottageReservationsComponent,
-    LessonReservationsComponent
+    LessonReservationsComponent,
+    SubscriptionsComponent,
+    RegRequestsComponent
   ],
   imports: [
     MatRadioModule,

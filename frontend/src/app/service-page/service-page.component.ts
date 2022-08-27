@@ -6,6 +6,7 @@ import { GetReservationDTO } from '../model/getReservationDTO';
 import { ReservationDTO } from '../model/reservationDTO';
 import { ReservationService } from '../service/reservation.service';
 import { ServiceService } from '../service/service.service';
+import { SubscriptionService } from '../service/subscription.service';
 
 @Component({
   selector: 'app-service-page',
@@ -21,7 +22,7 @@ export class ServicePageComponent implements OnInit {
   start = new Date();
   end = new Date();
 
-  constructor(private service:ServiceService, private route: ActivatedRoute, private resService: ReservationService) { }
+  constructor(private service:ServiceService, private route: ActivatedRoute, private resService: ReservationService, private subService: SubscriptionService) { }
 
   ngOnInit(): void {
     this.route.params
@@ -136,6 +137,16 @@ export class ServicePageComponent implements OnInit {
     result = result.trim();
 
     return result;
+  }
+
+
+  subscribe(){
+
+    this.subService.createSub(this.id).subscribe(
+      res => {
+        
+      }
+    )
   }
 
 }

@@ -17,11 +17,13 @@ import { LessonsComponent } from "./lessons/lessons.component";
 import { LoginComponent } from "./login/login.component";
 import { PendingReservationsComponent } from "./pending-reservations/pending-reservations.component";
 import { PointsComponent } from "./points/points.component";
+import { RegRequestsComponent } from "./reg-requests/reg-requests.component";
 import { RegistrationComponent } from "./registration/registration/registration.component";
 import { ReservationComponent } from "./reservation/reservation.component";
 import { ServicePageComponent } from "./service-page/service-page.component";
 import { ShipReservationsComponent } from "./ship-reservations/ship-reservations.component";
 import { ShipsComponent } from "./ships/ships.component";
+import { SubscriptionsComponent } from "./subscriptions/subscriptions.component";
 import { UpdateInfoComponent } from "./update-info/update-info.component";
 
 const routes: Routes = [
@@ -39,6 +41,9 @@ const routes: Routes = [
       {path: 'shipRes', component: ShipReservationsComponent},
       {path: 'cottageRes', component: CottageReservationsComponent},
       {path: 'lessonRes', component: LessonReservationsComponent},
+      {path: 'subscriptions', component: SubscriptionsComponent},
+      {path: 'regRequests', component: RegRequestsComponent},
+
 
 
 
