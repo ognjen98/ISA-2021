@@ -45,6 +45,9 @@ public class LoginController {
         if(!u.getEnabled()){
             return new ResponseEntity<>("Email not verified", HttpStatus.BAD_REQUEST);
         }
+        if(u.getApproved() == 2 || u.getApproved() == 0){
+            return new ResponseEntity<>("User not approved by admin", HttpStatus.BAD_REQUEST);
+        }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 authenticationRequest.getUsername(),
                 authenticationRequest.getPassword()));

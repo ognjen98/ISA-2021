@@ -50,8 +50,9 @@ public class Client extends User{
     }
 
     public Client(String name, String surname, String email, Address address, String mobile, String password,
-                  List<Role> roles, Boolean enabled, Boolean deleted, Integer points, Integer penalties) {
-        super(name, surname, email, address, mobile, password, roles, enabled,deleted);
+                  List<Role> roles, Boolean enabled, Boolean deleted, Integer points, Integer penalties,
+                  Integer approved) {
+        super(name, surname, email, address, mobile, password, roles, enabled,deleted, approved);
         this.points = points;
         this.penalties = penalties;
 

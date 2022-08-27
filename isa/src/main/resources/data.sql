@@ -18,23 +18,33 @@ INSERT INTO roles (name) VALUES ('COTTAGE_OWNER');
 INSERT INTO roles (name) VALUES ('SHIP_OWNER');
 INSERT INTO roles (name) VALUES ('INSTRUCTOR');
 
-insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
-values ('Ognjen', 'Civcic','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', '21310', 1, true,false);
-insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted, approved)
+values ('Ognjen', 'Civcic','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', '21310',
+1, true,false,1);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted, approved)
 values ('Stojan', 'Petrovic','ognjen2@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 2, true,false);
-insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
+'21310', 2, true,false,1);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
 values ('Milan', 'Peric','civic.ognjen98@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 3, true,false);
-insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
+'21310', 3, true,false,1);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
 values ('Jasmin', 'Jovanovic','ognjen4@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 4, true,false);
-insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
+'21310', 4, true,false,1);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
 values ('Juzba', 'Juzbasic','ognjencivcic23@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 7, true,false);
-insert into users (name, surname, email, password, mobile, address_id, enabled, deleted)
+'21310', 7, true,false,1);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
 values ('Juzba', 'Juzbasic','ognjen5@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
-'21310', 7, true,false);
+'21310', 7, true,false,1);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
+values ('Rastko', 'Nemanjic','rnemanjic@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
+'21310', 2, true,false,2);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
+values ('Jovan', 'Jokic','jjokic@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
+'21310', 3, true,false,2);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
+values ('Marko', 'Jaric','mjaric@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
+'21310', 4, true,false,2);
 
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 3);
@@ -42,11 +52,16 @@ INSERT INTO user_roles (user_id, role_id) VALUES (3, 4);
 INSERT INTO user_roles (user_id, role_id) VALUES (4, 5);
 INSERT INTO user_roles (user_id, role_id) VALUES (5, 2);
 INSERT INTO user_roles (user_id, role_id) VALUES (6, 2);
-
+INSERT INTO user_roles (user_id, role_id) VALUES (7, 3);
+INSERT INTO user_roles (user_id, role_id) VALUES (8, 4);
+INSERT INTO user_roles (user_id, role_id) VALUES (9, 5);
 
 insert into sellers (points,id,grade) values (0, 2, 0.0);
 insert into sellers (points,id,grade) values (0, 3, 0.0);
 insert into sellers (points,id,grade) values (0, 4, 0.0);
+insert into sellers (points,id,grade) values (0, 7, 0.0);
+insert into sellers (points,id,grade) values (0, 8, 0.0);
+insert into sellers (points,id,grade) values (0, 9, 0.0);
 
 insert into sys_admins(id) values (1);
 insert into cottage_owners(id) values (2);
@@ -54,6 +69,9 @@ insert into ship_owners(id) values (3);
 insert into instructors(id) values (4);
 insert into clients(id, penalties, points) values (5, 0, 0);
 insert into clients(id, penalties, points) values (6, 0, 0);
+insert into cottage_owners(id) values (7);
+insert into ship_owners(id) values (8);
+insert into instructors(id) values (9);
 
 insert into periods (start_time, end_time) values (to_timestamp(1663221600), to_timestamp(1663653600));
 insert into periods (start_time, end_time) values (to_timestamp(1664085600), to_timestamp(1665813600));

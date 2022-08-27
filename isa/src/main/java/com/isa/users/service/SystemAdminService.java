@@ -6,10 +6,14 @@ import com.isa.loyalties.dto.CategoryDTO;
 import com.isa.loyalties.repository.CategoryRepository;
 import com.isa.loyalties.repository.PointsRepository;
 import com.isa.users.Role;
+import com.isa.users.Seller;
 import com.isa.users.SystemAdmin;
 import com.isa.users.dto.AdminDTO;
+import com.isa.users.dto.UserDTO;
 import com.isa.users.repository.RoleRepository;
+import com.isa.users.repository.SellerRepository;
 import com.isa.users.repository.SystemAdminRepository;
+import com.isa.users.service.email.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.isa.users.service.ClientService.buildEmail;
 
 @Service
 public class SystemAdminService {
@@ -35,7 +42,13 @@ public class SystemAdminService {
     PointsRepository pointsRepository;
 
     @Autowired
+    EmailSender emailSender;
+
+    @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    SellerRepository sellerRepository;
 
     public Boolean checkFirstTimeLogin(String email){
         SystemAdmin systemAdmin = systemAdminRepository.findByEmail(email);
@@ -50,7 +63,7 @@ public class SystemAdminService {
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findByName("SYSTEM_ADMIN"));
         SystemAdmin systemAdmin = new SystemAdmin(dto.getName(), dto.getSurname(), dto.getEmail(), null, null,
-                passwordEncoder.encode("123"), roles, true, false, true);
+                passwordEncoder.encode("123"), roles, true, false, true, 1);
 
         systemAdminRepository.save(systemAdmin);
         return systemAdmin;
@@ -99,5 +112,33 @@ public class SystemAdminService {
         return points.get();
 
     }
+
+    public List<UserDTO> getRegRequests(){
+        List<Seller> sellers =
+                sellerRepository.findAll().stream().filter(s -> s.getApproved() == 2).collect(Collectors.toList());
+        List<UserDTO> dtos = new ArrayList<>();
+        for(Seller seller : sellers){
+            dtos.add(new UserDTO(seller.getId(), seller.getEmail(), seller.getName(), seller.getSurname()));
+        }
+        return dtos;
+    }
+
+    @Transactional
+    public String acceptReg(Long id){
+        Optional<Seller> seller = sellerRepository.findById(id);
+        seller.get().setApproved(1);
+//        emailSender.sendEmail(seller.get().getEmail(), buildEmail("Account activated successfully", "", "REQ"), "REQ");
+        return "Account activated successfully";
+    }
+
+    @Transactional
+    public String rejectReg(Long id, String message){
+        Optional<Seller> seller = sellerRepository.findById(id);
+        seller.get().setApproved(0);
+//        emailSender.sendEmail(seller.get().getEmail(), buildEmail(message, "", "REQ"), "REQ");
+        return "Account activation rejected";
+    }
+
+
 
 }

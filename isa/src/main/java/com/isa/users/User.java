@@ -28,6 +28,8 @@ public class User {
 
     private Boolean firstTimeLogin;
 
+    private Integer approved;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = {})
     private Address address;
 
@@ -51,7 +53,7 @@ public class User {
     public User(){}
 
     public User(Long id, String name,String surname, String email, String mobile, String password, List<Role> roles,
-                Boolean enabled, Boolean deleted) {
+                Boolean enabled, Boolean deleted, Integer approved) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -60,12 +62,13 @@ public class User {
         this.password = password;
         this.roles = roles;
         this.enabled = enabled;
+        this.approved = approved;
         this.deleted = deleted;
     }
 
     public User(String name, String surname, String email, Address address, String mobile, String password,
                 List<Role> roles,
-                Boolean enabled, Boolean deleted) {
+                Boolean enabled, Boolean deleted, Integer approved) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -75,6 +78,7 @@ public class User {
         this.roles = roles;
         this.enabled = enabled;
         this.deleted = deleted;
+        this.approved = approved;
     }
 
     public Long getId() {
@@ -197,5 +201,13 @@ public class User {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Integer getApproved() {
+        return approved;
+    }
+
+    public void setApproved(Integer approved) {
+        this.approved = approved;
     }
 }
