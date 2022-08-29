@@ -99,8 +99,7 @@ public class RevisionService {
 
 
             serviceRepository.save(serviceRevision.getService());
-            emailSender.sendEmail(serviceRevision.getService().getSeller().getEmail(), buildEmail("Revision " +
-                    "approved", "", "REV"),
+            emailSender.sendEmail(serviceRevision.getService().getSeller().getEmail(), buildEmail("", "", "REV", serviceRevision.getText()),
                     "REV");
 
         }
@@ -126,7 +125,7 @@ public class RevisionService {
 
             sellerRepository.save(sellerRevision.getSeller());
 
-            emailSender.sendEmail(sellerRevision.getSeller().getEmail(), buildEmail("Revision approved", "", "REV"),
+            emailSender.sendEmail(sellerRevision.getSeller().getEmail(), buildEmail("", "", "REV", sellerRevision.getText()),
                     "REV");
         }
 

@@ -127,7 +127,8 @@ public class SystemAdminService {
     public String acceptReg(Long id){
         Optional<Seller> seller = sellerRepository.findById(id);
         seller.get().setApproved(1);
-//        emailSender.sendEmail(seller.get().getEmail(), buildEmail("Account activated successfully", "", "REQ"), "REQ");
+        emailSender.sendEmail(seller.get().getEmail(), buildEmail("", "", "REQ_APPR", ""),
+                "REQ_APPR");
         return "Account activated successfully";
     }
 
@@ -135,7 +136,7 @@ public class SystemAdminService {
     public String rejectReg(Long id, String message){
         Optional<Seller> seller = sellerRepository.findById(id);
         seller.get().setApproved(0);
-//        emailSender.sendEmail(seller.get().getEmail(), buildEmail(message, "", "REQ"), "REQ");
+        emailSender.sendEmail(seller.get().getEmail(), buildEmail("", "", "REQ_REJ", message), "REQ_REJ");
         return "Account activation rejected";
     }
 

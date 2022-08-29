@@ -96,7 +96,7 @@ public class ClientService {
             //Since, we are running the spring boot application in localhost, we are hardcoding the
             //url of the server. We are creating a POST request with token param
             String link = "http://localhost:8082/registration/confirm?token=" + tokenForNewUser;
-            emailSender.sendEmail(request.getEmail(), buildEmail(request.getName(), link, "REG"), "REG");
+            emailSender.sendEmail(request.getEmail(), buildEmail(request.getName(), link, "REG", ""), "REG");
             return tokenForNewUser;
         } else {
             throw new IllegalStateException(String.format("Email %s, not valid", request.getEmail()));
@@ -181,8 +181,8 @@ public class ClientService {
     }
 
 
-    public static String buildEmail(String name, String link, String type) {
-        if(type.equals("REG") || type.equals("REV") || type.equals("SUB") || type.equals("REQ")){
+    public static String buildEmail(String name, String link, String type, String additions) {
+        if(type.equals("REG")){
             return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                     "\n" +
                     "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -250,7 +250,7 @@ public class ClientService {
                     "\n" +
                     "</div></div>";
         }
-        else if(type.equals("RES")){
+        else if(type.equals("RES")  || type.equals("REV") || type.equals("SUB") || type.equals("REQ")){
             return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
                     "\n" +
                     "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
@@ -271,6 +271,169 @@ public class ClientService {
                     "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;" +
                     "color:#ffffff;text-decoration:none;vertical-align:top;" +
                     "display:inline-block\">Reservation made successfully</span>\n" +
+                    "                    </td>\n" +
+                    "                  </tr>\n" +
+                    "                </tbody></table>\n" +
+                    "              </a>\n" +
+                    "            </td>\n" +
+                    "          </tr>\n" +
+                    "        </tbody></table>\n" +
+                    "        \n" +
+                    "      </td>\n" +
+                    "    </tr>\n" +
+                    "  </tbody></table>\n" +
+
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "  <div class=\"yj6qo\"></div><div class=\"adL\">\n" +
+                    "\n" +
+                    "</div></div>";
+        }
+        else if(type.equals("REV")){
+            return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
+                    "\n" +
+                    "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
+                    "\n" +
+                    "  <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;min-width:100%;width:100%!important\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
+                    "    <tbody><tr>\n" +
+                    "      <td width=\"100%\" height=\"53\" bgcolor=\"#0b0c0c\">\n" +
+                    "        \n" +
+                    "        <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;max-width:580px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\">\n" +
+                    "          <tbody><tr>\n" +
+                    "            <td width=\"70\" bgcolor=\"#0b0c0c\" valign=\"middle\">\n" +
+                    "                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
+                    "                  <tbody><tr>\n" +
+                    "                    <td style=\"padding-left:10px\">\n" +
+                    "                  \n" +
+                    "                    </td>\n" +
+                    "                    <td style=\"font-size:28px;line-height:1.315789474;Margin-top:4px;padding-left:10px\">\n" +
+                    "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;" +
+                    "color:#ffffff;text-decoration:none;vertical-align:top;" +
+                    "display:inline-block\">Revision" + "'" + additions + "'" + " approved</span>\n" +
+                    "                    </td>\n" +
+                    "                  </tr>\n" +
+                    "                </tbody></table>\n" +
+                    "              </a>\n" +
+                    "            </td>\n" +
+                    "          </tr>\n" +
+                    "        </tbody></table>\n" +
+                    "        \n" +
+                    "      </td>\n" +
+                    "    </tr>\n" +
+                    "  </tbody></table>\n" +
+
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "  <div class=\"yj6qo\"></div><div class=\"adL\">\n" +
+                    "\n" +
+                    "</div></div>";
+        }
+        else if(type.equals("REQ_APPR")){
+            return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
+                    "\n" +
+                    "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
+                    "\n" +
+                    "  <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;min-width:100%;width:100%!important\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
+                    "    <tbody><tr>\n" +
+                    "      <td width=\"100%\" height=\"53\" bgcolor=\"#0b0c0c\">\n" +
+                    "        \n" +
+                    "        <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;max-width:580px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\">\n" +
+                    "          <tbody><tr>\n" +
+                    "            <td width=\"70\" bgcolor=\"#0b0c0c\" valign=\"middle\">\n" +
+                    "                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
+                    "                  <tbody><tr>\n" +
+                    "                    <td style=\"padding-left:10px\">\n" +
+                    "                  \n" +
+                    "                    </td>\n" +
+                    "                    <td style=\"font-size:28px;line-height:1.315789474;Margin-top:4px;padding-left:10px\">\n" +
+                    "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;" +
+                    "color:#ffffff;text-decoration:none;vertical-align:top;" +
+                    "display:inline-block\">Registration request approved</span>\n" +
+                    "                    </td>\n" +
+                    "                  </tr>\n" +
+                    "                </tbody></table>\n" +
+                    "              </a>\n" +
+                    "            </td>\n" +
+                    "          </tr>\n" +
+                    "        </tbody></table>\n" +
+                    "        \n" +
+                    "      </td>\n" +
+                    "    </tr>\n" +
+                    "  </tbody></table>\n" +
+
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "  <div class=\"yj6qo\"></div><div class=\"adL\">\n" +
+                    "\n" +
+                    "</div></div>";
+        }
+        else if(type.equals("REQ_REJ")){
+            return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
+                    "\n" +
+                    "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
+                    "\n" +
+                    "  <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;min-width:100%;width:100%!important\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
+                    "    <tbody><tr>\n" +
+                    "      <td width=\"100%\" height=\"53\" bgcolor=\"#0b0c0c\">\n" +
+                    "        \n" +
+                    "        <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;max-width:580px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\">\n" +
+                    "          <tbody><tr>\n" +
+                    "            <td width=\"70\" bgcolor=\"#0b0c0c\" valign=\"middle\">\n" +
+                    "                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
+                    "                  <tbody><tr>\n" +
+                    "                    <td style=\"padding-left:10px\">\n" +
+                    "                  \n" +
+                    "                    </td>\n" +
+                    "                    <td style=\"font-size:28px;line-height:1.315789474;Margin-top:4px;padding-left:10px\">\n" +
+                    "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;" +
+                    "color:#ffffff;text-decoration:none;vertical-align:top;" +
+                    "display:inline-block\">Registration request rejected</span>\n" +
+                    "<span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;" +
+                    "color:#ffffff;text-decoration:none;vertical-align:top;" +
+                    "display:inline-block\">Reason: " + additions + "</span>\n" +
+                    "                    </td>\n" +
+                    "                  </tr>\n" +
+                    "                </tbody></table>\n" +
+                    "              </a>\n" +
+                    "            </td>\n" +
+                    "          </tr>\n" +
+                    "        </tbody></table>\n" +
+                    "        \n" +
+                    "      </td>\n" +
+                    "    </tr>\n" +
+                    "  </tbody></table>\n" +
+
+                    "\n" +
+                    "\n" +
+                    "\n" +
+                    "  <div class=\"yj6qo\"></div><div class=\"adL\">\n" +
+                    "\n" +
+                    "</div></div>";
+        }
+        else if(type.equals("SUB")){
+            return "<div style=\"font-family:Helvetica,Arial,sans-serif;font-size:16px;margin:0;color:#0b0c0c\">\n" +
+                    "\n" +
+                    "<span style=\"display:none;font-size:1px;color:#fff;max-height:0\"></span>\n" +
+                    "\n" +
+                    "  <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;min-width:100%;width:100%!important\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\">\n" +
+                    "    <tbody><tr>\n" +
+                    "      <td width=\"100%\" height=\"53\" bgcolor=\"#0b0c0c\">\n" +
+                    "        \n" +
+                    "        <table role=\"presentation\" width=\"100%\" style=\"border-collapse:collapse;max-width:580px\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\">\n" +
+                    "          <tbody><tr>\n" +
+                    "            <td width=\"70\" bgcolor=\"#0b0c0c\" valign=\"middle\">\n" +
+                    "                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"border-collapse:collapse\">\n" +
+                    "                  <tbody><tr>\n" +
+                    "                    <td style=\"padding-left:10px\">\n" +
+                    "                  \n" +
+                    "                    </td>\n" +
+                    "                    <td style=\"font-size:28px;line-height:1.315789474;Margin-top:4px;padding-left:10px\">\n" +
+                    "                      <span style=\"font-family:Helvetica,Arial,sans-serif;font-weight:700;" +
+                    "color:#ffffff;text-decoration:none;vertical-align:top;" +
+                    "display:inline-block\">Service: " + name +" added new reservation actions" + " </span>\n" +
                     "                    </td>\n" +
                     "                  </tr>\n" +
                     "                </tbody></table>\n" +

@@ -83,9 +83,9 @@ public class SubscriptionService {
         List<Subscription> subscriptions = subscriptionRepository.getSubscriptionsByService(service);
         for(Subscription subscription: subscriptions){
             if(!subscription.getCancelled()){
-//                emailSender.sendEmail(subscription.getClient().getEmail(), buildEmail(service.getName() + "added new " +
-//                                "action", "", "SUB"),
-//                        "SUB");
+                emailSender.sendEmail(subscription.getClient().getEmail(), buildEmail(service.getName(),
+                                "action", "SUB", ""),
+                        "SUB");
             }
         }
         return "Discount reservation added";

@@ -25,7 +25,7 @@ insert into users (name, surname, email, password, mobile, address_id, enabled, 
 values ('Stojan', 'Petrovic','ognjen2@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 2, true,false,1);
 insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
-values ('Milan', 'Peric','civic.ognjen98@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
+values ('Milan', 'Peric','hecas82996@xitudy.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 3, true,false,1);
 insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
 values ('Jasmin', 'Jovanovic','ognjen4@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
