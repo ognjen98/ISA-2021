@@ -413,7 +413,7 @@ public class ReservationService {
 //        reservation.get().setClient(client);
         entityManager.persist(reservation);
 
-        //emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES"), "RES");
+        emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES", ""), "RES");
         return reservation;
 
     }

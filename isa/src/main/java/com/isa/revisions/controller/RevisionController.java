@@ -27,8 +27,18 @@ public class RevisionController {
         return new ResponseEntity(revisionService.saveRevision(dto, email), HttpStatus.OK);
     }
 
-    @PostMapping("/approve/{id}")
+    @GetMapping("/approve/{id}")
     public ResponseEntity approve(@PathVariable Long id){
         return new ResponseEntity(revisionService.approve(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/reject/{id}")
+    public ResponseEntity reject(@PathVariable Long id){
+        return new ResponseEntity(revisionService.reject(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/getRevisions")
+    public ResponseEntity getRevisions(){
+        return new ResponseEntity(revisionService.getPendingRevisions(), HttpStatus.OK);
     }
 }

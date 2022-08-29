@@ -1,0 +1,42 @@
+<div class="formBox">
+    <h1><b>Add revision</b></h1>
+    <form [formGroup]="revForm" autocomplete="off" #f="ngForm">
+        <hr>
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select id="type" name="type" formControlName="type">
+                <mat-option value="SERVICE">Service</mat-option>
+                <mat-option value="SELLER">Seller</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance="fill">
+            <mat-label>Grade</mat-label>
+            <mat-select id="grade" name="grade" formControlName="grade">
+                <mat-option value="1">1</mat-option>
+                <mat-option value="2">2</mat-option>
+                <mat-option value="3">3</mat-option>
+                <mat-option value="4">4</mat-option>
+                <mat-option value="5">5</mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        <br>
+        
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Text</mat-label>
+            <input matInput placeholder="Text" name="text" formControlName="text">
+        
+        </mat-form-field>
+        <br>
+        
+
+        
+       
+        <br>
+        
+        <button mat-raised-button color="primary" (click)="revision()" [disabled]="revForm.invalid">Submit</button>
+    </form>
+</div>

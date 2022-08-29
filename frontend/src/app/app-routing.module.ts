@@ -20,6 +20,8 @@ import { PointsComponent } from "./points/points.component";
 import { RegRequestsComponent } from "./reg-requests/reg-requests.component";
 import { RegistrationComponent } from "./registration/registration/registration.component";
 import { ReservationComponent } from "./reservation/reservation.component";
+import { RevisionTableComponent } from "./revision-table/revision-table.component";
+import { RevisionComponent } from "./revision/revision.component";
 import { ServicePageComponent } from "./service-page/service-page.component";
 import { ShipReservationsComponent } from "./ship-reservations/ship-reservations.component";
 import { ShipsComponent } from "./ships/ships.component";
@@ -43,6 +45,10 @@ const routes: Routes = [
       {path: 'lessonRes', component: LessonReservationsComponent},
       {path: 'subscriptions', component: SubscriptionsComponent},
       {path: 'regRequests', component: RegRequestsComponent},
+      {path: 'cottageRes/revision/:id', component: RevisionComponent},
+      {path: 'shipRes/revision/:id', component: RevisionComponent},
+      {path: 'lessonRes/revision/:id', component: RevisionComponent},
+      {path: 'revision-table', component: RevisionTableComponent},
 
 
 

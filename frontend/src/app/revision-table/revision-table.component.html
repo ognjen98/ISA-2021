@@ -1,0 +1,14 @@
+<table class="table">
+    <th> Id </th>
+    <th> Text </th>
+    <th> Grade </th>
+ 
+    <tr *ngFor="let element of data">
+        <td> {{ element.id }} </td>
+        <td> {{ element.text }} </td>
+        <td> {{ element.grade }} </td>
+        <td><button mat-raised-button  (click)="accept(element.id)">Accept</button></td>
+        <td><button mat-raised-button  (click)="reject(element.id)">Reject</button></td>
+       
+    </tr>
+</table>

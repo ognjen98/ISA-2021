@@ -50,14 +50,23 @@ public class RevisionService {
     public String saveRevision(RevisionDTO dto, String email){
         Client client = clientRepository.findByEmail(email);
         com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());
+        ServiceRevision serRev = serviceRevisionRepository.getServiceRevisionByClient(client);
+        SellerRevision selRev = sellerRevisionRepository.getSellerRevisionByClient(client);
+
 
 
         if(dto.getType().equals("SELLER")){
+            if(selRev != null){
+                return "Already revised";
+            }
             SellerRevision revision = new SellerRevision(dto.getGrade(), dto.getText(), 2, client, service.getSeller());
             revisionRepository.save(revision);
             return "Seller revision saved successfully";
         }
         else if(dto.getType().equals("SERVICE")) {
+            if(serRev != null){
+                return "Already revised";
+            }
             ServiceRevision serviceRevision = new ServiceRevision(dto.getGrade(),dto.getText(), 2, client, service);
             revisionRepository.save(serviceRevision);
             return "Service revision saved successfully";
