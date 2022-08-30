@@ -126,15 +126,13 @@ public class ServicesService {
     public com.isa.services.Service deleteService(Long id){
         com.isa.services.Service service = serviceRepository.getServiceById(id);
         List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
-        if(reservations != null) {
-            for (Reservation r : reservations) {
-                r.setReserved(false);
-                r.setCancelled(true);
-                r.setClient(null);
-                r.setDeleted(true);
-            }
+        if (reservations == null) {
+            service.setDeleted(true);
+
+        } else {
+            return null;
         }
-        service.setDeleted(true);
+
         return service;
     }
 

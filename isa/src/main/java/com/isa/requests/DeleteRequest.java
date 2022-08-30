@@ -17,12 +17,21 @@ public class DeleteRequest {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
+    private Integer status;
+
     public DeleteRequest(){}
 
-    public DeleteRequest(Long id, String message, User user) {
+    public DeleteRequest(Long id, String message, User user, Integer status) {
         this.id = id;
         this.message = message;
         this.user = user;
+        this.status = status;
+    }
+
+    public DeleteRequest(String message, User user, Integer status) {
+        this.message = message;
+        this.user = user;
+        this.status = status;
     }
 
     public Long getId() {
@@ -47,5 +56,13 @@ public class DeleteRequest {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

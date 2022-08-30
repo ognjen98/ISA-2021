@@ -8,6 +8,8 @@ import { CottageReservationsComponent } from "./cottage-reservations/cottage-res
 import { CottagesComponent } from "./cottages/cottages.component";
 import { CreateAdminComponent } from "./create-admin/create-admin.component";
 import { DefinePercentageComponent } from "./define-percentage/define-percentage.component";
+import { DeleteRequestComponent } from "./delete-request/delete-request.component";
+import { DeleteRequestsComponent } from "./delete-requests/delete-requests.component";
 import { AuthGuard } from "./helpers/auth.guard";
 import { AdminHomeComponent } from "./home/admin-home/admin-home.component";
 import { ClientHomeComponent } from "./home/client-home/client-home.component";
@@ -48,7 +50,10 @@ const routes: Routes = [
       {path: 'cottageRes/revision/:id', component: RevisionComponent},
       {path: 'shipRes/revision/:id', component: RevisionComponent},
       {path: 'lessonRes/revision/:id', component: RevisionComponent},
-      {path: 'revision-table', component: RevisionTableComponent},
+      {path: 'revisionTable', component: RevisionTableComponent},
+      {path: 'deleteRequest', component: DeleteRequestComponent},
+      {path: 'deleteRequests', component: DeleteRequestsComponent},
+
 
 
 

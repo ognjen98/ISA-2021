@@ -1,0 +1,19 @@
+<div class="formBox">
+    <h1><b>Delete request</b></h1>
+    <form [formGroup]="delForm" autocomplete="off" #f="ngForm">
+        <hr>
+        
+        <mat-form-field appearance="fill" >
+            <mat-label>Reason</mat-label>
+            <input required matInput placeholder="Reason" name="reason" formControlName="reason" >
+            
+        </mat-form-field>
+        <br>
+
+        
+       
+        <br>
+        
+        <button mat-raised-button color="primary" (click)="makeDelRequest()" [disabled]="delForm.invalid">Submit</button>
+    </form>
+</div>

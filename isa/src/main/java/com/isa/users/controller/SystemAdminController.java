@@ -66,4 +66,6 @@ public class SystemAdminController {
     public ResponseEntity rejectReg(@PathVariable Long id, @RequestParam String message){
         return new ResponseEntity(service.rejectReg(id, message),HttpStatus.OK);
     }
+
+
 }

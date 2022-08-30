@@ -55,6 +55,8 @@ import { SubscriptionsComponent } from './subscriptions/subscriptions.component'
 import { RegRequestsComponent } from './reg-requests/reg-requests.component';
 import { RevisionComponent } from './revision/revision.component';
 import { RevisionTableComponent } from './revision-table/revision-table.component';
+import { DeleteRequestComponent } from './delete-request/delete-request.component';
+import { DeleteRequestsComponent } from './delete-requests/delete-requests.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +86,9 @@ import { RevisionTableComponent } from './revision-table/revision-table.componen
     SubscriptionsComponent,
     RegRequestsComponent,
     RevisionComponent,
-    RevisionTableComponent
+    RevisionTableComponent,
+    DeleteRequestComponent,
+    DeleteRequestsComponent
   ],
   imports: [
     MatRadioModule,

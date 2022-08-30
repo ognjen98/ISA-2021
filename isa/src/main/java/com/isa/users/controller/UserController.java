@@ -53,4 +53,26 @@ public class UserController {
     public ResponseEntity<List<UserDTO>> allUsers(){
         return new ResponseEntity(userService.getAllUsers(), HttpStatus.OK);
     }
+
+
+    @GetMapping("/deleteRequestAccept/{id}")
+    public ResponseEntity deleteRequestAccept(@PathVariable Long id, @RequestParam String reason){
+        return new ResponseEntity(userService.deleteUserAccept(id, reason), HttpStatus.OK);
+    }
+
+    @GetMapping("/deleteRequestReject/{id}")
+    public ResponseEntity deleteRequestReject(@PathVariable Long id, @RequestParam String reason){
+        return new ResponseEntity(userService.deleteUserReject(id, reason), HttpStatus.OK);
+    }
+
+    @GetMapping("/makeDelRequest")
+    public ResponseEntity makeDelRequest(@RequestParam String reason, HttpServletRequest request){
+        String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        return new ResponseEntity(userService.makeDelRequest(reason, email), HttpStatus.OK);
+    }
+
+    @GetMapping("/getDelRequests")
+    public ResponseEntity getDelRequests(){
+        return new ResponseEntity(userService.getDelRequests(), HttpStatus.OK);
+    }
 }

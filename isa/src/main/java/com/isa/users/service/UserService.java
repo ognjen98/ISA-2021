@@ -1,5 +1,8 @@
 package com.isa.users.service;
 
+import com.isa.requests.DeleteRequest;
+import com.isa.requests.dto.DeleteRequestDTO;
+import com.isa.requests.repository.DeleteRequestRepository;
 import com.isa.services.Reservation;
 import com.isa.services.TimePeriod;
 import com.isa.services.repository.ServiceRepository;
@@ -11,6 +14,7 @@ import com.isa.users.repository.AddressRepository;
 import com.isa.users.repository.ClientRepository;
 import com.isa.users.repository.ReservationRepository;
 import com.isa.users.repository.UserRepository;
+import com.isa.users.service.email.EmailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +40,9 @@ public class UserService{
     JwtService jwtService;
 
     @Autowired
+    EmailSender emailSender;
+
+    @Autowired
     private AddressRepository addressRepository;
 
     @Autowired
@@ -49,6 +56,9 @@ public class UserService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    DeleteRequestRepository deleteRequestRepository;
 
 
     public User updateInfo(UpdateInfoDTO dto, String email){
@@ -136,19 +146,19 @@ public class UserService{
                 "INSTRUCTOR")){
             Seller seller = (Seller) user.get();
             List<com.isa.services.Service> services = serviceRepository.getServicesBySellerId(seller.getId());
-            for(com.isa.services.Service service : services){
+            if(services != null) {
+                for (com.isa.services.Service service : services) {
 
-                List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
-                if(reservations != null) {
-                    for (Reservation r : reservations) {
-                        r.setReserved(false);
-                        r.setCancelled(true);
-                        r.setClient(null);
-                        r.setDeleted(true);
+                    List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
+                    if (reservations == null) {
+                        service.setDeleted(true);
+
+                    } else {
+                        return null;
                     }
-                }
-                service.setDeleted(true);
 
+
+                }
             }
             seller.setDeleted(true);
             return seller;
@@ -166,4 +176,122 @@ public class UserService{
         }
         return dtos;
     }
+
+
+    @Transactional
+    public String deleteUserAccept(Long id, String reason){
+        Optional<User> user = userRepository.findById(id);
+
+        List<Role> roles = user.get().getRoles();
+        if(roles.get(0).getName().equals("CLIENT")){
+            Client client = (Client) user.get();
+            Set<Reservation> cancelled = client.getCancelledReservations();
+//            user.get().setDeleted(true);
+            List<Reservation> reservations = reservationRepository.getReservationsByClientId(id);
+            if(reservations != null) {
+                for (Reservation r : reservations) {
+                    if (!cancelled.contains(r)) {
+                        com.isa.services.Service s = r.getService();
+                        TimePeriod t1 = new TimePeriod();
+                        TimePeriod t2 = new TimePeriod();
+                        for (TimePeriod tp : s.getPeriod()) {
+                            if (r.getStartTime().isEqual(tp.getEnd())) {
+                                t1 = tp;
+
+                            } else if (r.getEndTime().isEqual(tp.getStart())) {
+                                t2 = tp;
+                            }
+
+
+                        }
+                        TimePeriod newPeriod = new TimePeriod(t1.getStart(), t2.getEnd());
+                        timePeriodRepository.save(newPeriod);
+
+                        s.getPeriod().remove(t1);
+                        s.getPeriod().remove(t2);
+                        s.getPeriod().add(newPeriod);
+
+                        serviceRepository.save(s);
+
+                    }
+                    r.setReserved(false);
+                    r.setCancelled(true);
+                    r.setClient(null);
+                    if(r.getDiscPrice() == null) {
+                        r.setDeleted(true);
+                    }
+                }
+            }
+
+//            reservationRepository.deleteAll(reservations);
+            client.setDeleted(true);
+
+        }
+        else if(roles.get(0).getName().equals("COTTAGE_OWNER") || roles.get(0).getName().equals("SHIP_OWNER") || roles.get(0).getName().equals(
+                "INSTRUCTOR")){
+            Seller seller = (Seller) user.get();
+            List<com.isa.services.Service> services = serviceRepository.getServicesBySellerId(seller.getId());
+            if(services != null) {
+                for (com.isa.services.Service service : services) {
+
+                    List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
+                    if (reservations == null) {
+                        service.setDeleted(true);
+
+                    } else {
+                        return null;
+                    }
+
+
+                }
+            }
+            seller.setDeleted(true);
+
+        }
+        else if(roles.get(0).getName().equals("SYSTEM_ADMIN")){
+            SystemAdmin systemAdmin = (SystemAdmin) user.get();
+            systemAdmin.setDeleted(true);
+        }
+
+        DeleteRequest deleteRequest = deleteRequestRepository.findByUser(user.get());
+        deleteRequest.setStatus(1);
+        emailSender.sendEmail(user.get().getEmail(), ClientService.buildEmail("", "", "DEL", reason), "DEL");
+
+        return "Deleted successfully";
+    }
+
+    public String deleteUserReject(Long id, String reason){
+        Optional<User> user = userRepository.findById(id);
+        DeleteRequest deleteRequest = deleteRequestRepository.findByUser(user.get());
+        deleteRequest.setStatus(0);
+        emailSender.sendEmail(user.get().getEmail(), ClientService.buildEmail("", "", "DEL", reason), "DEL");
+        return "Request rejected";
+    }
+
+
+    public String makeDelRequest(String reason, String email){
+        User user = userRepository.findByEmail(email);
+        if(user == null){
+            return "You must login first";
+        }
+        DeleteRequest deleteRequest = new DeleteRequest(reason, user, 2);
+        deleteRequestRepository.save(deleteRequest);
+        return "Request made";
+
+    }
+
+
+    public List<DeleteRequestDTO> getDelRequests(){
+        List<DeleteRequest> deleteRequests = deleteRequestRepository.findAll();
+        List<DeleteRequestDTO> dtos = new ArrayList<>();
+        for(DeleteRequest deleteRequest : deleteRequests){
+            if(deleteRequest.getStatus() == 2) {
+                dtos.add(new DeleteRequestDTO(deleteRequest.getMessage(), deleteRequest.getUser().getId(),
+                        deleteRequest.getUser().getEmail()));
+            }
+        }
+
+        return dtos;
+    }
+
 }
