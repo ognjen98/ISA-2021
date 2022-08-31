@@ -7,7 +7,8 @@ import javax.persistence.*;
 import java.rmi.server.ServerCloneException;
 
 @Entity
-@Table(name="complaints")
+@Table(name = "complaints")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Complaint {
 
     @Id

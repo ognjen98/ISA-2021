@@ -271,6 +271,11 @@ public class UserService{
 
     public String makeDelRequest(String reason, String email){
         User user = userRepository.findByEmail(email);
+        DeleteRequest dr = deleteRequestRepository.findByUser(user);
+        if(dr != null){
+            return "You already submitted a request";
+        }
+
         if(user == null){
             return "You must login first";
         }

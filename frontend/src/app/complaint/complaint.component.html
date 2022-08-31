@@ -1,0 +1,28 @@
+<div class="formBox">
+    <h1><b>Complaint</b></h1>
+    <form [formGroup]="comForm" autocomplete="off" #f="ngForm">
+        <hr>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <mat-select id="type" name="type" formControlName="type">
+                <mat-option value="SERVICE">Service</mat-option>
+                <mat-option value="SELLER">Seller</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <br>
+        
+        <mat-form-field appearance="fill" >
+            <mat-label>Reason</mat-label>
+            <input required matInput placeholder="Reason" name="reason" formControlName="reason" >
+            
+        </mat-form-field>
+        <br>
+
+        
+       
+        <br>
+        
+        <button mat-raised-button color="primary" (click)="submit()" [disabled]="comForm.invalid">Submit</button>
+    </form>
+</div>

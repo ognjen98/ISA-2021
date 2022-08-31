@@ -39,23 +39,24 @@ export class DeleteRequestsComponent implements OnInit {
   }
 
   accept(i:number, evt){
-    let form = document.getElementById("form"+i);
-    let button = document.getElementById("button"+i + "acc");
+    let form = document.getElementById("form"+i+"acc");
+    let form2 = document.getElementById("form"+i+"rej");
+    // let button = document.getElementById("button"+i + "acc");
     
-    let button2 = document.getElementById("button"+i + "rej");
-    form.insertBefore(button, button2);
-    console.log(button)
-    if(button.style.display === "inline-block"){
-      button.style.display = "none";
+    // let button2 = document.getElementById("button"+i + "rej");
+    // form.insertBefore(button, button2);
+    // console.log(button)
+    if(form.style.display === "inline-block"){
+      form.style.display = "none";
     }
-    else if(button.style.display === "none"){
-      button.style.display = "inline-block";
-      button2.style.display = "none";
+    else if(form.style.display === "none"){
+      form.style.display = "inline-block";
+      form2.style.display = "none";
       for(let j = 0; j<this.ids.length;j++){
-        let buttoni = document.getElementById("button"+j + "acc");
+        let formi = document.getElementById("form"+j + "acc");
         
         if(j != i){
-          buttoni.style.display = "none"
+          formi.style.display = "none"
         }
 
         
@@ -64,22 +65,22 @@ export class DeleteRequestsComponent implements OnInit {
   }
 
   reject(i:number, evt){
-    let form = document.getElementById("form"+i);
-    let button = document.getElementById("button"+i + "rej");
+    let form = document.getElementById("form"+i+"rej");
+    let form2 = document.getElementById("form"+i+"acc");    // let button = document.getElementById("button"+i + "rej");
     
-    let button2 = document.getElementById("button"+i + "acc");
-    form.insertBefore(button2, button);
-    if(button.style.display === "inline-block"){
-      button.style.display = "none";
+    // let button2 = document.getElementById("button"+i + "acc");
+    // form.insertBefore(button2, button);
+    if(form.style.display === "inline-block"){
+      form.style.display = "none";
     }
-    else if(button.style.display === "none"){
-      button.style.display = "inline-block";
-      button2.style.display = "none";
+    else if(form.style.display === "none"){
+      form.style.display = "inline-block";
+      form2.style.display = "none";
       for(let j = 0; j<this.ids.length;j++){
-        let buttoni = document.getElementById("button"+j + "rej");
+        let formi = document.getElementById("form"+j + "rej");
         
         if(j != i){
-          buttoni.style.display = "none"
+          formi.style.display = "none"
           
 
         }
@@ -102,7 +103,7 @@ export class DeleteRequestsComponent implements OnInit {
 
 
   submitRej(id: number){
-    let message = this.delFormAcc.get("message").value;
+    let message = this.delFormRej.get("message").value;
     this.service.deleteRequestReject(id, message).subscribe(
       res => {
         window.location.reload()

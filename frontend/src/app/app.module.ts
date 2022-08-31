@@ -57,6 +57,8 @@ import { RevisionComponent } from './revision/revision.component';
 import { RevisionTableComponent } from './revision-table/revision-table.component';
 import { DeleteRequestComponent } from './delete-request/delete-request.component';
 import { DeleteRequestsComponent } from './delete-requests/delete-requests.component';
+import { ComplaintComponent } from './complaint/complaint.component';
+import { ComplaintTableComponent } from './complaint-table/complaint-table.component';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,9 @@ import { DeleteRequestsComponent } from './delete-requests/delete-requests.compo
     RevisionComponent,
     RevisionTableComponent,
     DeleteRequestComponent,
-    DeleteRequestsComponent
+    DeleteRequestsComponent,
+    ComplaintComponent,
+    ComplaintTableComponent
   ],
   imports: [
     MatRadioModule,

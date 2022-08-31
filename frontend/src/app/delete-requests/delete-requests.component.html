@@ -10,17 +10,29 @@
         <td> {{ element.text }} </td>
         <td><button mat-raised-button  (click)="accept(i, $event)">Accept</button></td>
         <td><button mat-raised-button  (click)="reject(i, $event)">Reject</button></td>
-        <td ><form id="{{'form' + i}}" [formGroup]="delFormAcc"><mat-form-field appearance="fill" >
+        <td ><form id="{{'form' + i + 'acc'}}" style="display: none" [formGroup]="delFormAcc"><mat-form-field appearance="fill" >
             <textarea rows="1" matInput placeholder="Reason" name="message" formControlName="message"></textarea>
                 
                 
                 <!-- <mat-error *ngIf="reportFormRange['controls'].start.hasError('matStartDateInvalid')">Invalid start date</mat-error> -->
             </mat-form-field>
             &nbsp;
-            <button mat-raised-button class="switch" id="{{'button' + i + 'acc'}}" style="display: none;"   (click)="submitAcc(element.userId)">Submit</button>
-            <button mat-raised-button class="switch" id="{{'button' + i + 'rej'}}" style="display: none"  (click)="submitRej(element.userId)">Submit</button>
+            <button mat-raised-button class="switch" id="{{'button' + i + 'acc'}}" (click)="submitAcc(element.userId)">Submit</button>
+            <!-- <button mat-raised-button class="switch" id="{{'button' + i + 'rej'}}" style="display: none"  (click)="submitRej(element.userId)">Submit</button> -->
         
         </form></td>
+        <td ><form id="{{'form' + i + 'rej'}}" style="display: none" [formGroup]="delFormRej"><mat-form-field appearance="fill" >
+            <textarea rows="1" matInput placeholder="Reason" name="message" formControlName="message"></textarea>
+                
+                
+                <!-- <mat-error *ngIf="reportFormRange['controls'].start.hasError('matStartDateInvalid')">Invalid start date</mat-error> -->
+            </mat-form-field>
+            &nbsp;
+            <!-- <button mat-raised-button class="switch" id="{{'button' + i + 'acc'}}" style="display: none;"   (click)="submitAcc(element.userId)">Submit</button> -->
+            <button mat-raised-button class="switch" id="{{'button' + i + 'rej'}}"   (click)="submitRej(element.userId)">Submit</button>
+        
+        </form></td>
+        
         <!-- <td ><form id="{{'form' + i +'rej'}}" style="visibility:hidden" [formGroup]="delFormRej"><mat-form-field appearance="fill" >
             <textarea rows="1" matInput placeholder="Reason" name="message" formControlName="message"></textarea>
                 

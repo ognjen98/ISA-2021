@@ -4,6 +4,8 @@ import { AllServicesComponent } from "./all-services/all-services.component";
 import { AllUsersComponent } from "./all-users/all-users.component";
 import { CategoryComponent } from "./category/category.component";
 import { ChartsComponent } from "./charts/charts.component";
+import { ComplaintTableComponent } from "./complaint-table/complaint-table.component";
+import { ComplaintComponent } from "./complaint/complaint.component";
 import { CottageReservationsComponent } from "./cottage-reservations/cottage-reservations.component";
 import { CottagesComponent } from "./cottages/cottages.component";
 import { CreateAdminComponent } from "./create-admin/create-admin.component";
@@ -53,6 +55,10 @@ const routes: Routes = [
       {path: 'revisionTable', component: RevisionTableComponent},
       {path: 'deleteRequest', component: DeleteRequestComponent},
       {path: 'deleteRequests', component: DeleteRequestsComponent},
+      {path: 'complaintTable', component: ComplaintTableComponent},
+      {path: 'cottageRes/complaint/:id', component: ComplaintComponent},
+      {path: 'shipRes/complaint/:id', component: ComplaintComponent},
+      {path: 'lessonRes/complaint/:id', component: ComplaintComponent},
 
 
 

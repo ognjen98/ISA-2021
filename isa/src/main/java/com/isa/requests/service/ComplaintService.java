@@ -47,7 +47,7 @@ public class ComplaintService {
     @Autowired
     EmailSender emailSender;
 
-    @Transactional
+
     public String saveComplaint(ComplaintDTO dto, String email) {
         Client client = clientRepository.findByEmail(email);
         com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());

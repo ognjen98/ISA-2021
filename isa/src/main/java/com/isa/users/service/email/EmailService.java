@@ -37,6 +37,17 @@ public class EmailService implements EmailSender{
                 helper.setSubject("Reservation made");
             else if(type.equals("REV"))
                 helper.setSubject("Revision approved");
+            else if(type.equals("SUB"))
+                helper.setSubject("Your subscriptions added new actions");
+            else if(type.equals("DEL"))
+                helper.setSubject("Delete request");
+            else if(type.equals("REQ_APPR"))
+                helper.setSubject("Registration request approved");
+            else if(type.equals("REQ_REJ"))
+                helper.setSubject("Registration request rejected");
+            else if(type.equals("COM"))
+                helper.setSubject("Complaint answer");
+
             helper.setFrom("ognjencivcic23@gmail.com");
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {

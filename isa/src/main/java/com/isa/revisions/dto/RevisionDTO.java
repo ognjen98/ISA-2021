@@ -16,6 +16,11 @@ public class RevisionDTO {
         this.type = type;
     }
 
+    public RevisionDTO(Integer grade, String text) {
+        this.grade = grade;
+        this.text = text;
+    }
+
     public RevisionDTO(Long id, Integer grade, String text, String type) {
         this.id = id;
         this.grade = grade;
