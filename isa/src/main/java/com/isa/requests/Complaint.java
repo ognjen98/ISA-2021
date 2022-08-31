@@ -14,24 +14,27 @@ public class Complaint {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String request;
+    private String text;
 
-    private String response;
+    private Integer status;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Client client;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Service service;
-
     public Complaint(){}
 
-    public Complaint(Long id, String request, String response, Client client, Service service) {
+    public Complaint(Long id, Client client, String text, Integer status) {
         this.id = id;
-        this.request = request;
-        this.response = response;
         this.client = client;
-        this.service = service;
+        this.text = text;
+        this.status = status;
+
+    }
+
+    public Complaint(Client client, String text, Integer status) {
+        this.client = client;
+        this.text = text;
+        this.status = status;
     }
 
     public Long getId() {
@@ -42,22 +45,6 @@ public class Complaint {
         this.id = id;
     }
 
-    public String getRequest() {
-        return request;
-    }
-
-    public void setRequest(String request) {
-        this.request = request;
-    }
-
-    public String getResponse() {
-        return response;
-    }
-
-    public void setResponse(String response) {
-        this.response = response;
-    }
-
     public Client getClient() {
         return client;
     }
@@ -66,11 +53,19 @@ public class Complaint {
         this.client = client;
     }
 
-    public Service getService() {
-        return service;
+    public String getText() {
+        return text;
     }
 
-    public void setService(Service service) {
-        this.service = service;
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
