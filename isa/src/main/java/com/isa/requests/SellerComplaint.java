@@ -6,8 +6,10 @@ import com.isa.users.Seller;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "seller_complaints")
 public class SellerComplaint extends Complaint{
 
     @ManyToOne(fetch = FetchType.EAGER)

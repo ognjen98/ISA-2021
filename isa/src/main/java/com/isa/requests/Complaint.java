@@ -22,6 +22,9 @@ public class Complaint {
     @ManyToOne(fetch = FetchType.EAGER)
     private Client client;
 
+    @Version
+    private Integer version;
+
     public Complaint(){}
 
     public Complaint(Long id, Client client, String text, Integer status) {
@@ -36,6 +39,14 @@ public class Complaint {
         this.client = client;
         this.text = text;
         this.status = status;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Long getId() {

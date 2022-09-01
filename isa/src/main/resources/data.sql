@@ -193,5 +193,12 @@ insert into categories(name, type, points, discount) values ('GOLD', 'SELLER', 2
 insert into categories(name, type, points, discount) values ('SILVER', 'SELLER', 1500, 90);
 insert into categories(name, type, points, discount) values ('BRONZE', 'SELLER', 1000, 80);
 
+
+insert into points (client_points, seller_points) values(20, 25);
+
+insert into complaints(text, status, client_id, version) values ('adadoa', 2, 5, 0);
+
+insert into service_complaints(id, service_id) values (1, 1);
+
 --insert into revisions(grade, text, status, client_id) values (3, 'Cao', 0, null);
 --insert into service_revisions(id, service_id) values (1, 2);

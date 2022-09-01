@@ -84,19 +84,19 @@ public class ComplaintService {
             ServiceComplaint serviceComplaint = (ServiceComplaint) complaint.get();
             serviceComplaint.setStatus(1);
             serviceComplaintRepository.save(serviceComplaint);
-            emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
-                    response), "COM");
-            emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
-                    response), "COM");
+//            emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
+//                    response), "COM");
+//            emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+//                    response), "COM");
         }
         else if(complaint.get() instanceof SellerComplaint) {
             SellerComplaint sellerComplaint = (SellerComplaint) complaint.get();
             sellerComplaint.setStatus(1);
             sellerComplaintRepository.save(sellerComplaint);
-            emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
-                    response), "COM");
-            emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
-                    response), "COM");
+//            emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
+//                    response), "COM");
+//            emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+//                    response), "COM");
         }
 
         return "Complaint not approved";
