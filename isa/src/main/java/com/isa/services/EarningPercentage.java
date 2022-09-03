@@ -7,6 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class EarningPercentage {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -19,6 +19,9 @@ public class DeleteRequest {
 
     private Integer status;
 
+    @Version
+    private Integer version;
+
     public DeleteRequest(){}
 
     public DeleteRequest(Long id, String message, User user, Integer status) {
@@ -64,5 +67,13 @@ public class DeleteRequest {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

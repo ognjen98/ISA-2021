@@ -148,4 +148,12 @@ public class ServicesService {
         return dtos;
     }
 
+    @Transactional
+    public com.isa.services.Service findOneById(Long id) {
+
+
+        com.isa.services.Service service = serviceRepository.getServiceById(id);
+
+        return service;
+    }
 }

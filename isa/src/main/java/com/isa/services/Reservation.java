@@ -34,7 +34,7 @@ public class Reservation {
 
     private Float discPrice;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     @JoinTable(
             name = "reservations_additional_infos",
             joinColumns = @JoinColumn(name = "reservation_id"),
@@ -44,11 +44,11 @@ public class Reservation {
 
     private Float price;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE})
     private Address address;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE})
     private Service service;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -86,6 +86,20 @@ public class Reservation {
         this.address = address;
         this.service = service;
         this.client = client;
+        this.cancelled = cancelled;
+        this.reserved = reserved;
+        this.deleted = deleted;
+    }
+
+
+    public Reservation(
+                       Float price, Boolean cancelled,
+                       Boolean reserved, Boolean deleted) {
+
+
+        this.price = price;
+
+
         this.cancelled = cancelled;
         this.reserved = reserved;
         this.deleted = deleted;

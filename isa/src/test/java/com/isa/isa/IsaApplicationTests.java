@@ -1,28 +1,52 @@
 package com.isa.isa;
 
+import com.isa.loyalties.Category;
+import com.isa.loyalties.Points;
+import com.isa.loyalties.repository.CategoryRepository;
+import com.isa.loyalties.repository.PointsRepository;
+import com.isa.requests.Complaint;
+import com.isa.requests.DeleteRequest;
+import com.isa.requests.SellerComplaint;
+import com.isa.requests.ServiceComplaint;
+import com.isa.requests.repository.ComplaintRepository;
+import com.isa.requests.repository.DeleteRequestRepository;
+import com.isa.requests.repository.SellerComplaintRepository;
+import com.isa.requests.repository.ServiceComplaintRepository;
 import com.isa.requests.service.ComplaintService;
-import com.isa.services.AdditionalInfo;
-import com.isa.services.Reservation;
+import com.isa.services.*;
 import com.isa.services.dto.ReservationDTO;
 import com.isa.services.dto.SearchDataDTO;
 import com.isa.services.dto.ServiceDTO;
+import com.isa.services.repository.EarningPercentageRepository;
+import com.isa.services.repository.EarningsRepository;
+import com.isa.services.repository.ServiceRepository;
+import com.isa.services.repository.TimePeriodRepository;
 import com.isa.services.service.ReservationService;
-import org.aspectj.lang.annotation.Before;
+import com.isa.services.service.ServicesService;
+import com.isa.testing.domain.Product;
+import com.isa.testing.service.ProductService;
+import com.isa.users.*;
+import com.isa.users.repository.ClientRepository;
+import com.isa.users.repository.ReservationRepository;
+import com.isa.users.repository.SellerRepository;
+import com.isa.users.repository.UserRepository;
+import org.junit.Before;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -39,9 +63,388 @@ public class IsaApplicationTests {
 	@Autowired
 	private ComplaintService complaintService;
 
+	@Autowired
+	ComplaintRepository complaintRepository;
 
-	@Test(expected = ObjectOptimisticLockingFailureException.class)
-	public void testOptimisticLockingScenario() throws Throwable {
+	@Autowired
+	SellerRepository sellerRepository;
+
+	@Autowired
+	EarningsRepository earningsRepository;
+
+	@Autowired
+	EarningPercentageRepository earningPercentageRepository;
+
+	@Autowired
+	PointsRepository pointsRepository;
+
+	@Autowired
+	CategoryRepository categoryRepository;
+
+	@Autowired
+	ServiceComplaintRepository serviceComplaintRepository;
+
+	@Autowired
+	SellerComplaintRepository sellerComplaintRepository;
+
+	@Autowired
+	ReservationRepository reservationRepository;
+
+	@Autowired
+	UserRepository userRepository;
+
+	@Autowired
+	TimePeriodRepository timePeriodRepository;
+
+	@Autowired
+	ClientRepository clientRepository;
+
+	@Autowired
+	DeleteRequestRepository deleteRequestRepository;
+
+	@Autowired
+	ServiceRepository serviceRepository;
+
+	@Autowired
+	private ProductService productService;
+
+	@Autowired
+	EntityManager entityManager;
+
+	@Autowired
+	ServicesService servicesService;
+
+	@Autowired
+	EntityManagerFactory factory;
+
+//	@Test(expected = PessimisticLockingFailureException.class)
+//	public void testOptimisticLockingScenario() throws Throwable {
+//
+//		ExecutorService executor = Executors.newFixedThreadPool(2);
+//		Future<?> future1 = executor.submit(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				System.out.println("Startovan Thread 1");
+//
+////				EntityManager entityManager = factory.createEntityManager();
+////				entityManager.getTransaction().begin();
+//				Set<AdditionalInfo> additionalInfos = new HashSet<>();
+//				additionalInfos.add(new AdditionalInfo(1L, "", 50F));
+//				additionalInfos.add(new AdditionalInfo(2L, "", 100F));
+//				ReservationDTO dto = new ReservationDTO(null, LocalDateTime.of(2022, 9, 15, 8, 0, 0),
+//						LocalDateTime.of(2022,9,16,6,0,0), additionalInfos, 1L, 0);
+//				try { Thread.sleep(10000); } catch (InterruptedException e) {}
+//				Reservation reservation = reservationService.findOneById(dto.getId());
+//				Client client = clientRepository.findByEmail("ognjencivcic23@gmail.com");
+//
+//
+//
+//
+//				com.isa.services.Service service = servicesService.findOneById(1L);
+//
+//
+////				List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
+////
+////				List<TimePeriod> removal = new ArrayList<>();
+////				List<TimePeriod> addition = new ArrayList<>();
+////				for(TimePeriod tp: service.getPeriod()){
+////					if((dto.getStart().isAfter(tp.getStart()) || dto.getStart().isEqual(tp.getStart())) && (dto.getEnd().isBefore(tp.getEnd()) || dto.getEnd().isEqual(tp.getEnd()))){
+////						removal.add(tp);
+////						TimePeriod first = new TimePeriod(tp.getStart(), dto.getStart());
+////						TimePeriod second = new TimePeriod(dto.getEnd(), tp.getEnd());
+//////						timePeriodRepository.save(first);
+//////						timePeriodRepository.save(second);
+////
+////						addition.add(first);
+////						addition.add(second);
+////					}
+////
+////
+////				}
+////
+////				service.getPeriod().removeAll(removal);
+////				service.getPeriod().addAll(addition);
+//
+//
+////				serviceRepository.save(service);
+//
+//				if(reservation == null){
+//				float price = 0;
+//				float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
+//				price+=service.getPrice() * hours;
+////				for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
+////					price += additionalInfo.getPrice();
+////				}
+////				Optional<EarningPercentage> ep = earningPercentageRepository.findById(1L);
+////
+////				Earnings earnings = new Earnings(LocalDate.now(), price*(ep.get().getPercentage()/100));
+////				Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
+////				Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
+////				Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
+////				if(client.getPoints()>goldClient.getPoints()){
+////					price = price - price * goldClient.getDiscount();
+////				}
+////				else if(client.getPoints() > silverClient.getPoints()){
+////					price = price - price * silverClient.getDiscount();
+////				}
+////				else if(client.getPoints() > bronzeClient.getPoints()){
+////					price = price - price * bronzeClient.getDiscount();
+////				}
+////				Category goldSeller = categoryRepository.findCategoryByNameAndType("GOLD", "SELLER");
+////				Category silverSeller = categoryRepository.findCategoryByNameAndType("SILVER", "SELLER");
+////				Category bronzeSeller = categoryRepository.findCategoryByNameAndType("BRONZE", "SELLER");
+////				Seller seller = service.getSeller();
+////				float sellerMoney = 0;
+////				if(seller.getPoints()>goldSeller.getPoints()){
+////					sellerMoney = price - price * goldSeller.getDiscount()/100;
+////				}
+////				else if(seller.getPoints() > silverSeller.getPoints()){
+////					sellerMoney = price - price * silverSeller.getDiscount()/100;
+////				}
+////				else if(seller.getPoints() > bronzeSeller.getPoints()){
+////					sellerMoney = price - price * bronzeSeller.getDiscount()/100;
+////				}
+////				seller.setMoney(sellerMoney);
+////
+//////					earningsRepository.save(earnings);
+////				Optional<Points> points = pointsRepository.findById(1L);
+////				int sellerPoints = seller.getPoints();
+////				int clientPoints = client.getPoints();
+////				sellerPoints += points.get().getSellerPoints();
+////				clientPoints += points.get().getClientPoints();
+////
+////				client.setPoints(clientPoints);
+////				seller.setPoints(sellerPoints);
+////					sellerRepository.save(seller);
+////					clientRepository.save(client);
+//				reservation = new Reservation(price, false, true, false);
+//				// thread uspavan na 3 sekunde da bi
+//				reservationRepository.save(reservation);
+//
+//				}
+//
+//
+//
+//
+//
+//
+//				// drugi thread mogao da izvrsi istu operaciju
+//
+//
+////				entityManager.flush();
+////				entityManager.getTransaction().commit();
+////				entityManager.close();
+//			}
+//		});
+//		executor.submit(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				System.out.println("Startovan Thread 2");
+////				EntityManager entityManager = factory.createEntityManager();
+////				entityManager.getTransaction().begin();
+//				Set<AdditionalInfo> additionalInfos = new HashSet<>();
+//				additionalInfos.add(new AdditionalInfo(1L, "", 50F));
+//				additionalInfos.add(new AdditionalInfo(2L, "", 100F));
+//				ReservationDTO dto = new ReservationDTO(null, LocalDateTime.of(2022, 9, 15, 8, 0, 0),
+//						LocalDateTime.of(2022,9,16,6,0,0), additionalInfos, 1L, 0);
+//				Reservation reservation = reservationService.findOneById(dto.getId());
+//
+//				Client client = clientRepository.findByEmail("ognjencivcic23@gmail.com");
+//
+//
+//
+//
+//				com.isa.services.Service service = servicesService.findOneById(1L);
+//
+//
+////				List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
+//
+////				List<TimePeriod> removal = new ArrayList<>();
+////				List<TimePeriod> addition = new ArrayList<>();
+////				for(TimePeriod tp: service.getPeriod()){
+////					if((dto.getStart().isAfter(tp.getStart()) || dto.getStart().isEqual(tp.getStart())) && (dto.getEnd().isBefore(tp.getEnd()) || dto.getEnd().isEqual(tp.getEnd()))){
+////						removal.add(tp);
+////						TimePeriod first = new TimePeriod(tp.getStart(), dto.getStart());
+////						TimePeriod second = new TimePeriod(dto.getEnd(), tp.getEnd());
+//////						timePeriodRepository.save(first);
+//////						timePeriodRepository.save(second);
+////
+////						addition.add(first);
+////						addition.add(second);
+////					}
+////
+////
+////				}
+////
+////				service.getPeriod().removeAll(removal);
+////				service.getPeriod().addAll(addition);
+//
+//
+////				serviceRepository.save(service);
+//
+//				if(reservation == null) {
+//					float price = 0;
+//					float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
+//					price += service.getPrice() * hours;
+////				for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
+////					price += additionalInfo.getPrice();
+////				}
+////					Optional<EarningPercentage> ep = earningPercentageRepository.findById(1L);
+////				Earnings earnings = new Earnings(LocalDate.now(), price*(ep.get().getPercentage()/100));
+////				Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
+////				Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
+////				Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
+////				if(client.getPoints()>goldClient.getPoints()){
+////					price = price - price * goldClient.getDiscount();
+////				}
+////				else if(client.getPoints() > silverClient.getPoints()){
+////					price = price - price * silverClient.getDiscount();
+////				}
+////				else if(client.getPoints() > bronzeClient.getPoints()){
+////					price = price - price * bronzeClient.getDiscount();
+////				}
+////				Category goldSeller = categoryRepository.findCategoryByNameAndType("GOLD", "SELLER");
+////				Category silverSeller = categoryRepository.findCategoryByNameAndType("SILVER", "SELLER");
+////				Category bronzeSeller = categoryRepository.findCategoryByNameAndType("BRONZE", "SELLER");
+////				Seller seller = service.getSeller();
+////				float sellerMoney = 0;
+////				if(seller.getPoints()>goldSeller.getPoints()){
+////					sellerMoney = price - price * goldSeller.getDiscount()/100;
+////				}
+////				else if(seller.getPoints() > silverSeller.getPoints()){
+////					sellerMoney = price - price * silverSeller.getDiscount()/100;
+////				}
+////				else if(seller.getPoints() > bronzeSeller.getPoints()){
+////					sellerMoney = price - price * bronzeSeller.getDiscount()/100;
+////				}
+////				seller.setMoney(sellerMoney);
+////
+//////					earningsRepository.save(earnings);
+////				Optional<Points> points = pointsRepository.findById(1L);
+////				int sellerPoints = seller.getPoints();
+////				int clientPoints = client.getPoints();
+////				sellerPoints += points.get().getSellerPoints();
+////				clientPoints += points.get().getClientPoints();
+////
+////				client.setPoints(clientPoints);
+////				seller.setPoints(sellerPoints);
+////					sellerRepository.save(seller);
+////					clientRepository.save(client);
+//					reservation = new Reservation(price, false, true, false);
+//					reservationRepository.save(reservation);
+//
+//				}
+////				entityManager.flush();
+////				entityManager.getTransaction().commit();
+////				entityManager.close();
+//
+//
+//
+//			}
+//		});
+//		try {
+//			future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
+//		} catch (ExecutionException e) {
+//			System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
+//			throw e.getCause();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		executor.shutdown();
+//
+//	}
+
+
+//	@Test(expected = ObjectOptimisticLockingFailureException.class)
+//	public void testComplaint() throws Throwable {
+//
+//		ExecutorService executor = Executors.newFixedThreadPool(2);
+//		Future<?> future1 = executor.submit(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				System.out.println("Startovan Thread 1");
+//
+//				Optional<Complaint> complaint = complaintRepository.findById(1L);
+//
+//				// thread uspavan na 3 sekunde da bi
+//				// drugi thread mogao da izvrsi istu operaciju
+//				if(complaint.get() instanceof ServiceComplaint) {
+//					ServiceComplaint serviceComplaint = (ServiceComplaint) complaint.get();
+//					serviceComplaint.setStatus(1);
+//					try { Thread.sleep(100); } catch (InterruptedException e) {}
+//					serviceComplaintRepository.save(serviceComplaint);
+////            emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
+////                    response), "COM");
+////            emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+////                    response), "COM");
+//				}
+//				else if(complaint.get() instanceof SellerComplaint) {
+//					SellerComplaint sellerComplaint = (SellerComplaint) complaint.get();
+//					sellerComplaint.setStatus(1);
+//					sellerComplaintRepository.save(sellerComplaint);
+////            emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
+////                    response), "COM");
+////            emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+////                    response), "COM");
+//				}
+//
+//
+//			}
+//		});
+//		executor.submit(new Runnable() {
+//
+//			@Override
+//			public void run() {
+//				System.out.println("Startovan Thread 2");
+//				Optional<Complaint> complaint = complaintRepository.findById(1L);
+//
+//				// drugi thread mogao da izvrsi istu operaciju
+//				if(complaint.get() instanceof ServiceComplaint) {
+//					ServiceComplaint serviceComplaint = (ServiceComplaint) complaint.get();
+//					serviceComplaint.setStatus(1);
+//
+//					serviceComplaintRepository.save(serviceComplaint);
+////            emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
+////                    response), "COM");
+////            emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+////                    response), "COM");
+//				}
+//				else if(complaint.get() instanceof SellerComplaint) {
+//					SellerComplaint sellerComplaint = (SellerComplaint) complaint.get();
+//					sellerComplaint.setStatus(1);
+//					sellerComplaintRepository.save(sellerComplaint);
+////            emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
+////                    response), "COM");
+////            emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+////                    response), "COM");
+//				}
+//			}
+//		});
+//		try {
+//			future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
+//		} catch (ExecutionException e) {
+//			System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
+//			throw e.getCause();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		executor.shutdown();
+//
+//	}
+//
+
+		@Before
+		public void setUp() throws Exception {
+			User user = userRepository.findByEmail("ognjencivcic23@gmail.com");
+			deleteRequestRepository.save(new DeleteRequest("message", user,  2));
+		}
+
+
+		@Test(expected = ObjectOptimisticLockingFailureException.class)
+	public void testDelete() throws Throwable {
 
 		ExecutorService executor = Executors.newFixedThreadPool(2);
 		Future<?> future1 = executor.submit(new Runnable() {
@@ -49,27 +452,16 @@ public class IsaApplicationTests {
 			@Override
 			public void run() {
 				System.out.println("Startovan Thread 1");
-				SearchDataDTO searchDataDTO = new SearchDataDTO(LocalDateTime.of(2022, 10, 3, 8, 0, 0),
-						LocalDateTime.of(2022,10,4,8,0,0),	"",
-						"SHIP", "", "");
-				List<ServiceDTO> searchResult = reservationService.search(searchDataDTO);
 
-				String email = "ognjencivcic23@gmail.com";
-				Set<AdditionalInfo> additionalInfoList = new HashSet<>();
-				additionalInfoList.add(new AdditionalInfo(1L, "", 50F));
-				additionalInfoList.add(new AdditionalInfo(2L, "", 100F));
-				LocalDate localDate =  LocalDate.of(2022, 10 ,3);
-				LocalTime localTime = LocalTime.of(8, 0,0);
-				LocalDate localDate2 =  LocalDate.of(2022, 10 ,4);
-				LocalTime localTime2 = LocalTime.of(8, 0,0);
-				ReservationDTO reservationDTO = new ReservationDTO(null, LocalDateTime.of(localDate, localTime),
-						LocalDateTime.of(localDate2, localTime2),additionalInfoList, searchResult.get(0).getId(), 5);
+				Optional<User> user = userRepository.findById(5L);
+				DeleteRequest deleteRequest = deleteRequestRepository.findByUser(user.get());
+				deleteRequest.setStatus(0);
+				try { Thread.sleep(500); } catch (InterruptedException e) {}
+
+				deleteRequestRepository.save(deleteRequest);
 
 
-				try { Thread.sleep(13000); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi
-				// drugi thread mogao da izvrsi istu operaciju
 
-				Reservation reservation = reservationService.reserve(reservationDTO, email);
 			}
 		});
 		executor.submit(new Runnable() {
@@ -77,23 +469,10 @@ public class IsaApplicationTests {
 			@Override
 			public void run() {
 				System.out.println("Startovan Thread 2");
-				SearchDataDTO searchDataDTO = new SearchDataDTO(LocalDateTime.of(2022, 10, 3, 8, 0, 0),
-						LocalDateTime.of(2022,10,4,8,0,0),	"",
-						"SHIP", "", "");
-				List<ServiceDTO> searchResult = reservationService.search(searchDataDTO);
-
-				String email = "ognjen5@gmail.com";
-				Set<AdditionalInfo> additionalInfoList = new HashSet<>();
-				additionalInfoList.add(new AdditionalInfo(1L, "", 50F));
-				additionalInfoList.add(new AdditionalInfo(2L, "", 100F));
-				LocalDate localDate =  LocalDate.of(2022, 10 ,3);
-				LocalTime localTime = LocalTime.of(8, 0,0);
-				LocalDate localDate2 =  LocalDate.of(2022, 10 ,4);
-				LocalTime localTime2 = LocalTime.of(8, 0,0);
-				ReservationDTO reservationDTO = new ReservationDTO(null, LocalDateTime.of(localDate, localTime),
-						LocalDateTime.of(localDate2, localTime2),additionalInfoList, searchResult.get(0).getId(), 5);
-
-				Reservation reservation = reservationService.reserve(reservationDTO, email);
+				Optional<User> user = userRepository.findById(5L);
+				DeleteRequest deleteRequest = deleteRequestRepository.findByUser(user.get());
+				deleteRequest.setStatus(0);
+				deleteRequestRepository.save(deleteRequest);
 			}
 		});
 		try {
@@ -109,44 +488,6 @@ public class IsaApplicationTests {
 	}
 
 
-	@Test(expected = ObjectOptimisticLockingFailureException.class)
-	public void testComplaint() throws Throwable {
-
-		ExecutorService executor = Executors.newFixedThreadPool(2);
-		Future<?> future1 = executor.submit(new Runnable() {
-
-			@Override
-			public void run() {
-				System.out.println("Startovan Thread 1");
 
 
-
-
-				try { Thread.sleep(5000); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi
-				// drugi thread mogao da izvrsi istu operaciju
-				complaintService.respond(1L, "dobar dan");
-
-
-			}
-		});
-		executor.submit(new Runnable() {
-
-			@Override
-			public void run() {
-				System.out.println("Startovan Thread 2");
-
-				complaintService.respond(1L, "asdasda");
-			}
-		});
-		try {
-			future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
-		} catch (ExecutionException e) {
-			System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
-			throw e.getCause();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		executor.shutdown();
-
-	}
 }

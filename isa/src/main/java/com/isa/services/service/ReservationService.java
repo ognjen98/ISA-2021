@@ -304,7 +304,7 @@ public class ReservationService {
         service.getPeriod().addAll(addition);
 
 
-        serviceRepository.save(service);
+//        serviceRepository.save(service);
 
         if(reservation ==null){
             float price = 0;
@@ -313,8 +313,8 @@ public class ReservationService {
             for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
                 price += additionalInfo.getPrice();
             }
-            EarningPercentage ep = earningPercentageRepository.getById(1L);
-            Earnings earnings = new Earnings(LocalDate.now(), price*(ep.getPercentage()/100));
+            Optional<EarningPercentage> ep = earningPercentageRepository.findById(1L);
+            Earnings earnings = new Earnings(LocalDate.now(), price*(ep.get().getPercentage()/100));
             Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
             Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
             Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
@@ -700,6 +700,15 @@ public class ReservationService {
         }
 
         return result;
+    }
+
+    @Transactional
+    public Reservation findOneById(Long id) {
+
+
+        Reservation reservation = reservationRepository.getReservationById(id);
+
+        return reservation;
     }
 
 }
