@@ -4,10 +4,14 @@ import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/f
 import { ThemePalette } from '@angular/material/core';
 import { CustomeDateValidators } from '../helpers/date.validator';
 import { AdditionalInfo } from '../model/additionalInfo';
+import { InhrCottageDTO } from '../model/inhrCottageDTO';
+import { InhrShipDTO } from '../model/inhrShipDTO';
 import { ReservationDTO } from '../model/reservationDTO';
 import { SearchDataDTO } from '../model/searchDataDTO';
 import { ServiceDTO } from '../model/serviceDTO';
 import { SortDTO } from '../model/sortDTO';
+import { SortDTOCottage } from '../model/sortDTOCottage';
+import { SortDTOShip } from '../model/sortDTOShip';
 import { ReservationService } from '../service/reservation.service';
 
 
@@ -26,9 +30,12 @@ export class ReservationComponent implements OnInit {
   minDate = new Date();
   dto: SearchDataDTO;
   returnData: ServiceDTO[] = new Array();
+  returnData2: InhrCottageDTO[] = new Array();
+  returnData3: InhrShipDTO[] = new Array();
   sortDTO: SortDTO;
   additionalInfos: AdditionalInfo[] = new Array();
   reservationDTO: ReservationDTO;
+  type: string = "SHIP";
   serviceId: number;
 
 
@@ -91,6 +98,13 @@ export class ReservationComponent implements OnInit {
       
     })
 
+    this.searchForm.get('entity').valueChanges.subscribe(
+      x => {
+        this.type = x;
+        console.log(this.type);
+      }
+    )
+
  
   }
 
@@ -129,13 +143,37 @@ export class ReservationComponent implements OnInit {
   sort(event){
     let sortParam = event.value;
     console.log(event.value)
-    this.sortDTO = new SortDTO(this.returnData, sortParam)
-    this.service.sort(this.sortDTO).subscribe(
-      res =>{
-        this.returnData = res;
-        console.log(this.returnData)
-      }
-    )
+    if(this.type === "SHIP"){
+      let dto = new SortDTOShip(this.returnData3, sortParam)
+      
+      this.service.sortShips(dto).subscribe(
+        res =>{
+          this.returnData3 = res;
+          
+        }
+      )
+    }
+    else if(this.type === "COTTAGE"){
+      let dto = new SortDTOCottage(this.returnData2, sortParam)
+      
+      this.service.sortCottages(dto).subscribe(
+        res =>{
+          this.returnData2 = res;
+          
+        }
+      )
+    }
+    else {
+      this.sortDTO = new SortDTO(this.returnData, sortParam)
+      this.service.sort(this.sortDTO).subscribe(
+        res =>{
+          this.returnData = res;
+          console.log(this.returnData)
+        }
+      )
+    }
+    
+    
   }
 
   search(){
@@ -153,13 +191,33 @@ export class ReservationComponent implements OnInit {
       end = this.parseDate(end)
     }
     this.dto = new SearchDataDTO(start, end, noGuests, entity, grade, location)
-    this.service.search(this.dto).subscribe(
-      res =>
-      {
-        this.returnData = res;
-        console.log(this.returnData)
-      }
-    )
+    if(entity === "SHIP"){
+      this.service.searchShips(this.dto).subscribe(
+        res =>
+        {
+          this.returnData3 = res;
+          console.log(this.returnData)
+        }
+      )
+    }
+    else if(entity === "COTTAGE"){
+      this.service.searchCottages(this.dto).subscribe(
+        res =>
+        {
+          this.returnData2 = res;
+          console.log(this.returnData)
+        }
+      )
+    }
+    else{
+      this.service.searchLessons(this.dto).subscribe(
+        res =>
+        {
+          this.returnData = res;
+          console.log(this.returnData)
+        }
+      )
+    }
   }
 
   parseDate(date:string){

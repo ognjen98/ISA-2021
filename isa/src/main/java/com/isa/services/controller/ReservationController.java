@@ -34,14 +34,34 @@ public class ReservationController {
     ReservationRepository reservationRepository;
 
 
-    @PostMapping("/search")
-    public ResponseEntity<List<ServiceDTO>> searchServices(@RequestBody SearchDataDTO dto){
-        return new ResponseEntity(reservationService.search(dto), HttpStatus.OK);
+    @PostMapping("/searchShips")
+    public ResponseEntity<List<InhrShipDTO>> searchShips(@RequestBody SearchDataDTO dto){
+        return new ResponseEntity(reservationService.searchShips(dto), HttpStatus.OK);
+    }
+
+    @PostMapping("/searchCottages")
+    public ResponseEntity<List<InhrCottageDTO>> searchCottages(@RequestBody SearchDataDTO dto){
+        return new ResponseEntity(reservationService.searchCottages(dto), HttpStatus.OK);
+    }
+
+    @PostMapping("/searchLessons")
+    public ResponseEntity<List<ServiceDTO>> searchLessons(@RequestBody SearchDataDTO dto){
+        return new ResponseEntity(reservationService.searchLessons(dto), HttpStatus.OK);
     }
 
     @PostMapping("/sort")
     public ResponseEntity<List<ServiceDTO>> sortServices(@RequestBody SortDTO dto){
         return new ResponseEntity(reservationService.sort(dto), HttpStatus.OK);
+    }
+
+    @PostMapping("/sortShips")
+    public ResponseEntity<List<InhrShipDTO>> sortShips(@RequestBody SortDTOShip dto){
+        return new ResponseEntity(reservationService.sortShips(dto), HttpStatus.OK);
+    }
+
+    @PostMapping("/sortCottages")
+    public ResponseEntity<List<InhrCottageDTO>> sortCottages(@RequestBody SortDTOCottage dto){
+        return new ResponseEntity(reservationService.sortCottages(dto), HttpStatus.OK);
     }
 
     @PostMapping("/filter")

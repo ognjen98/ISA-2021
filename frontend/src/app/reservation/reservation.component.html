@@ -81,6 +81,7 @@
                             <mat-option value="PRICE_DESC">Sort by price descending</mat-option>
                         </mat-select>
                     </mat-form-field>
+                    <div *ngIf="type==='FISHING INSTRUCTOR'" >
                             <div id="returnData" [dataSource]="returnData" class="row" *ngFor="let data of returnData;let i=index" class="container center-card">  
                                 
                                 <mat-card>
@@ -138,7 +139,113 @@
             
                 
             </div>
+        </div>
+        <div *ngIf="type==='SHIP'">
+            <div  id="returnData" [dataSource]="returnData3" class="row" *ngFor="let data of returnData3;let i=index" class="container center-card">  
+                                
+                <mat-card>
+                    <mat-card-header>
+                        
+                        <mat-card-title>
+                            <p class="title-paragraph">{{data.name}}</p>
+                            
+                           
+                        </mat-card-title>
+                            
+                        <mat-card-subtitle>
+                            <span style="visibility: hidden;" >{{data.id}}</span>
+                        </mat-card-subtitle>
+                        
+                   
+                    </mat-card-header> 
+
+                    
+                    <mat-card-content>
+                        <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
+                            <mat-grid-tile>
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXC8KB-1CchePhUhYS-QEPN_4UEwSZus1ByA&usqp=CAU" alt="" height="250px" width="500px">
+                            </mat-grid-tile>
+                            <mat-grid-tile >
+                                <mat-card-content style="text-align: left;">
+                                <div class="content-paragraph">Street: {{ data.streetName}}, {{ data.number}}</div><br>
+                                
+                                <div class="content-paragraph">City: {{ data.city }}</div><br>
+                                <div class="content-paragraph">State: {{ data.state }}</div><br>
+                                <div class="content-paragraph">Price: {{ data.price }}$/hour </div><br>
+                                <div class="content-paragraph">Grade: {{ data.grade }}</div>
+                                
+                            </mat-card-content>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        
+                       
+                    </mat-card-content>
+                    
+                    <mat-divider></mat-divider>   
+                   <mat-card-actions style="text-align: right;">
+                       
+                        <!-- <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="!feedback.approved">Approve</button>
+                        <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="feedback.approved">Deny</button> -->
+                        <button mat-raised-button color="primary" (click)="getInfos(data.id)" matStepperNext>More Info</button>
+                    </mat-card-actions>
+                </mat-card>
+                <div style="margin-top: 20px;"></div> 
+            </div>
+        </div>
+        <div *ngIf="type==='COTTAGE'">
+            <div  id="returnData" [dataSource]="returnData2" class="row" *ngFor="let data of returnData2;let i=index" class="container center-card">  
+                                
+                <mat-card>
+                    <mat-card-header>
+                        
+                        <mat-card-title>
+                            <p class="title-paragraph">{{data.name}}</p>
+                            
+                           
+                        </mat-card-title>
+                            
+                        <mat-card-subtitle>
+                            <span style="visibility: hidden;" >{{data.id}}</span>
+                        </mat-card-subtitle>
+                        
+                   
+                    </mat-card-header> 
+
+                    
+                    <mat-card-content>
+                        <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
+                            <mat-grid-tile>
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXC8KB-1CchePhUhYS-QEPN_4UEwSZus1ByA&usqp=CAU" alt="" height="250px" width="500px">
+                            </mat-grid-tile>
+                            <mat-grid-tile >
+                                <mat-card-content style="text-align: left;">
+                                <div class="content-paragraph">Street: {{ data.streetName}}, {{ data.number}}</div><br>
+                                
+                                <div class="content-paragraph">City: {{ data.city }}</div><br>
+                                <div class="content-paragraph">State: {{ data.state }}</div><br>
+                                <div class="content-paragraph">Price: {{ data.price }}$/hour </div><br>
+                                <div class="content-paragraph">Grade: {{ data.grade }}</div>
+                                
+                            </mat-card-content>
+                            </mat-grid-tile>
+                        </mat-grid-list>
+                        
+                       
+                    </mat-card-content>
+                    
+                    <mat-divider></mat-divider>   
+                   <mat-card-actions style="text-align: right;">
+                       
+                        <!-- <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="!feedback.approved">Approve</button>
+                        <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="feedback.approved">Deny</button> -->
+                        <button mat-raised-button color="primary" (click)="getInfos(data.id)" matStepperNext>More Info</button>
+                    </mat-card-actions>
+                </mat-card>
+                <div style="margin-top: 20px;"></div> 
+            </div>
+        </div>
     </mat-step>
+    
     <mat-step>
         <div *ngIf="additionalInfos.length == 0" class="container" style="text-align: center;">
             <h1>

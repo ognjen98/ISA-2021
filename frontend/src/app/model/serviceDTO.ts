@@ -1,12 +1,12 @@
 export class ServiceDTO {
-	private id: number;
-    private name: string;
-    private grade: number;
-    private price: number;
-    private streetName: string;
-    private number: string;
-    private city: string;
-    private state: string;
+	id: number;
+	name: string;
+	grade: number;
+	price: number;
+	streetName: string;
+	number: string;
+	city: string;
+	state: string;
 
 
 	constructor($id: number, $name: string, $grade: number, $price: number, $streetName: string, $number: string, $city: string, $state: string) {

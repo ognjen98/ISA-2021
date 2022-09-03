@@ -80,31 +80,13 @@ public class ReservationService {
     @Autowired
     ReservationRepository reservationRepository;
 
-    public List<ServiceDTO> search (SearchDataDTO dto){
-        List<com.isa.services.Service> services;
-        if(dto.getEntity().equals("SHIP")){
-            List<com.isa.services.Service> ships =
-                    serviceRepository.findAll().stream().filter(s-> s instanceof Ship && !s.getDeleted()).collect(Collectors.toList());
-            services = ships;
-            List<Ship> ships1 = new ArrayList<>();
-            for(com.isa.services.Service s: services){
-                ships1.add((Ship) s);
-            }
+    public List<InhrShipDTO> searchShips (SearchDataDTO dto){
+        List<Ship> ships = shipRepository.findAll().stream().filter(s -> !s.getDeleted()).collect(Collectors.toList());
 
-        }
-        else if(dto.getEntity().equals("COTTAGE")){
-            List<com.isa.services.Service> cottages =
-                    serviceRepository.findAll().stream().filter(s-> s instanceof Cottage && !s.getDeleted()).collect(Collectors.toList());
-            services = cottages;
-        }
-        else {
-            List<com.isa.services.Service> fishingLessons =
-                    serviceRepository.findAll().stream().filter(s-> s instanceof FishingLessons && !s.getDeleted()).collect(Collectors.toList());
-            services = fishingLessons;
-        }
+
         List<com.isa.services.Service> result = new ArrayList<>();
 
-        for(com.isa.services.Service s : services){
+        for(Ship s : ships){
             List<TimePeriod> timePeriods = s.getPeriod();
 
 
@@ -146,22 +128,265 @@ public class ReservationService {
 
         }
 
-        services.removeAll(result);
-        return serviceMapper(services);
+        ships.removeAll(result);
+        return shipMapper(ships);
     }
 
 
-    private List<ServiceDTO> serviceMapper(List<com.isa.services.Service> services){
-        List<ServiceDTO> dtos = new ArrayList<>();
-        for(com.isa.services.Service s: services){
-            dtos.add(new ServiceDTO(s.getId(), s.getName(),s.getGrade(),s.getPrice(),s.getAddress().getStreetName(),
-                    s.getAddress().getNumber(),s.getAddress().getCity(),s.getAddress().getState()));
+    public List<InhrCottageDTO> searchCottages (SearchDataDTO dto){
+        List<Cottage> cottages =
+                cottageRepository.findAll().stream().filter(s -> !s.getDeleted()).collect(Collectors.toList());
+
+
+        List<com.isa.services.Service> result = new ArrayList<>();
+
+        for(Cottage s : cottages){
+            List<TimePeriod> timePeriods = s.getPeriod();
+
+
+            if(dto.getStartTime() != null && dto.getEndTime() != null){
+                for(TimePeriod tp : timePeriods){
+
+                    if(dto.getStartTime().isAfter(tp.getStart()) && dto.getEndTime().isBefore(tp.getEnd())){
+                        if(result.contains(s)) {
+                            result.remove(s);
+                            break;
+                        }
+                        break;
+                    }
+                    if ((dto.getStartTime().isBefore(tp.getStart()) && dto.getEndTime().isAfter(tp.getEnd()))
+                            || (dto.getStartTime().isAfter(tp.getStart()) && dto.getEndTime().isAfter(tp.getEnd()))
+                            || (dto.getStartTime().isBefore(tp.getStart()) && dto.getEndTime().isBefore(tp.getEnd()))) {
+                        result.add(s);
+
+                    }
+
+
+                }
+
+            }
+            if(!dto.getLocation().equals("") && !s.getAddress().getCity().toLowerCase().contains(dto.getLocation().toLowerCase())){
+                result.add(s);
+
+            }
+            if(!dto.getGrade().equals("") && s.getGrade() != Double.parseDouble(dto.getGrade())){
+                result.add(s);
+
+            }
+            if(!dto.getNoGuests().equals("") && s.getNoGuests() < Integer.parseInt(dto.getNoGuests())){
+                result.add(s);
+
+            }
+
+
+
         }
+
+        cottages.removeAll(result);
+        return cottageMapper(cottages);
+    }
+
+
+    public List<ServiceDTO> searchLessons (SearchDataDTO dto){
+        List<FishingLessons> cottages =
+                fishingLessonsRepository.findAll().stream().filter(s -> !s.getDeleted()).collect(Collectors.toList());
+
+
+        List<com.isa.services.Service> result = new ArrayList<>();
+
+        for(FishingLessons s : cottages){
+            List<TimePeriod> timePeriods = s.getPeriod();
+
+
+            if(dto.getStartTime() != null && dto.getEndTime() != null){
+                for(TimePeriod tp : timePeriods){
+
+                    if(dto.getStartTime().isAfter(tp.getStart()) && dto.getEndTime().isBefore(tp.getEnd())){
+                        if(result.contains(s)) {
+                            result.remove(s);
+                            break;
+                        }
+                        break;
+                    }
+                    if ((dto.getStartTime().isBefore(tp.getStart()) && dto.getEndTime().isAfter(tp.getEnd()))
+                            || (dto.getStartTime().isAfter(tp.getStart()) && dto.getEndTime().isAfter(tp.getEnd()))
+                            || (dto.getStartTime().isBefore(tp.getStart()) && dto.getEndTime().isBefore(tp.getEnd()))) {
+                        result.add(s);
+
+                    }
+
+
+                }
+
+            }
+            if(!dto.getLocation().equals("") && !s.getAddress().getCity().toLowerCase().contains(dto.getLocation().toLowerCase())){
+                result.add(s);
+
+            }
+            if(!dto.getGrade().equals("") && s.getGrade() != Double.parseDouble(dto.getGrade())){
+                result.add(s);
+
+            }
+            if(!dto.getNoGuests().equals("") && s.getNoGuests() < Integer.parseInt(dto.getNoGuests())){
+                result.add(s);
+
+            }
+
+
+
+        }
+
+        cottages.removeAll(result);
+        return lessonMapper(cottages);
+    }
+
+
+
+    private List<InhrShipDTO> shipMapper(List<Ship> ships){
+        List<InhrShipDTO> dtos = new ArrayList<>();
+
+
+        for (Ship s : ships) {
+
+            dtos.add(new InhrShipDTO(s.getId(), s.getName(), s.getGrade(), s.getPrice(), s.getAddress().getStreetName(),
+                    s.getAddress().getNumber(), s.getAddress().getCity(), s.getAddress().getState(),
+                    s.getNoGuests(), s.getType(), s.getLength(), s.getNoEngines(), s.getMaxSpeed(), s.getEnginePower()));
+        }
+
+
+        return dtos;
+    }
+
+    private List<InhrCottageDTO> cottageMapper(List<Cottage> ships){
+        List<InhrCottageDTO> dtos = new ArrayList<>();
+
+
+        for (Cottage s : ships) {
+
+            dtos.add(new InhrCottageDTO(s.getId(), s.getName(), s.getGrade(), s.getPrice(), s.getAddress().getStreetName(),
+                    s.getAddress().getNumber(), s.getAddress().getCity(), s.getAddress().getState(),
+                    s.getNoGuests(), s.getNoRooms(), s.getNoBedsByRoom()));
+        }
+
+
+        return dtos;
+    }
+
+    private List<ServiceDTO> lessonMapper(List<FishingLessons> ships){
+        List<ServiceDTO> dtos = new ArrayList<>();
+
+
+        for (FishingLessons s : ships) {
+
+            dtos.add(new ServiceDTO(s.getId(), s.getName(), s.getGrade(), s.getPrice(), s.getAddress().getStreetName(),
+                    s.getAddress().getNumber(), s.getAddress().getCity(), s.getAddress().getState()));
+        }
+
 
         return dtos;
     }
 
     public List<ServiceDTO> sort(SortDTO dto) {
+        if(dto.getSortParam().equals("NAME_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getName().toLowerCase()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("NAME_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getName().toLowerCase()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("CITY_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getCity().toLowerCase()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("CITY_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getCity().toLowerCase()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("PRICE_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getPrice()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("PRICE_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getPrice()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("GRADE_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getGrade()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("GRADE_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getGrade()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+
+
+        return dto.getDto();
+    }
+
+    public List<InhrCottageDTO> sortCottages(SortDTOCottage dto) {
+        if(dto.getSortParam().equals("NAME_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getName().toLowerCase()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("NAME_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getName().toLowerCase()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("CITY_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getCity().toLowerCase()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("CITY_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getCity().toLowerCase()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("PRICE_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getPrice()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("PRICE_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getPrice()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("GRADE_ASC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getGrade()));
+            return dto.getDto();
+        }
+        else if(dto.getSortParam().equals("GRADE_DESC")){
+
+            Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getGrade()));
+            Collections.reverse(dto.getDto());
+            return dto.getDto();
+        }
+
+
+        return dto.getDto();
+    }
+
+    public List<InhrShipDTO> sortShips(SortDTOShip dto) {
         if(dto.getSortParam().equals("NAME_ASC")){
 
             Collections.sort(dto.getDto(), Comparator.comparing(d -> d.getName().toLowerCase()));
@@ -232,6 +457,7 @@ public class ReservationService {
     }
 
 
+    @Transactional
     public Set<AdditionalInfo> getAdditionalInfoForService(Long serviceId){
         com.isa.services.Service s = serviceRepository.getServiceById(serviceId);
         if(s.getDeleted()){
@@ -272,15 +498,7 @@ public class ReservationService {
             }
         }
 
-        List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
-        for(Reservation res : serviceReservations){
-            if(dto.getId() == null) {
-                if (((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
-                        || ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))) {
-                    return null;
-                }
-            }
-        }
+
         List<TimePeriod> removal = new ArrayList<>();
         List<TimePeriod> addition = new ArrayList<>();
         for(TimePeriod tp: service.getPeriod()){
@@ -356,6 +574,15 @@ public class ReservationService {
             clientRepository.save(client);
             reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
                     dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true, false);
+            List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
+            for(Reservation res : serviceReservations){
+                if(dto.getId() == null) {
+                    if (((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
+                            || ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))) {
+                        return null;
+                    }
+                }
+            }
             reservationRepository.save(reservation);
             return  reservation;
 
@@ -411,7 +638,16 @@ public class ReservationService {
         reservation.setDeleted(false);
 
 //        reservation.get().setClient(client);
-        entityManager.persist(reservation);
+        List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
+        for(Reservation res : serviceReservations){
+            if(dto.getId() == null) {
+                if (((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
+                        || ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))) {
+                    return null;
+                }
+            }
+        }
+        reservationRepository.save(reservation);
 
 //        emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES", ""), "RES");
         return reservation;

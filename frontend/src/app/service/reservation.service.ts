@@ -5,11 +5,15 @@ import { Observable } from 'rxjs';
 import { AdditionalInfo } from '../model/additionalInfo';
 import { DayMonthValueDTO } from '../model/dayMontValueDTO';
 import { GetReservationDTO } from '../model/getReservationDTO';
+import { InhrCottageDTO } from '../model/inhrCottageDTO';
+import { InhrShipDTO } from '../model/inhrShipDTO';
 import { ReportDTO } from '../model/reportDTO';
 import { ReservationDTO } from '../model/reservationDTO';
 import { SearchDataDTO } from '../model/searchDataDTO';
 import { ServiceDTO } from '../model/serviceDTO';
 import { SortDTO } from '../model/sortDTO';
+import { SortDTOCottage } from '../model/sortDTOCottage';
+import { SortDTOShip } from '../model/sortDTOShip';
 
 @Injectable({
   providedIn: 'root'
@@ -20,13 +24,31 @@ export class ReservationService {
   constructor(private http: HttpClient, private router: Router) { }
 
 
-  search(searchData: SearchDataDTO){
-    return this.http.post<ServiceDTO[]>(this._APIUrl + "/search", searchData);
+  searchShips(searchData: SearchDataDTO){
+    return this.http.post<InhrShipDTO[]>(this._APIUrl + "/searchShips", searchData);
+  }
+
+  searchCottages(searchData: SearchDataDTO){
+    return this.http.post<InhrCottageDTO[]>(this._APIUrl + "/searchCottages", searchData);
+  }
+
+  searchLessons(searchData: SearchDataDTO){
+    return this.http.post<ServiceDTO[]>(this._APIUrl + "/searchLessons", searchData);
   }
 
   sort(sortData: SortDTO){
     return this.http.post<ServiceDTO[]>(this._APIUrl + "/sort", sortData);
   }
+
+  sortShips(sortData: SortDTOShip){
+    return this.http.post<InhrShipDTO[]>(this._APIUrl + "/sortShips", sortData);
+  }
+
+
+  sortCottages(sortData: SortDTOCottage){
+    return this.http.post<InhrCottageDTO[]>(this._APIUrl + "/sortCottages", sortData);
+  }
+
 
   getInfos(serviceId: number){
     return this.http.get<AdditionalInfo[]>(this._APIUrl+ "/getInfos/"+ serviceId);
