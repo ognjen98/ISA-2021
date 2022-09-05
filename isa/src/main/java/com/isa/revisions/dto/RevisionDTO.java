@@ -28,6 +28,13 @@ public class RevisionDTO {
         this.type = type;
     }
 
+    public RevisionDTO(Long id, Integer grade, String text, String type, Long serviceId) {
+        this.id = id;
+        this.grade = grade;
+        this.text = text;
+        this.type = type;
+        this.serviceId = serviceId;
+    }
 
     public Long getId() {
         return id;

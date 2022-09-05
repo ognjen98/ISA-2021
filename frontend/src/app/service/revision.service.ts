@@ -28,4 +28,12 @@ export class RevisionService {
   getRev(){
     return this._http.get<Revision[]>(this._APIUrl + "/getRevisions");
   }
+
+  getSerRev(id:number){
+    return this._http.get<RevisionDTO[]>(this._APIUrl + "/getSerRevisions/"+id)
+  }
+
+  getSelRev(id:number){
+    return this._http.get<RevisionDTO[]>(this._APIUrl + "/getSelRevisions/"+id)
+  }
 }

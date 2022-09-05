@@ -28,7 +28,10 @@ export class RevisionTableComponent implements OnInit {
   accept(id: number){
     this.service.accept(id).subscribe(
       res=> {
-
+        window.location.reload()
+      },
+      err => {
+        window.location.reload()
       }
     )
   }
@@ -36,7 +39,10 @@ export class RevisionTableComponent implements OnInit {
   reject(id: number){
     this.service.reject(id).subscribe(
       res=> {
-        
+        window.location.reload()
+      },
+      err => {
+        window.location.reload()
       }
     )
   }

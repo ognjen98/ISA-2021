@@ -9,6 +9,7 @@ import com.isa.revisions.repository.SellerRevisionRepository;
 import com.isa.revisions.repository.ServiceRevisionRepository;
 import com.isa.services.repository.ServiceRepository;
 import com.isa.users.Client;
+import com.isa.users.Seller;
 import com.isa.users.repository.ClientRepository;
 import com.isa.users.repository.SellerRepository;
 import com.isa.users.service.email.EmailSender;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,8 +52,8 @@ public class RevisionService {
     public String saveRevision(RevisionDTO dto, String email){
         Client client = clientRepository.findByEmail(email);
         com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());
-        ServiceRevision serRev = serviceRevisionRepository.getServiceRevisionByClient(client);
-        SellerRevision selRev = sellerRevisionRepository.getSellerRevisionByClient(client);
+        ServiceRevision serRev = serviceRevisionRepository.getServiceRevisionByClientAndService(client, service);
+        SellerRevision selRev = sellerRevisionRepository.getSellerRevisionByClientAndSeller(client, service.getSeller());
 
 
 
@@ -108,6 +110,7 @@ public class RevisionService {
 
 
             serviceRepository.save(serviceRevision.getService());
+            serviceRevision.setStatus(1);
             emailSender.sendEmail(serviceRevision.getService().getSeller().getEmail(), buildEmail("", "", "REV", serviceRevision.getText()),
                     "REV");
 
@@ -133,12 +136,12 @@ public class RevisionService {
 
 
             sellerRepository.save(sellerRevision.getSeller());
-
+            sellerRevision.setStatus(1);
             emailSender.sendEmail(sellerRevision.getSeller().getEmail(), buildEmail("", "", "REV", sellerRevision.getText()),
                     "REV");
         }
 
-        revision.get().setStatus(1);
+
 
         return "Revision approved";
 
@@ -152,5 +155,30 @@ public class RevisionService {
         return "Revision not approved";
 
 
+    }
+
+    public List<RevisionDTO> getSerRevisions(Long serviceId){
+        List<ServiceRevision> revisions =
+                serviceRevisionRepository.findAll().stream().filter(r -> r.getService().getId() == serviceId && r.getStatus() == 1).collect(Collectors.toList());
+        List<RevisionDTO> dtos = new ArrayList<>();
+        for(ServiceRevision serviceRevision : revisions){
+            dtos.add(new RevisionDTO(serviceRevision.getId(), serviceRevision.getGrade(), serviceRevision.getText(),
+                    "SERVICE",serviceId));
+
+        }
+        return dtos;
+    }
+
+    public List<RevisionDTO> getSelRevisions(Long serviceId){
+        Optional<com.isa.services.Service> service = serviceRepository.findById(serviceId);
+        List<SellerRevision> revisions =
+                sellerRevisionRepository.findAll().stream().filter(r -> r.getSeller().getId() == service.get().getSeller().getId() && r.getStatus() == 1).collect(Collectors.toList());
+        List<RevisionDTO> dtos = new ArrayList<>();
+        for(SellerRevision serviceRevision : revisions){
+            dtos.add(new RevisionDTO(serviceRevision.getId(), serviceRevision.getGrade(), serviceRevision.getText(),
+                    "SELLER", serviceId));
+
+        }
+        return dtos;
     }
 }

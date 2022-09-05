@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AdditionalInfo } from '../model/additionalInfo';
 import { DiscountReservationDTO } from '../model/discountReservation';
-import { GetReservationDTO } from '../model/getReservationDTO';
 import { ReservationDTO } from '../model/reservationDTO';
 import { RevisionDTO } from '../model/revisionDTO';
 import { ReservationService } from '../service/reservation.service';
@@ -11,11 +10,11 @@ import { ServiceService } from '../service/service.service';
 import { SubscriptionService } from '../service/subscription.service';
 
 @Component({
-  selector: 'app-service-page',
-  templateUrl: './service-page.component.html',
-  styleUrls: ['./service-page.component.css']
+  selector: 'app-action-reservations',
+  templateUrl: './action-reservations.component.html',
+  styleUrls: ['./action-reservations.component.css']
 })
-export class ServicePageComponent implements OnInit {
+export class ActionReservationsComponent implements OnInit {
 
   returnData: DiscountReservationDTO[] = new Array();
   dto: ReservationDTO;
@@ -23,8 +22,6 @@ export class ServicePageComponent implements OnInit {
   id: number;
   start = new Date();
   end = new Date();
-  serRev: RevisionDTO[] = new Array();
-  selRev: RevisionDTO[] = new Array();
 
   constructor(private service:ServiceService, private route: ActivatedRoute, private resService: ReservationService, private subService: SubscriptionService, private revService: RevisionService) { }
 
@@ -36,8 +33,6 @@ export class ServicePageComponent implements OnInit {
       });
 
       this.getDiscRes(this.id)
-      this.getSelRevisions();
-      this.getSerRevisions();
   }
 
 
@@ -146,30 +141,6 @@ export class ServicePageComponent implements OnInit {
   }
 
 
-  subscribe(){
 
-    this.subService.createSub(this.id).subscribe(
-      res => {
-        
-      }
-    )
-  }
-
-  getSerRevisions(){
-    this.revService.getSerRev(this.id).subscribe(
-      res => {
-        this.serRev = res;
-      }
-    )
-  }
-
-
-  getSelRevisions(){
-    this.revService.getSelRev(this.id).subscribe(
-      res => {
-        this.selRev = res;
-      }
-    )
-  }
 
 }

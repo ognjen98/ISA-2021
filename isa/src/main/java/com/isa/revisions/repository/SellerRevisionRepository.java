@@ -11,5 +11,5 @@ public interface SellerRevisionRepository extends JpaRepository<SellerRevision, 
 
     List<SellerRevision> getSellerRevisionsBySeller(Seller seller);
 
-    SellerRevision getSellerRevisionByClient(Client client);
+    SellerRevision getSellerRevisionByClientAndSeller(Client client,Seller seller);
 }

@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { ActionReservationsComponent } from "./action-reservations/action-reservations.component";
 import { AllServicesComponent } from "./all-services/all-services.component";
 import { AllUsersComponent } from "./all-users/all-users.component";
 import { CategoryComponent } from "./category/category.component";
@@ -59,6 +60,10 @@ const routes: Routes = [
       {path: 'cottageRes/complaint/:id', component: ComplaintComponent},
       {path: 'shipRes/complaint/:id', component: ComplaintComponent},
       {path: 'lessonRes/complaint/:id', component: ComplaintComponent},
+      {path: 'ships/servicePage/:id/actionRes', component: ActionReservationsComponent},
+      {path: 'cottages/servicePage/:id/actionRes', component: ActionReservationsComponent},
+      {path: 'lessons/servicePage/:id/actionRes', component: ActionReservationsComponent},
+      
 
 
 

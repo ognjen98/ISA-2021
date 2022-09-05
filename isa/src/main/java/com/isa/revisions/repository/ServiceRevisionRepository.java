@@ -11,6 +11,6 @@ import java.util.List;
 public interface ServiceRevisionRepository extends JpaRepository<ServiceRevision, Long> {
     List<ServiceRevision> getServiceRevisionsByService(Service service);
 
-    ServiceRevision getServiceRevisionByClient(Client client);
+    ServiceRevision getServiceRevisionByClientAndService(Client client, Service service);
 
 }

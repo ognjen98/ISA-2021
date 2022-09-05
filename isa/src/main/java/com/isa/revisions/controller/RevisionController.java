@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("/revision")
@@ -40,5 +41,15 @@ public class RevisionController {
     @GetMapping("/getRevisions")
     public ResponseEntity getRevisions(){
         return new ResponseEntity(revisionService.getPendingRevisions(), HttpStatus.OK);
+    }
+
+    @GetMapping("/getSerRevisions/{id}")
+    public ResponseEntity<List<RevisionDTO>> getSerRevisions(@PathVariable Long id){
+        return new ResponseEntity<>(revisionService.getSerRevisions(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/getSelRevisions/{id}")
+    public ResponseEntity<List<RevisionDTO>> getSelRevisions(@PathVariable Long id){
+        return new ResponseEntity<>(revisionService.getSelRevisions(id), HttpStatus.OK);
     }
 }
