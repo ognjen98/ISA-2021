@@ -27,6 +27,9 @@ public class Service {
 
     private String rulesOfConduct;
 
+    @Version
+    private Integer version;
+
     private Float price;
 
     private  Float grade;
@@ -193,5 +196,13 @@ public class Service {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

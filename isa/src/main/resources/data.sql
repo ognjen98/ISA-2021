@@ -92,25 +92,25 @@ insert into additional_infos (info,price) values ('Mamac', 5);
 insert into additional_infos (info,price) values ('Internet', 30);
 insert into additional_infos (info,price) values ('Parking', 8);
 
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
-values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70, 5,false);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
-values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50, 3,false);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
-values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,30, 2,false);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
-values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,170, 3,false);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
-values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,120, 5,false);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
-values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,80, 10,false);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
-values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50,1,false)
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
+values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70, 5,false,0);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
+values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50, 3,false,0);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
+values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,30, 2,false,0);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
+values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,170, 3,false,0);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
+values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,120, 5,false,0);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
+values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,80, 10,false,0);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
+values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50,1,false,0)
 ;
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
-values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,200, 2,false);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted)
-values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,300,3,false);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
+values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,200, 2,false,0);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
+values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,300,3,false,0);
 
 insert into services_periods (service_id, period_id) values (1,1);
 insert into services_periods (service_id, period_id) values (1,2);

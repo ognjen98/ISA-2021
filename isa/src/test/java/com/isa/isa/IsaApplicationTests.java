@@ -36,6 +36,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -117,244 +118,264 @@ public class IsaApplicationTests {
 	@Autowired
 	EntityManagerFactory factory;
 
-//	@Test(expected = PessimisticLockingFailureException.class)
-//	public void testOptimisticLockingScenario() throws Throwable {
+	@Test(expected = ObjectOptimisticLockingFailureException.class)
+	public void testOptimisticLockingScenario() throws Throwable {
+
+		ExecutorService executor = Executors.newFixedThreadPool(2);
+		Future<?> future1 = executor.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Startovan Thread 1");
+
+//				EntityManager entityManager = factory.createEntityManager();
+//				entityManager.getTransaction().begin();
+				Set<AdditionalInfo> additionalInfos = new HashSet<>();
+				additionalInfos.add(new AdditionalInfo(1L, "", 50F));
+				additionalInfos.add(new AdditionalInfo(2L, "", 100F));
+				ReservationDTO dto = new ReservationDTO(null, LocalDateTime.of(2022, 9, 15, 8, 0, 0),
+						LocalDateTime.of(2022,9,16,6,0,0), additionalInfos, 1L, 0);
+
+				Reservation reservation = reservationRepository.getReservationById(dto.getId());
+				Client client = clientRepository.findByEmail("ognjencivcic23@gmail.com");
+
+
+
+
+				com.isa.services.Service service = serviceRepository.findById(1L).get();
+				List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
+				for(Reservation res : serviceReservations){
+					if(dto.getId() == null) {
+						if (((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
+								|| ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))) {
+							System.out.println("Jebiga");
+						}
+					}
+				}
+
+
+				List<TimePeriod> removal = new ArrayList<>();
+				List<TimePeriod> addition = new ArrayList<>();
+				for(TimePeriod tp: service.getPeriod()){
+					if((dto.getStart().isAfter(tp.getStart()) || dto.getStart().isEqual(tp.getStart())) && (dto.getEnd().isBefore(tp.getEnd()) || dto.getEnd().isEqual(tp.getEnd()))){
+						removal.add(tp);
+						TimePeriod first = new TimePeriod(tp.getStart(), dto.getStart());
+						TimePeriod second = new TimePeriod(dto.getEnd(), tp.getEnd());
+//						timePeriodRepository.save(first);
+//						timePeriodRepository.save(second);
+
+						addition.add(first);
+						addition.add(second);
+					}
+
+
+				}
 //
-//		ExecutorService executor = Executors.newFixedThreadPool(2);
-//		Future<?> future1 = executor.submit(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				System.out.println("Startovan Thread 1");
-//
-////				EntityManager entityManager = factory.createEntityManager();
-////				entityManager.getTransaction().begin();
-//				Set<AdditionalInfo> additionalInfos = new HashSet<>();
-//				additionalInfos.add(new AdditionalInfo(1L, "", 50F));
-//				additionalInfos.add(new AdditionalInfo(2L, "", 100F));
-//				ReservationDTO dto = new ReservationDTO(null, LocalDateTime.of(2022, 9, 15, 8, 0, 0),
-//						LocalDateTime.of(2022,9,16,6,0,0), additionalInfos, 1L, 0);
-//				try { Thread.sleep(10000); } catch (InterruptedException e) {}
-//				Reservation reservation = reservationService.findOneById(dto.getId());
-//				Client client = clientRepository.findByEmail("ognjencivcic23@gmail.com");
-//
-//
-//
-//
-//				com.isa.services.Service service = servicesService.findOneById(1L);
-//
-//
-////				List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
-////
-////				List<TimePeriod> removal = new ArrayList<>();
-////				List<TimePeriod> addition = new ArrayList<>();
-////				for(TimePeriod tp: service.getPeriod()){
-////					if((dto.getStart().isAfter(tp.getStart()) || dto.getStart().isEqual(tp.getStart())) && (dto.getEnd().isBefore(tp.getEnd()) || dto.getEnd().isEqual(tp.getEnd()))){
-////						removal.add(tp);
-////						TimePeriod first = new TimePeriod(tp.getStart(), dto.getStart());
-////						TimePeriod second = new TimePeriod(dto.getEnd(), tp.getEnd());
-//////						timePeriodRepository.save(first);
-//////						timePeriodRepository.save(second);
-////
-////						addition.add(first);
-////						addition.add(second);
-////					}
-////
-////
-////				}
-////
-////				service.getPeriod().removeAll(removal);
-////				service.getPeriod().addAll(addition);
-//
-//
-////				serviceRepository.save(service);
-//
-//				if(reservation == null){
-//				float price = 0;
-//				float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
-//				price+=service.getPrice() * hours;
-////				for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
-////					price += additionalInfo.getPrice();
-////				}
-////				Optional<EarningPercentage> ep = earningPercentageRepository.findById(1L);
-////
-////				Earnings earnings = new Earnings(LocalDate.now(), price*(ep.get().getPercentage()/100));
-////				Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
-////				Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
-////				Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
-////				if(client.getPoints()>goldClient.getPoints()){
-////					price = price - price * goldClient.getDiscount();
-////				}
-////				else if(client.getPoints() > silverClient.getPoints()){
-////					price = price - price * silverClient.getDiscount();
-////				}
-////				else if(client.getPoints() > bronzeClient.getPoints()){
-////					price = price - price * bronzeClient.getDiscount();
-////				}
-////				Category goldSeller = categoryRepository.findCategoryByNameAndType("GOLD", "SELLER");
-////				Category silverSeller = categoryRepository.findCategoryByNameAndType("SILVER", "SELLER");
-////				Category bronzeSeller = categoryRepository.findCategoryByNameAndType("BRONZE", "SELLER");
-////				Seller seller = service.getSeller();
-////				float sellerMoney = 0;
-////				if(seller.getPoints()>goldSeller.getPoints()){
-////					sellerMoney = price - price * goldSeller.getDiscount()/100;
-////				}
-////				else if(seller.getPoints() > silverSeller.getPoints()){
-////					sellerMoney = price - price * silverSeller.getDiscount()/100;
-////				}
-////				else if(seller.getPoints() > bronzeSeller.getPoints()){
-////					sellerMoney = price - price * bronzeSeller.getDiscount()/100;
-////				}
-////				seller.setMoney(sellerMoney);
-////
-//////					earningsRepository.save(earnings);
-////				Optional<Points> points = pointsRepository.findById(1L);
-////				int sellerPoints = seller.getPoints();
-////				int clientPoints = client.getPoints();
-////				sellerPoints += points.get().getSellerPoints();
-////				clientPoints += points.get().getClientPoints();
-////
-////				client.setPoints(clientPoints);
-////				seller.setPoints(sellerPoints);
-////					sellerRepository.save(seller);
-////					clientRepository.save(client);
-//				reservation = new Reservation(price, false, true, false);
-//				// thread uspavan na 3 sekunde da bi
-//				reservationRepository.save(reservation);
-//
-//				}
-//
-//
-//
-//
-//
-//
-//				// drugi thread mogao da izvrsi istu operaciju
-//
-//
-////				entityManager.flush();
-////				entityManager.getTransaction().commit();
-////				entityManager.close();
-//			}
-//		});
-//		executor.submit(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				System.out.println("Startovan Thread 2");
-////				EntityManager entityManager = factory.createEntityManager();
-////				entityManager.getTransaction().begin();
-//				Set<AdditionalInfo> additionalInfos = new HashSet<>();
-//				additionalInfos.add(new AdditionalInfo(1L, "", 50F));
-//				additionalInfos.add(new AdditionalInfo(2L, "", 100F));
-//				ReservationDTO dto = new ReservationDTO(null, LocalDateTime.of(2022, 9, 15, 8, 0, 0),
-//						LocalDateTime.of(2022,9,16,6,0,0), additionalInfos, 1L, 0);
-//				Reservation reservation = reservationService.findOneById(dto.getId());
-//
-//				Client client = clientRepository.findByEmail("ognjencivcic23@gmail.com");
-//
-//
-//
-//
-//				com.isa.services.Service service = servicesService.findOneById(1L);
-//
-//
-////				List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
-//
-////				List<TimePeriod> removal = new ArrayList<>();
-////				List<TimePeriod> addition = new ArrayList<>();
-////				for(TimePeriod tp: service.getPeriod()){
-////					if((dto.getStart().isAfter(tp.getStart()) || dto.getStart().isEqual(tp.getStart())) && (dto.getEnd().isBefore(tp.getEnd()) || dto.getEnd().isEqual(tp.getEnd()))){
-////						removal.add(tp);
-////						TimePeriod first = new TimePeriod(tp.getStart(), dto.getStart());
-////						TimePeriod second = new TimePeriod(dto.getEnd(), tp.getEnd());
-//////						timePeriodRepository.save(first);
-//////						timePeriodRepository.save(second);
-////
-////						addition.add(first);
-////						addition.add(second);
-////					}
-////
-////
-////				}
-////
-////				service.getPeriod().removeAll(removal);
-////				service.getPeriod().addAll(addition);
-//
-//
-////				serviceRepository.save(service);
-//
-//				if(reservation == null) {
-//					float price = 0;
-//					float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
-//					price += service.getPrice() * hours;
-////				for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
-////					price += additionalInfo.getPrice();
-////				}
-////					Optional<EarningPercentage> ep = earningPercentageRepository.findById(1L);
-////				Earnings earnings = new Earnings(LocalDate.now(), price*(ep.get().getPercentage()/100));
-////				Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
-////				Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
-////				Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
-////				if(client.getPoints()>goldClient.getPoints()){
-////					price = price - price * goldClient.getDiscount();
-////				}
-////				else if(client.getPoints() > silverClient.getPoints()){
-////					price = price - price * silverClient.getDiscount();
-////				}
-////				else if(client.getPoints() > bronzeClient.getPoints()){
-////					price = price - price * bronzeClient.getDiscount();
-////				}
-////				Category goldSeller = categoryRepository.findCategoryByNameAndType("GOLD", "SELLER");
-////				Category silverSeller = categoryRepository.findCategoryByNameAndType("SILVER", "SELLER");
-////				Category bronzeSeller = categoryRepository.findCategoryByNameAndType("BRONZE", "SELLER");
-////				Seller seller = service.getSeller();
-////				float sellerMoney = 0;
-////				if(seller.getPoints()>goldSeller.getPoints()){
-////					sellerMoney = price - price * goldSeller.getDiscount()/100;
-////				}
-////				else if(seller.getPoints() > silverSeller.getPoints()){
-////					sellerMoney = price - price * silverSeller.getDiscount()/100;
-////				}
-////				else if(seller.getPoints() > bronzeSeller.getPoints()){
-////					sellerMoney = price - price * bronzeSeller.getDiscount()/100;
-////				}
-////				seller.setMoney(sellerMoney);
-////
-//////					earningsRepository.save(earnings);
-////				Optional<Points> points = pointsRepository.findById(1L);
-////				int sellerPoints = seller.getPoints();
-////				int clientPoints = client.getPoints();
-////				sellerPoints += points.get().getSellerPoints();
-////				clientPoints += points.get().getClientPoints();
-////
-////				client.setPoints(clientPoints);
-////				seller.setPoints(sellerPoints);
-////					sellerRepository.save(seller);
-////					clientRepository.save(client);
-//					reservation = new Reservation(price, false, true, false);
-//					reservationRepository.save(reservation);
-//
-//				}
-////				entityManager.flush();
-////				entityManager.getTransaction().commit();
-////				entityManager.close();
-//
-//
-//
-//			}
-//		});
-//		try {
-//			future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
-//		} catch (ExecutionException e) {
-//			System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
-//			throw e.getCause();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		executor.shutdown();
-//
-//	}
+				service.getPeriod().removeAll(removal);
+				service.getPeriod().addAll(addition);
+
+				//try { Thread.sleep(400); } catch (InterruptedException e) {}
+				serviceRepository.save(service);
+
+				if(reservation == null){
+				float price = 0;
+				float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
+				price+=service.getPrice() * hours;
+				for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
+					price += additionalInfo.getPrice();
+				}
+				Optional<EarningPercentage> ep = earningPercentageRepository.findById(1L);
+
+				Earnings earnings = new Earnings(LocalDate.now(), price*(ep.get().getPercentage()/100));
+				Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
+				Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
+				Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
+				if(client.getPoints()>goldClient.getPoints()){
+					price = price - price * goldClient.getDiscount();
+				}
+				else if(client.getPoints() > silverClient.getPoints()){
+					price = price - price * silverClient.getDiscount();
+				}
+				else if(client.getPoints() > bronzeClient.getPoints()){
+					price = price - price * bronzeClient.getDiscount();
+				}
+				Category goldSeller = categoryRepository.findCategoryByNameAndType("GOLD", "SELLER");
+				Category silverSeller = categoryRepository.findCategoryByNameAndType("SILVER", "SELLER");
+				Category bronzeSeller = categoryRepository.findCategoryByNameAndType("BRONZE", "SELLER");
+				Seller seller = service.getSeller();
+				float sellerMoney = 0;
+				if(seller.getPoints()>goldSeller.getPoints()){
+					sellerMoney = price - price * goldSeller.getDiscount()/100;
+				}
+				else if(seller.getPoints() > silverSeller.getPoints()){
+					sellerMoney = price - price * silverSeller.getDiscount()/100;
+				}
+				else if(seller.getPoints() > bronzeSeller.getPoints()){
+					sellerMoney = price - price * bronzeSeller.getDiscount()/100;
+				}
+				seller.setMoney(sellerMoney);
+
+//					earningsRepository.save(earnings);
+				Optional<Points> points = pointsRepository.findById(1L);
+				int sellerPoints = seller.getPoints();
+				int clientPoints = client.getPoints();
+				sellerPoints += points.get().getSellerPoints();
+				clientPoints += points.get().getClientPoints();
+
+				client.setPoints(clientPoints);
+				seller.setPoints(sellerPoints);
+					sellerRepository.save(seller);
+					clientRepository.save(client);
+				reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
+                    dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true, false);
+
+				// thread uspavan na 3 sekunde da bi
+				reservationRepository.save(reservation);
+
+				}
+
+
+
+
+
+
+				// drugi thread mogao da izvrsi istu operaciju
+
+
+//				entityManager.flush();
+//				entityManager.getTransaction().commit();
+//				entityManager.close();
+			}
+		});
+		executor.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Startovan Thread 2");
+//				EntityManager entityManager = factory.createEntityManager();
+//				entityManager.getTransaction().begin();
+				Set<AdditionalInfo> additionalInfos = new HashSet<>();
+				additionalInfos.add(new AdditionalInfo(1L, "", 50F));
+				additionalInfos.add(new AdditionalInfo(2L, "", 100F));
+				ReservationDTO dto = new ReservationDTO(null, LocalDateTime.of(2022, 9, 15, 8, 0, 0),
+						LocalDateTime.of(2022,9,16,6,0,0), additionalInfos, 1L, 0);
+				Reservation reservation = reservationRepository.getReservationById(dto.getId());
+
+				Client client = clientRepository.findByEmail("ognjencivcic23@gmail.com");
+
+
+
+
+				com.isa.services.Service service = serviceRepository.findById(1L).get();
+
+				List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
+				for(Reservation res : serviceReservations){
+					if(dto.getId() == null) {
+						if (((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
+								|| ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))) {
+							System.out.println("Jebiga");
+						}
+					}
+				}
+
+
+				List<TimePeriod> removal = new ArrayList<>();
+				List<TimePeriod> addition = new ArrayList<>();
+				for(TimePeriod tp: service.getPeriod()){
+					if((dto.getStart().isAfter(tp.getStart()) || dto.getStart().isEqual(tp.getStart())) && (dto.getEnd().isBefore(tp.getEnd()) || dto.getEnd().isEqual(tp.getEnd()))){
+						removal.add(tp);
+						TimePeriod first = new TimePeriod(tp.getStart(), dto.getStart());
+						TimePeriod second = new TimePeriod(dto.getEnd(), tp.getEnd());
+//						timePeriodRepository.save(first);
+//						timePeriodRepository.save(second);
+
+						addition.add(first);
+						addition.add(second);
+					}
+
+
+				}
+
+				service.getPeriod().removeAll(removal);
+				service.getPeriod().addAll(addition);
+
+
+				serviceRepository.save(service);
+
+				if(reservation == null) {
+					float price = 0;
+					float hours = ChronoUnit.HOURS.between(dto.getStart(), dto.getEnd());
+					price += service.getPrice() * hours;
+				for(AdditionalInfo additionalInfo: dto.getAdditionalInfos()){
+					price += additionalInfo.getPrice();
+				}
+					Optional<EarningPercentage> ep = earningPercentageRepository.findById(1L);
+				Earnings earnings = new Earnings(LocalDate.now(), price*(ep.get().getPercentage()/100));
+				Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
+				Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
+				Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
+				if(client.getPoints()>goldClient.getPoints()){
+					price = price - price * goldClient.getDiscount();
+				}
+				else if(client.getPoints() > silverClient.getPoints()){
+					price = price - price * silverClient.getDiscount();
+				}
+				else if(client.getPoints() > bronzeClient.getPoints()){
+					price = price - price * bronzeClient.getDiscount();
+				}
+				Category goldSeller = categoryRepository.findCategoryByNameAndType("GOLD", "SELLER");
+				Category silverSeller = categoryRepository.findCategoryByNameAndType("SILVER", "SELLER");
+				Category bronzeSeller = categoryRepository.findCategoryByNameAndType("BRONZE", "SELLER");
+				Seller seller = service.getSeller();
+				float sellerMoney = 0;
+				if(seller.getPoints()>goldSeller.getPoints()){
+					sellerMoney = price - price * goldSeller.getDiscount()/100;
+				}
+				else if(seller.getPoints() > silverSeller.getPoints()){
+					sellerMoney = price - price * silverSeller.getDiscount()/100;
+				}
+				else if(seller.getPoints() > bronzeSeller.getPoints()){
+					sellerMoney = price - price * bronzeSeller.getDiscount()/100;
+				}
+				seller.setMoney(sellerMoney);
+
+//					earningsRepository.save(earnings);
+				Optional<Points> points = pointsRepository.findById(1L);
+				int sellerPoints = seller.getPoints();
+				int clientPoints = client.getPoints();
+				sellerPoints += points.get().getSellerPoints();
+				clientPoints += points.get().getClientPoints();
+
+				client.setPoints(clientPoints);
+				seller.setPoints(sellerPoints);
+					sellerRepository.save(seller);
+					clientRepository.save(client);
+					reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
+                    dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true, false);
+
+
+					reservationRepository.save(reservation);
+
+				}
+//				entityManager.flush();
+//				entityManager.getTransaction().commit();
+//				entityManager.close();
+
+
+
+			}
+		});
+		try {
+			future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
+		} catch (ExecutionException e) {
+			System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
+			throw e.getCause();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		executor.shutdown();
+
+	}
 
 
 //	@Test(expected = ObjectOptimisticLockingFailureException.class)
