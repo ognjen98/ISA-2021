@@ -22,8 +22,8 @@ public class Service {
 
     private String promoDesc;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Image> images;
+
+    private String image;
 
     private String rulesOfConduct;
 
@@ -65,7 +65,7 @@ public class Service {
 
     public Service(){}
 
-    public Service(Long id, String name, String promoDesc, Set<Image> images, String rulesOfConduct,
+    public Service(Long id, String name, String promoDesc, String image, String rulesOfConduct,
                    Float price, Float grade, Integer noGuests, Set<AdditionalInfo> additionalInfos,
                    List<TimePeriod> period,
                    Seller seller,
@@ -74,7 +74,7 @@ public class Service {
         this.id = id;
         this.name = name;
         this.promoDesc = promoDesc;
-        this.images = images;
+        this.image = image;
         this.rulesOfConduct = rulesOfConduct;
         this.price = price;
         this.grade =grade;
@@ -110,12 +110,12 @@ public class Service {
         this.promoDesc = promoDesc;
     }
 
-    public Set<Image> getImages() {
-        return images;
+    public String getImage() {
+        return image;
     }
 
-    public void setImages(Set<Image> images) {
-        this.images = images;
+    public void setImages(String image) {
+        this.image = image;
     }
 
     public String getRulesOfConduct() {

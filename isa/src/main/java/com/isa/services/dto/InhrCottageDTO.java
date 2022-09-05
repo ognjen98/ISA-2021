@@ -7,8 +7,10 @@ public class InhrCottageDTO extends ServiceDTO{
 
     public InhrCottageDTO(){}
 
-    public InhrCottageDTO(Long id, String name, Float grade, Float price, String streetName, String number, String city, String state, Integer noGuests, Integer noRooms, Integer noBedsByRoom) {
-        super(id, name, grade, price, streetName, number, city, state);
+    public InhrCottageDTO(Long id, String name, Float grade, Float price, String streetName, String number,
+                          String city, String state, Integer noGuests, Integer noRooms, Integer noBedsByRoom,
+                          String image) {
+        super(id, name, grade, price, streetName, number, city, state, image);
         this.noGuests = noGuests;
         this.noRooms = noRooms;
         this.noBedsByRoom = noBedsByRoom;

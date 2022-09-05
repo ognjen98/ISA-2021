@@ -47,7 +47,7 @@ public class ComplaintService {
     @Autowired
     EmailSender emailSender;
 
-
+    @Transactional
     public String saveComplaint(ComplaintDTO dto, String email) {
         Client client = clientRepository.findByEmail(email);
         com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());
@@ -70,6 +70,7 @@ public class ComplaintService {
         return "There was a problem";
     }
 
+    @Transactional
     public List<Complaint> getPendingComplaints(){
         List<Complaint> revisions =
                 complaintRepository.findAll().stream().filter(r -> r.getStatus() == 2).collect(Collectors.toList());
@@ -84,19 +85,21 @@ public class ComplaintService {
             ServiceComplaint serviceComplaint = (ServiceComplaint) complaint.get();
             serviceComplaint.setStatus(1);
             serviceComplaintRepository.save(serviceComplaint);
-//            emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
-//                    response), "COM");
-//            emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
-//                    response), "COM");
+            emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
+                    response), "COM");
+            emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+                    response), "COM");
+            return  "Complaint approved";
         }
         else if(complaint.get() instanceof SellerComplaint) {
             SellerComplaint sellerComplaint = (SellerComplaint) complaint.get();
             sellerComplaint.setStatus(1);
             sellerComplaintRepository.save(sellerComplaint);
-//            emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
-//                    response), "COM");
-//            emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
-//                    response), "COM");
+            emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
+                    response), "COM");
+            emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+                    response), "COM");
+            return "Complaint approved";
         }
 
         return "Complaint not approved";

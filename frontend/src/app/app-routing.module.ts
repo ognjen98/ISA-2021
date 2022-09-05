@@ -37,38 +37,13 @@ const routes: Routes = [
     {path:'', component: HomeComponent, children: [
       {path: 'register', component: RegistrationComponent},
       {path: 'login', component: LoginComponent},
-      {path: 'category', component: CategoryComponent},
-      {path: 'points', component: PointsComponent},
+      
       {path: 'ships', component: ShipsComponent},
       {path: 'lessons', component: LessonsComponent},
       {path: 'cottages', component: CottagesComponent},
       {path: 'lessons/servicePage/:id', component: ServicePageComponent},
       {path: 'ships/servicePage/:id', component: ServicePageComponent},
       {path: 'cottages/servicePage/:id', component: ServicePageComponent},
-      {path: 'shipRes', component: ShipReservationsComponent},
-      {path: 'cottageRes', component: CottageReservationsComponent},
-      {path: 'lessonRes', component: LessonReservationsComponent},
-      {path: 'subscriptions', component: SubscriptionsComponent},
-      {path: 'regRequests', component: RegRequestsComponent},
-      {path: 'cottageRes/revision/:id', component: RevisionComponent},
-      {path: 'shipRes/revision/:id', component: RevisionComponent},
-      {path: 'lessonRes/revision/:id', component: RevisionComponent},
-      {path: 'revisionTable', component: RevisionTableComponent},
-      {path: 'deleteRequest', component: DeleteRequestComponent},
-      {path: 'deleteRequests', component: DeleteRequestsComponent},
-      {path: 'complaintTable', component: ComplaintTableComponent},
-      {path: 'cottageRes/complaint/:id', component: ComplaintComponent},
-      {path: 'shipRes/complaint/:id', component: ComplaintComponent},
-      {path: 'lessonRes/complaint/:id', component: ComplaintComponent},
-      {path: 'ships/servicePage/:id/actionRes', component: ActionReservationsComponent},
-      {path: 'cottages/servicePage/:id/actionRes', component: ActionReservationsComponent},
-      {path: 'lessons/servicePage/:id/actionRes', component: ActionReservationsComponent},
-      
-
-
-
-
-
     ]},
     {path: 'client', component: ClientHomeComponent, canActivate: [AuthGuard],
   
@@ -79,6 +54,27 @@ const routes: Routes = [
       {path: 'updateInfo', component: UpdateInfoComponent},
       {path: 'reservation', component: ReservationComponent},
       {path: 'pendingRes', component: PendingReservationsComponent},
+      {path: 'ships', component: ShipsComponent},
+      {path: 'lessons', component: LessonsComponent},
+      {path: 'cottages', component: CottagesComponent},
+      {path: 'lessons/servicePage/:id', component: ServicePageComponent},
+      {path: 'ships/servicePage/:id', component: ServicePageComponent},
+      {path: 'cottages/servicePage/:id', component: ServicePageComponent},
+      {path: 'shipRes', component: ShipReservationsComponent},
+      {path: 'cottageRes', component: CottageReservationsComponent},
+      {path: 'lessonRes', component: LessonReservationsComponent},
+      {path: 'subscriptions', component: SubscriptionsComponent},
+      {path: 'cottageRes/revision/:id', component: RevisionComponent},
+      {path: 'shipRes/revision/:id', component: RevisionComponent},
+      {path: 'lessonRes/revision/:id', component: RevisionComponent},
+      {path: 'deleteRequest', component: DeleteRequestComponent},
+      {path: 'cottageRes/complaint/:id', component: ComplaintComponent},
+      {path: 'shipRes/complaint/:id', component: ComplaintComponent},
+      {path: 'lessonRes/complaint/:id', component: ComplaintComponent},
+      {path: 'ships/servicePage/:id/actionRes', component: ActionReservationsComponent},
+      {path: 'cottages/servicePage/:id/actionRes', component: ActionReservationsComponent},
+      {path: 'lessons/servicePage/:id/actionRes', component: ActionReservationsComponent},
+
     ]
   },
     {path: 'admin', component: AdminHomeComponent, canActivate: [AuthGuard],
@@ -92,7 +88,13 @@ const routes: Routes = [
       {path: 'allServices', component: AllServicesComponent},
       {path: 'allUsers', component: AllUsersComponent},
       {path: 'charts', component: ChartsComponent},
-      {path: 'createAdmin', component: CreateAdminComponent}
+      {path: 'createAdmin', component: CreateAdminComponent},
+      {path: 'category', component: CategoryComponent},
+      {path: 'points', component: PointsComponent},
+      {path: 'regRequests', component: RegRequestsComponent},
+      {path: 'revisionTable', component: RevisionTableComponent},
+      {path: 'deleteRequests', component: DeleteRequestsComponent},
+      {path: 'complaintTable', component: ComplaintTableComponent},
     ]
   },
   

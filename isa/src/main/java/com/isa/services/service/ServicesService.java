@@ -35,6 +35,7 @@ public class ServicesService {
     @Autowired
     private FishingLessonsRepository fishingLessonsRepository;
 
+    @Transactional
     public List<ServiceDTO> getShips(){
         List<com.isa.services.Service> ships =
                 serviceRepository.findAll().stream().filter(s-> s instanceof Ship && !s.getDeleted()).collect(Collectors.toList());
@@ -52,6 +53,7 @@ public class ServicesService {
         return dtos;
     }
 
+    @Transactional
     public List<ServiceDTO> getLessons(){
         List<com.isa.services.Service> fishingLessons =
                 serviceRepository.findAll().stream().filter(s-> s instanceof FishingLessons && !s.getDeleted()).collect(Collectors.toList());
@@ -69,6 +71,7 @@ public class ServicesService {
         return dtos;
     }
 
+    @Transactional
     public List<ServiceDTO> getCottages(){
         List<com.isa.services.Service> cottages =
                 serviceRepository.findAll().stream().filter(s-> s instanceof Cottage && !s.getDeleted()).collect(Collectors.toList());
@@ -90,7 +93,8 @@ public class ServicesService {
         List<ServiceDTO> dtos = new ArrayList<>();
         for(com.isa.services.Service service: services){
             dtos.add(new ServiceDTO(service.getId(), service.getName(),service.getGrade(),service.getPrice(),service.getAddress().getStreetName(),
-                    service.getAddress().getNumber(),service.getAddress().getCity(),service.getAddress().getState()));
+                    service.getAddress().getNumber(),service.getAddress().getCity(),service.getAddress().getState(),
+                    service.getImage()));
 
         }
 
@@ -114,7 +118,7 @@ public class ServicesService {
                         discountReservation.getStartTime(), discountReservation.getEndTime(),
                         discountReservation.getMaxCapacity(), discountReservation.getPrice(),
                         discountReservation.getAddress().getCity(), discountReservation.getDiscPrice(),
-                        discountReservation.getAdditionalInfos());
+                        discountReservation.getAdditionalInfos(), discountReservation.getService().getImage());
                 dtos.add(dto);
             }
         }
@@ -126,7 +130,7 @@ public class ServicesService {
     public com.isa.services.Service deleteService(Long id){
         com.isa.services.Service service = serviceRepository.getServiceById(id);
         List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
-        if (reservations == null) {
+        if (reservations == null || reservations.size() == 0) {
             service.setDeleted(true);
 
         } else {
@@ -136,6 +140,7 @@ public class ServicesService {
         return service;
     }
 
+    @Transactional
     public List<ServiceDTO> getAllServices(){
         List<com.isa.services.Service> services = serviceRepository.findAll().stream().filter(s -> !s.getDeleted()).collect(Collectors.toList());
         List<ServiceDTO> dtos = new ArrayList<>();
@@ -143,7 +148,7 @@ public class ServicesService {
 
             dtos.add(new ServiceDTO(service.getId(), service.getName(), service.getGrade(), service.getPrice(),
                     service.getAddress().getStreetName(), service.getAddress().getNumber(),
-                    service.getAddress().getCity(), service.getAddress().getState()));
+                    service.getAddress().getCity(), service.getAddress().getState(), service.getImage()));
         }
         return dtos;
     }

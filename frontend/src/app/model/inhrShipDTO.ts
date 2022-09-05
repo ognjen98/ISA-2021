@@ -9,8 +9,8 @@ export class InhrShipDTO extends ServiceDTO{
     private enginePower: number;
 
 
-	constructor(id:number, name: string, grade: number, price:number, streetName:string, number: string, city: string, state: string, $noGuests: number, $type: string, $length: number, $noEngines: number, $maxSpeed: number, $enginePower: number) {
-        super(id, name, grade, price, streetName, number, city, state);
+	constructor(id:number, name: string, grade: number, price:number, streetName:string, number: string, city: string, state: string, $noGuests: number, $type: string, $length: number, $noEngines: number, $maxSpeed: number, $enginePower: number, image: string) {
+        super(id, name, grade, price, streetName, number, city, state, image);
 		this.noGuests = $noGuests;
 		this.type = $type;
 		this.length = $length;

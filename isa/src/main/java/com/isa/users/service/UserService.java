@@ -61,6 +61,7 @@ public class UserService{
     DeleteRequestRepository deleteRequestRepository;
 
 
+    @Transactional
     public User updateInfo(UpdateInfoDTO dto, String email){
         User u = userRepository.findByEmail(email);
         if(u.getDeleted()){
@@ -80,6 +81,7 @@ public class UserService{
         return u;
     }
 
+    @Transactional
     public UpdateInfoDTO  getInfo(String email){
         User u = userRepository.findByEmail(email);
         if(u.getDeleted()){
@@ -103,7 +105,7 @@ public class UserService{
             Set<Reservation> cancelled = client.getCancelledReservations();
 //            user.get().setDeleted(true);
             List<Reservation> reservations = reservationRepository.getReservationsByClientId(id);
-            if(reservations != null) {
+            if(reservations != null || reservations.size() != 0) {
                 for (Reservation r : reservations) {
                     if (!cancelled.contains(r)) {
                         com.isa.services.Service s = r.getService();
@@ -146,11 +148,11 @@ public class UserService{
                 "INSTRUCTOR")){
             Seller seller = (Seller) user.get();
             List<com.isa.services.Service> services = serviceRepository.getServicesBySellerId(seller.getId());
-            if(services != null) {
+            if(services != null || services.size() != 0) {
                 for (com.isa.services.Service service : services) {
 
                     List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
-                    if (reservations == null) {
+                    if (reservations == null || reservations.size() == 0) {
                         service.setDeleted(true);
 
                     } else {
@@ -166,7 +168,7 @@ public class UserService{
         return null;
     }
 
-
+    @Transactional
     public List<UserDTO> getAllUsers(){
         List<User> users =
                 userRepository.findAll().stream().filter(u -> !(u instanceof SystemAdmin) && !u.getDeleted()).collect(Collectors.toList());
@@ -188,7 +190,7 @@ public class UserService{
             Set<Reservation> cancelled = client.getCancelledReservations();
 //            user.get().setDeleted(true);
             List<Reservation> reservations = reservationRepository.getReservationsByClientId(id);
-            if(reservations != null) {
+            if(reservations != null || reservations.size() != 0) {
                 for (Reservation r : reservations) {
                     if (!cancelled.contains(r)) {
                         com.isa.services.Service s = r.getService();
@@ -231,11 +233,11 @@ public class UserService{
                 "INSTRUCTOR")){
             Seller seller = (Seller) user.get();
             List<com.isa.services.Service> services = serviceRepository.getServicesBySellerId(seller.getId());
-            if(services != null) {
+            if(services != null || services.size() != 0) {
                 for (com.isa.services.Service service : services) {
 
                     List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
-                    if (reservations == null) {
+                    if (reservations == null || reservations.size() == 0) {
                         service.setDeleted(true);
 
                     } else {
@@ -260,6 +262,7 @@ public class UserService{
         return "Deleted successfully";
     }
 
+    @Transactional
     public String deleteUserReject(Long id, String reason){
         Optional<User> user = userRepository.findById(id);
         DeleteRequest deleteRequest = deleteRequestRepository.findByUser(user.get());
@@ -269,6 +272,7 @@ public class UserService{
     }
 
 
+    @Transactional
     public String makeDelRequest(String reason, String email){
         User user = userRepository.findByEmail(email);
         DeleteRequest dr = deleteRequestRepository.findByUser(user);
@@ -285,7 +289,7 @@ public class UserService{
 
     }
 
-
+    @Transactional
     public List<DeleteRequestDTO> getDelRequests(){
         List<DeleteRequest> deleteRequests = deleteRequestRepository.findAll();
         List<DeleteRequestDTO> dtos = new ArrayList<>();

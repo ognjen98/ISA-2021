@@ -17,13 +17,14 @@ public class GetReservationDTO {
     private String city;
     private Set<AdditionalInfo> additionalInfoSet;
     private String serviceName;
+    private String image;
 
 
     public GetReservationDTO(){}
 
     public GetReservationDTO(Long id, LocalDateTime startTime, LocalDateTime endTime, Integer maxCapacity,
                                   Float price,Float discPrice, String city, Set<AdditionalInfo> additionalInfoSet,
-                             String serviceName) {
+                             String serviceName, String image) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -33,6 +34,7 @@ public class GetReservationDTO {
         this.city = city;
         this.additionalInfoSet = additionalInfoSet;
         this.serviceName = serviceName;
+        this.image = image;
 
     }
 
@@ -107,5 +109,13 @@ public class GetReservationDTO {
 
     public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -22,6 +22,6 @@ export class ComplaintService {
   }
 
   respond(id: number, response: string){
-    return this._http.get(this._APIUrl + "/response/" + id + "?response=")
+    return this._http.get(this._APIUrl + "/response/" + id + "?response="+response)
   }
 }

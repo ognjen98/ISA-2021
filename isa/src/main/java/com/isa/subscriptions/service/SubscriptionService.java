@@ -39,11 +39,12 @@ public class SubscriptionService {
     @Autowired
     EmailSender emailSender;
 
+    @Transactional
     public String createSubscription(Long serviceId, String email){
         Client client = clientRepository.findByEmail(email);
         com.isa.services.Service service = serviceRepository.getServiceById(serviceId);
         Subscription s = subscriptionRepository.getSubscriptionByServiceAndClient(service, client);
-        if(s != null){
+        if(s != null && !s.getCancelled()){
             return "Subscription already exists";
         }
 
@@ -53,6 +54,7 @@ public class SubscriptionService {
         return "Subscription added";
     }
 
+    @Transactional
     public List<SubscriptionDTO> subbedServices(String email){
         Client client = clientRepository.findByEmail(email);
         List<Subscription> subscriptions = subscriptionRepository.getSubscriptionsByClient(client);
@@ -60,7 +62,7 @@ public class SubscriptionService {
         for(Subscription subscription : subscriptions){
             if(!subscription.getCancelled()) {
                 dtos.add(new SubscriptionDTO(subscription.getId(), subscription.getService().getName(),
-                        subscription.getService().getAddress().getCity()));
+                        subscription.getService().getAddress().getCity(), subscription.getService().getImage()));
             }
         }
 
@@ -75,6 +77,7 @@ public class SubscriptionService {
         return "Subscription cancelled";
     }
 
+    @Transactional
     public String addResAction(ResActionDTO dto){
         com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());
         Reservation reservation = new Reservation(dto.getPrice(),dto.getDiscount(), service);
@@ -84,7 +87,7 @@ public class SubscriptionService {
         for(Subscription subscription: subscriptions){
             if(!subscription.getCancelled()){
                 emailSender.sendEmail(subscription.getClient().getEmail(), buildEmail(service.getName(),
-                                "action", "SUB", ""),
+                                "", "SUB", ""),
                         "SUB");
             }
         }

@@ -15,11 +15,13 @@ public class DiscountReservationDTO {
     private String city;
     private Float discPrice;
     private Set<AdditionalInfo> additionalInfos;
+    private String image;
 
     public DiscountReservationDTO(){}
 
     public DiscountReservationDTO(Long id, LocalDateTime startTime, LocalDateTime endTime, Integer maxCapacity,
-                                  Float price, String city, Float discPrice, Set<AdditionalInfo> additionalInfos) {
+                                  Float price, String city, Float discPrice, Set<AdditionalInfo> additionalInfos,
+                                  String image) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -28,6 +30,7 @@ public class DiscountReservationDTO {
         this.city = city;
         this.discPrice = discPrice;
         this.additionalInfos = additionalInfos;
+        this.image = image;
     }
 
     public Long getId() {
@@ -92,5 +95,13 @@ public class DiscountReservationDTO {
 
     public void setAdditionalInfos(Set<AdditionalInfo> additionalInfos) {
         this.additionalInfos = additionalInfos;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

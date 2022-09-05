@@ -78,6 +78,7 @@ public class RevisionService {
     }
 
 
+    @Transactional
     public List<Revision> getPendingRevisions(){
         List<Revision> revisions =
                 revisionRepository.findAll().stream().filter(r -> r.getStatus() == 2).collect(Collectors.toList());
@@ -157,6 +158,7 @@ public class RevisionService {
 
     }
 
+    @Transactional
     public List<RevisionDTO> getSerRevisions(Long serviceId){
         List<ServiceRevision> revisions =
                 serviceRevisionRepository.findAll().stream().filter(r -> r.getService().getId() == serviceId && r.getStatus() == 1).collect(Collectors.toList());
@@ -169,6 +171,7 @@ public class RevisionService {
         return dtos;
     }
 
+    @Transactional
     public List<RevisionDTO> getSelRevisions(Long serviceId){
         Optional<com.isa.services.Service> service = serviceRepository.findById(serviceId);
         List<SellerRevision> revisions =

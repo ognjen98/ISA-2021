@@ -5,13 +5,15 @@ public class SubscriptionDTO {
     private Long id;
     private String serviceName;
     private String city;
+    private String image;
 
     public SubscriptionDTO(){}
 
-    public SubscriptionDTO(Long id, String serviceName, String city) {
+    public SubscriptionDTO(Long id, String serviceName, String city, String image) {
         this.id = id;
         this.serviceName = serviceName;
         this.city = city;
+        this.image = image;
     }
 
     public Long getId() {
@@ -36,5 +38,13 @@ public class SubscriptionDTO {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

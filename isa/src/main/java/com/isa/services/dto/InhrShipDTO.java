@@ -11,8 +11,10 @@ public class InhrShipDTO extends ServiceDTO{
 
     public InhrShipDTO(){}
 
-    public InhrShipDTO(Long id, String name, Float grade, Float price, String streetName, String number, String city, String state, Integer noGuests, String type, Float length, Integer noEngines, Float maxSpeed, Float enginePower) {
-        super(id, name, grade, price, streetName, number, city, state);
+    public InhrShipDTO(Long id, String name, Float grade, Float price, String streetName, String number, String city,
+                       String state, Integer noGuests, String type, Float length, Integer noEngines, Float maxSpeed,
+                       Float enginePower, String image) {
+        super(id, name, grade, price, streetName, number, city, state, image);
         this.noGuests = noGuests;
         this.type = type;
         this.length = length;

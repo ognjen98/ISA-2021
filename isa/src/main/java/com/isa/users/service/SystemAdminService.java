@@ -55,6 +55,7 @@ public class SystemAdminService {
         return systemAdmin.getFirstTimeLogin();
     }
 
+    @Transactional
     public SystemAdmin createAdmin(AdminDTO dto){
         boolean userExists = systemAdminRepository.existsSystemAdminByEmail(dto.getEmail());
         if(userExists){
@@ -113,6 +114,7 @@ public class SystemAdminService {
 
     }
 
+    @Transactional
     public List<UserDTO> getRegRequests(){
         List<Seller> sellers =
                 sellerRepository.findAll().stream().filter(s -> s.getApproved() == 2).collect(Collectors.toList());

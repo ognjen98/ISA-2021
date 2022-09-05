@@ -80,6 +80,7 @@ public class ReservationService {
     @Autowired
     ReservationRepository reservationRepository;
 
+    @Transactional
     public List<InhrShipDTO> searchShips (SearchDataDTO dto){
         List<Ship> ships = shipRepository.findAll().stream().filter(s -> !s.getDeleted()).collect(Collectors.toList());
 
@@ -133,6 +134,7 @@ public class ReservationService {
     }
 
 
+    @Transactional
     public List<InhrCottageDTO> searchCottages (SearchDataDTO dto){
         List<Cottage> cottages =
                 cottageRepository.findAll().stream().filter(s -> !s.getDeleted()).collect(Collectors.toList());
@@ -187,6 +189,7 @@ public class ReservationService {
     }
 
 
+    @Transactional
     public List<ServiceDTO> searchLessons (SearchDataDTO dto){
         List<FishingLessons> cottages =
                 fishingLessonsRepository.findAll().stream().filter(s -> !s.getDeleted()).collect(Collectors.toList());
@@ -250,7 +253,8 @@ public class ReservationService {
 
             dtos.add(new InhrShipDTO(s.getId(), s.getName(), s.getGrade(), s.getPrice(), s.getAddress().getStreetName(),
                     s.getAddress().getNumber(), s.getAddress().getCity(), s.getAddress().getState(),
-                    s.getNoGuests(), s.getType(), s.getLength(), s.getNoEngines(), s.getMaxSpeed(), s.getEnginePower()));
+                    s.getNoGuests(), s.getType(), s.getLength(), s.getNoEngines(), s.getMaxSpeed(),
+                    s.getEnginePower(), s.getImage()));
         }
 
 
@@ -265,7 +269,7 @@ public class ReservationService {
 
             dtos.add(new InhrCottageDTO(s.getId(), s.getName(), s.getGrade(), s.getPrice(), s.getAddress().getStreetName(),
                     s.getAddress().getNumber(), s.getAddress().getCity(), s.getAddress().getState(),
-                    s.getNoGuests(), s.getNoRooms(), s.getNoBedsByRoom()));
+                    s.getNoGuests(), s.getNoRooms(), s.getNoBedsByRoom(), s.getImage()));
         }
 
 
@@ -279,13 +283,14 @@ public class ReservationService {
         for (FishingLessons s : ships) {
 
             dtos.add(new ServiceDTO(s.getId(), s.getName(), s.getGrade(), s.getPrice(), s.getAddress().getStreetName(),
-                    s.getAddress().getNumber(), s.getAddress().getCity(), s.getAddress().getState()));
+                    s.getAddress().getNumber(), s.getAddress().getCity(), s.getAddress().getState(), s.getImage()));
         }
 
 
         return dtos;
     }
 
+    @Transactional
     public List<ServiceDTO> sort(SortDTO dto) {
         if(dto.getSortParam().equals("NAME_ASC")){
 
@@ -336,6 +341,7 @@ public class ReservationService {
         return dto.getDto();
     }
 
+    @Transactional
     public List<InhrCottageDTO> sortCottages(SortDTOCottage dto) {
         if(dto.getSortParam().equals("NAME_ASC")){
 
@@ -386,6 +392,7 @@ public class ReservationService {
         return dto.getDto();
     }
 
+    @Transactional
     public List<InhrShipDTO> sortShips(SortDTOShip dto) {
         if(dto.getSortParam().equals("NAME_ASC")){
 
@@ -436,6 +443,7 @@ public class ReservationService {
         return dto.getDto();
     }
 
+    @Transactional
     public List<InhrShipDTO> filter(FilterDTO dto) {
 
         if(dto.getEntity().equals("SHIP")){
@@ -649,7 +657,7 @@ public class ReservationService {
         }
         reservationRepository.save(reservation);
 
-//        emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES", ""), "RES");
+        emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES", ""), "RES");
         return reservation;
 
     }
@@ -709,6 +717,7 @@ public class ReservationService {
         return "Cancelled successfully";
     }
 
+    @Transactional
     public List<GetReservationDTO> getReservationsForClient(String email){
         Client client = clientRepository.findByEmail(email);
         if(client.getDeleted()){
@@ -722,8 +731,9 @@ public class ReservationService {
     private List<GetReservationDTO> discountReservationDTOMapper(List<Reservation> discountReservations){
         List<GetReservationDTO> dtos = new ArrayList<>();
         int i = 0;
+        LocalDateTime now = LocalDateTime.now();
         for(Reservation discountReservation: discountReservations){
-            if(!discountReservation.getCancelled() || !discountReservation.getDeleted() || discountReservation.getStartTime().isAfter(LocalDateTime.now())) {
+            if(!discountReservation.getCancelled() && !discountReservation.getDeleted() && discountReservation.getStartTime().isAfter(now)) {
                 Float discPrice = discountReservation.getDiscPrice();
                 if(discPrice == null){
                     discPrice = 0F;
@@ -733,7 +743,7 @@ public class ReservationService {
                         discountReservation.getMaxCapacity(), discountReservation.getPrice(),
                         discPrice,
                         discountReservation.getAddress().getCity(), discountReservation.getAdditionalInfos(),
-                        discountReservation.getService().getName());
+                        discountReservation.getService().getName(), discountReservation.getService().getImage());
                 dtos.add(dto);
             }
         }
@@ -748,6 +758,7 @@ public class ReservationService {
         return ep;
     }
 
+    @Transactional
     public List<DayMonthValueDTO> getReport(ReportDTO dto){
         if(dto.getType().equals("Year")){
             List<Earnings> earnings =
@@ -877,6 +888,7 @@ public class ReservationService {
     }
 
 
+    @Transactional
     public List<GetReservationDTO> getPastShipReservations(String email){
         List<Reservation> reservations =
                 reservationRepository.findAll().stream().filter(r -> r.getEndTime().isBefore(LocalDateTime.now()) && r.getClient().getEmail().equals(email)).collect(Collectors.toList());
@@ -890,13 +902,14 @@ public class ReservationService {
             if(r.getService() instanceof Ship){
                 result.add(new GetReservationDTO(r.getId(),r.getStartTime(),r.getEndTime(),r.getMaxCapacity(),
                         r.getPrice(),discPrice,r.getAddress().getCity(), r.getAdditionalInfos(),
-                        r.getService().getName()));
+                        r.getService().getName(), r.getService().getImage()));
             }
         }
 
         return result;
     }
 
+    @Transactional
     public List<GetReservationDTO> getPastLessonsReservations(String email){
         List<Reservation> reservations =
                 reservationRepository.findAll().stream().filter(r -> r.getEndTime().isBefore(LocalDateTime.now()) && r.getClient().getEmail().equals(email)).collect(Collectors.toList());
@@ -910,13 +923,14 @@ public class ReservationService {
             if(r.getService() instanceof FishingLessons){
                 result.add(new GetReservationDTO(r.getId(),r.getStartTime(),r.getEndTime(),r.getMaxCapacity(),
                         r.getPrice(),discPrice,r.getAddress().getCity(), r.getAdditionalInfos(),
-                        r.getService().getName()));
+                        r.getService().getName(),r.getService().getImage()));
             }
         }
 
         return result;
     }
 
+    @Transactional
     public List<GetReservationDTO> getPastCottageReservations(String email){
         List<Reservation> reservations =
                 reservationRepository.findAll().stream().filter(r -> r.getEndTime().isBefore(LocalDateTime.now()) && r.getClient().getEmail().equals(email)).collect(Collectors.toList());
@@ -930,7 +944,7 @@ public class ReservationService {
                 }
                 GetReservationDTO dto =new GetReservationDTO(r.getId(),r.getStartTime(),r.getEndTime(),r.getMaxCapacity(),
                 r.getPrice(),discPrice,r.getAddress().getCity(), r.getAdditionalInfos(),
-                r.getService().getName());
+                r.getService().getName(), r.getService().getImage());
                 result.add(dto);
             }
         }

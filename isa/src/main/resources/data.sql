@@ -12,6 +12,8 @@ insert into addresses (street_name, number, city, state) values ('Maksima Gorkog
 insert into addresses (street_name, number, city, state) values ('Strazilovska', '2', 'Novi Sad','Srbija');
 insert into addresses (street_name, number, city, state) values ('Fruskogorska', '1', 'Novi Sad','Srbija');
 
+
+
 INSERT INTO roles (name) VALUES ('SYSTEM_ADMIN');
 INSERT INTO roles (name) VALUES ('CLIENT');
 INSERT INTO roles (name) VALUES ('COTTAGE_OWNER');
@@ -92,25 +94,39 @@ insert into additional_infos (info,price) values ('Mamac', 5);
 insert into additional_infos (info,price) values ('Internet', 30);
 insert into additional_infos (info,price) values ('Parking', 8);
 
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
-values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70, 5,false,0);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
-values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50, 3,false,0);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
-values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,30, 2,false,0);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
-values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,170, 3,false,0);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
-values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,120, 5,false,0);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
-values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,80, 10,false,0);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
-values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50,1,false,0)
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,
+version, image)
+values ('Soko', 'Veoma dobar brod sa velikim izborom dodatnih usluga', 'Budite dobri', 5, 3, 0.0, 70, 5,false,0, 'http://www.ico.rs/wp-content/uploads/2011/06/KATAMARAN.jpg');
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,
+version, image)
+values ('Jedrilicar', 'Veliko jedro na sredini dostize brzinu do 50 km/h', 'Budite dobri', 6, 3, 0.0,50, 3,false,0, 'https://www.luxlife.rs/storage/posts/gallery/2011/Sep/183533/red-dragon-luksuzna-jedrilica.jpg');
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,
+version, image)
+values ('Spartanac', 'Brod srednje duzine dostize brzinu i do 250 km/h', 'Budite dobri', 7, 3, 0.0,30, 2,false,0,'https://media.mojtrg.me/Image/cbb95823-4bed-4ab9-8e1c-97ac8bb3f2ef/20190430/false/false/1280/960/prodajem-gliser.jpeg');
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,
+version, image)
+values ('Lovacki dom', 'Prostrana vikendica za sve goste', 'Budite dobri', 8, 2, 0.0,170, 3,false,0,'https://www.apartmanivikendice.com/images/smestaj/galerija-vikendica-pustolov-uvac-20.jpg');
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,
+version, image)
+values ('Lazino sokace', 'Uzivajte u najboljim specijalitetima sa ovih prostora', 'Budite dobri', 9, 2, 0.0,120, 5,
+false,0,'https://www.gradnja.rs/wp-content/uploads/2022/02/luksuzne-vikendice-srbija-izajmljivanje-gradnja.rs_.jpg');
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,
+version, image)
+values ('Znalac', 'Oprobajte se u brojnim igrama znanja sa ostalim gostima', 'Budite dobri', 10, 2, 0.0,80, 10,false,0,'https://cf.bstatic.com/xdata/images/hotel/max1024x768/187868702.jpg?k=4368f5637f7ff4c79e5c7f993e37c48850d3e9d7d514486c15e971a4aa45ed38&o=&hp=1')
 ;
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
-values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,200, 2,false,0);
-insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,version)
-values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,300,3,false,0);
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,
+version, image)
+values ('Jasminovo pecanje varalicom', 'Pecanje varalicom sa prvakom Srbije u pecanju', 'Budite dobri', 11, 4, 0.0,50,1,
+false,0, 'https://cdn.wallpapersafari.com/42/67/mCjYQN.jpg')
+;
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,
+version, image)
+values ('Jasminovo pecanje udicom', 'Pecanje udicom sa prvakom Srbije u pecanju', 'Budite dobri', 12, 4, 0.0,200, 2,
+false,0,'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXfNp8kiNeiDX9RdbDDZZvdMW5SP8ooz209g&usqp=CAU');
+insert into services (name, promo_desc, rules_of_conduct,address_id, seller_id, grade, price, no_guests, deleted,
+version, image)
+values ('Jasminovo pecanje rukama', 'Pecanje rukama sa prvakom Srbije u pecanju', 'Budite dobri', 13, 4, 0.0,300,3,
+false,0,'https://t3.ftcdn.net/jpg/03/34/10/06/360_F_334100631_68aaU8bT2ZfiS0g9nwiFd8osIW3nebFb.jpg');
 
 insert into services_periods (service_id, period_id) values (1,1);
 insert into services_periods (service_id, period_id) values (1,2);
@@ -199,6 +215,21 @@ insert into points (client_points, seller_points) values(20, 25);
 insert into complaints(text, status, client_id, version) values ('adadoa', 2, 5, 0);
 
 insert into service_complaints(id, service_id) values (1, 1);
+
+insert into earnings (date_time, money) values (to_timestamp(1642489200), 300.0);
+insert into earnings (date_time, money) values (to_timestamp(1645167600), 250.0);
+insert into earnings (date_time, money) values (to_timestamp(1645513200), 400.0);
+insert into earnings (date_time, money) values (to_timestamp(1647932400), 124.0);
+insert into earnings (date_time, money) values (to_timestamp(1647932400), 270.0);
+insert into earnings (date_time, money) values (to_timestamp(1647327600), 900.0);
+insert into earnings (date_time, money) values (to_timestamp(1646204400), 1500.0);
+insert into earnings (date_time, money) values (to_timestamp(1646204400), 500.0);
+insert into earnings (date_time, money) values (to_timestamp(1652421600), 231.0);
+insert into earnings (date_time, money) values (to_timestamp(1653026400), 921.0);
+insert into earnings (date_time, money) values (to_timestamp(1653372000), 293.0);
+insert into earnings (date_time, money) values (to_timestamp(1656050400), 591.0);
+insert into earnings (date_time, money) values (to_timestamp(1658642400), 3904.0);
+
 
 --insert into revisions(grade, text, status, client_id) values (3, 'Cao', 0, null);
 --insert into service_revisions(id, service_id) values (1, 2);

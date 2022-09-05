@@ -10,11 +10,12 @@ public class ServiceDTO {
     private String number;
     private String city;
     private String state;
+    private String image;
 
     public ServiceDTO(){}
 
     public ServiceDTO(Long id, String name, Float grade, Float price, String streetName, String number, String city,
-                      String state) {
+                      String state, String image) {
         this.name = name;
         this.grade = grade;
         this.price = price;
@@ -23,6 +24,7 @@ public class ServiceDTO {
         this.city = city;
         this.state = state;
         this.id = id;
+        this.image = image;
     }
 
     public Long getId() {
@@ -87,5 +89,13 @@ public class ServiceDTO {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

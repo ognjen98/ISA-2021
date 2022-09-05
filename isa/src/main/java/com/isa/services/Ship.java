@@ -36,7 +36,7 @@ public class Ship extends Service{
 
     public Ship(){}
 
-    public Ship(Long id, String name, String promoDesc, Set<Image> images, String rulesOfConduct, Float price,
+    public Ship(Long id, String name, String promoDesc, String images, String rulesOfConduct, Float price,
                 Float grade, Integer noGuests, Set<AdditionalInfo> additionalInfos, List<TimePeriod> period,
                 Seller seller,
                 Address address, Set<Reservation> discountReservations, String type, Float length, Integer noEngines,

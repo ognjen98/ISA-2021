@@ -67,6 +67,7 @@
     <mat-step>
         <div class="container">
                 <div>
+                    <button mat-button matStepperPrevious>Back</button>
 
                     <mat-form-field appearance="fill">
                         <mat-label>Sort</mat-label>
@@ -121,7 +122,7 @@
                                     <mat-card-content>
                                         <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
                                             <mat-grid-tile>
-                                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXC8KB-1CchePhUhYS-QEPN_4UEwSZus1ByA&usqp=CAU" alt="" height="250px" width="500px">
+                                                <img src="{{data.image}}" alt="" height="250px" width="500px">
                                             </mat-grid-tile>
                                             <mat-grid-tile >
                                                 <mat-card-content style="text-align: left;">
@@ -180,7 +181,7 @@
                     <mat-card-content>
                         <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
                             <mat-grid-tile>
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXC8KB-1CchePhUhYS-QEPN_4UEwSZus1ByA&usqp=CAU" alt="" height="250px" width="500px">
+                                <img src="{{data.image}}" alt="" height="250px" width="500px">
                             </mat-grid-tile>
                             <mat-grid-tile >
                                 <mat-card-content style="text-align: left;">
@@ -232,7 +233,7 @@
                     <mat-card-content>
                         <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
                             <mat-grid-tile>
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXC8KB-1CchePhUhYS-QEPN_4UEwSZus1ByA&usqp=CAU" alt="" height="250px" width="500px">
+                                <img src="{{data.image}}" alt="" height="250px" width="500px">
                             </mat-grid-tile>
                             <mat-grid-tile >
                                 <mat-card-content style="text-align: left;">
@@ -284,7 +285,7 @@
                     <mat-card-content>
                         <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
                             <mat-grid-tile>
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXC8KB-1CchePhUhYS-QEPN_4UEwSZus1ByA&usqp=CAU" alt="" height="250px" width="500px">
+                                <img src="{{data.image}}" alt="" height="250px" width="500px">
                             </mat-grid-tile>
                             <mat-grid-tile >
                                 <mat-card-content style="text-align: left;">
@@ -320,6 +321,8 @@
             <h1>
                 No additional services
             </h1>
+            <button mat-button matStepperPrevious>Back</button>
+
             <button mat-raised-button color="primary" (click)="reserve()">Reserve</button>
         </div>
         <div *ngIf="additionalInfos['length']>0" class="container" style="text-align: center;width: 300px;">
@@ -329,6 +332,8 @@
               <pre>{{info.info}}&emsp;&emsp;               {{info.price}}$</pre>
             </mat-list-option>
           </mat-selection-list>
+          <button mat-button matStepperPrevious>Back</button>
+
           <button mat-raised-button color="primary" (click)="reserve()">Reserve</button>
         </div>
         
