@@ -65,7 +65,7 @@ public class ReservationController {
     }
 
     @PostMapping("/filter")
-    public ResponseEntity<List<ServiceDTO>> filterServices(@RequestBody FilterDTO dto){
+    public ResponseEntity<List<InhrShipDTO>> filterServices(@RequestBody FilterDTO dto){
         return new ResponseEntity(reservationService.filter(dto), HttpStatus.OK);
     }
 

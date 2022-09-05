@@ -4,12 +4,12 @@ import java.util.List;
 
 public class FilterDTO {
     private String entity;
-    private List<String> type;
-    private List<ServiceDTO> dtos;
+    private String type;
+    private List<InhrShipDTO> dtos;
 
     public FilterDTO(){}
 
-    public FilterDTO(String entity, List<String> type) {
+    public FilterDTO(String entity, String type) {
         this.entity = entity;
         this.type = type;
     }
@@ -22,19 +22,19 @@ public class FilterDTO {
         this.entity = entity;
     }
 
-    public List<String> getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(List<String> type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public List<ServiceDTO> getDtos() {
+    public List<InhrShipDTO> getDtos() {
         return dtos;
     }
 
-    public void setDtos(List<ServiceDTO> dtos) {
+    public void setDtos(List<InhrShipDTO> dtos) {
         this.dtos = dtos;
     }
 }

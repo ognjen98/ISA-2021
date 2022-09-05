@@ -97,7 +97,7 @@ public class ServicesService {
         return dtos;
     }
 
-
+    @Transactional
     public Set<DiscountReservationDTO> getAllDiscountReservationsForService(Long id){
         com.isa.services.Service service = serviceRepository.getServiceById(id);
         if(service.getDeleted()){

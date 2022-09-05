@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/f
 import { ThemePalette } from '@angular/material/core';
 import { CustomeDateValidators } from '../helpers/date.validator';
 import { AdditionalInfo } from '../model/additionalInfo';
+import { FilterDTO } from '../model/filterDTO';
 import { InhrCottageDTO } from '../model/inhrCottageDTO';
 import { InhrShipDTO } from '../model/inhrShipDTO';
 import { ReservationDTO } from '../model/reservationDTO';
@@ -29,6 +30,7 @@ export class ReservationComponent implements OnInit {
   today: Date;
   minDate = new Date();
   dto: SearchDataDTO;
+  filterForm: FormGroup;
   returnData: ServiceDTO[] = new Array();
   returnData2: InhrCottageDTO[] = new Array();
   returnData3: InhrShipDTO[] = new Array();
@@ -37,6 +39,8 @@ export class ReservationComponent implements OnInit {
   reservationDTO: ReservationDTO;
   type: string = "SHIP";
   serviceId: number;
+  filtered: boolean = false;
+  filteredData: InhrShipDTO[] = new Array();
 
 
   
@@ -46,6 +50,10 @@ export class ReservationComponent implements OnInit {
    }
 
   ngOnInit(): void {
+
+    this.filterForm = this.fb.group({
+      type: []
+    })
 
     this.searchForm=this.fb.group({
       entity: ["SHIP", ],
@@ -108,6 +116,23 @@ export class ReservationComponent implements OnInit {
  
   }
 
+
+  filter(){
+    let type = this.filterForm.get('type').value;
+    this.filtered = true;
+    if(type === "" || type === null){
+      this.filtered = false;
+      return;
+    }
+
+    this.service.filter(new FilterDTO(this.type, type, this.returnData3)).subscribe(
+      res => {
+        this.filteredData = res;
+      }
+    )
+
+  }
+
   
 
   getInfos(serviceId: number){
@@ -144,14 +169,26 @@ export class ReservationComponent implements OnInit {
     let sortParam = event.value;
     console.log(event.value)
     if(this.type === "SHIP"){
-      let dto = new SortDTOShip(this.returnData3, sortParam)
-      
-      this.service.sortShips(dto).subscribe(
-        res =>{
-          this.returnData3 = res;
-          
-        }
-      )
+      if(this.filtered === false){
+        let dto = new SortDTOShip(this.returnData3, sortParam)
+        
+        this.service.sortShips(dto).subscribe(
+          res =>{
+            this.returnData3 = res;
+            
+          }
+        )
+      }
+      else{
+        let dto = new SortDTOShip(this.filteredData, sortParam)
+        
+        this.service.sortShips(dto).subscribe(
+          res =>{
+            this.returnData3 = res;
+            
+          }
+        )
+      }
     }
     else if(this.type === "COTTAGE"){
       let dto = new SortDTOCottage(this.returnData2, sortParam)

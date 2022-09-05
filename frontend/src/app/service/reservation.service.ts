@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdditionalInfo } from '../model/additionalInfo';
 import { DayMonthValueDTO } from '../model/dayMontValueDTO';
+import { FilterDTO } from '../model/filterDTO';
 import { GetReservationDTO } from '../model/getReservationDTO';
 import { InhrCottageDTO } from '../model/inhrCottageDTO';
 import { InhrShipDTO } from '../model/inhrShipDTO';
@@ -85,5 +86,9 @@ export class ReservationService {
 
   getCottageReservations(){
     return this.http.get<GetReservationDTO[]>(this._APIUrl + "/getCottageReservations")
+  }
+
+  filter(dto: FilterDTO){
+    return this.http.post<InhrShipDTO[]>(this._APIUrl + "/filter", dto);
   }
 }

@@ -436,13 +436,13 @@ public class ReservationService {
         return dto.getDto();
     }
 
-    public List<ServiceDTO> filter(FilterDTO dto) {
+    public List<InhrShipDTO> filter(FilterDTO dto) {
 
         if(dto.getEntity().equals("SHIP")){
-            List<ServiceDTO> removal = new ArrayList<>();
-            for(ServiceDTO d: dto.getDtos()){
+            List<InhrShipDTO> removal = new ArrayList<>();
+            for(InhrShipDTO d: dto.getDtos()){
                 Ship s = shipRepository.getShipById(d.getId());
-                if(!dto.getType().contains(s.getType())){
+                if(!dto.getType().equalsIgnoreCase(s.getType())){
                     removal.add(d);
                 }
 //                if(dto.getType().contains(s.getType()) && dto.getDtos().contains(d)){
