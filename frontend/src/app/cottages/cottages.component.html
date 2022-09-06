@@ -1,68 +1,232 @@
-<div class="container">
-    <div>
-        <mat-form-field appearance="fill">
-            <mat-label>Sort</mat-label>
-            <mat-select id="sort" name="sort" (selectionChange)="sort($event)">
-                <mat-option value="NAME_ASC">Sort by name ascending</mat-option>
-                <mat-option value="NAME_DESC">Sort by name descending</mat-option>
-                <mat-option value="CITY_ASC">Sort by city ascending</mat-option>
-                <mat-option value="CITY_DESC">Sort by city descending</mat-option>
-                <mat-option value="GRADE_ASC">Sort by grade ascending</mat-option>
-                <mat-option value="GRADE_DESC">Sort by grade descending</mat-option>
-                <mat-option value="PRICE_ASC">Sort by price ascending</mat-option>
-                <mat-option value="PRICE_DESC">Sort by price descending</mat-option>
-            </mat-select>
-        </mat-form-field>
-    <div id="returnData" [dataSource]="returnData" class="row" *ngFor="let data of returnData;let i=index" class="container center-card">  
-        <a href="#" [routerLink]="['servicePage', data.id]" style="text-decoration:none">                   
-    <mat-card>
-        <mat-card-header>
-            
-            <mat-card-title>
-                <p class="title-paragraph">{{data.name}}</p>
-                
+<mat-horizontal-stepper linear #stepper style="visibility: hidden;">
+    <mat-step [stepControl]="searchForm" [editable]="true">
+        <form [formGroup]="searchForm" autocomplete="off"  (ngSubmit)="search()">
+            <mat-grid-list cols="6" rowHeight="100px" row-width="1000px">
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Location</mat-label>
+                     <input matInput placeholder="Location" name="location" formControlName="location" >
+                 </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Number of guests</mat-label>
+                     <input matInput placeholder="Number of guests" name="noGuests" formControlName="noGuests" >
+                 </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <mat-label>Grade</mat-label>
+                     <input matInput placeholder="Grade" name="grade" formControlName="grade" >
+                 </mat-form-field>
+            </mat-grid-tile>
+            <mat-grid-tile>
                
-            </mat-card-title>
+                  <mat-form-field appearance="fill" >
+                    <input matInput [ngxMatDatetimePicker]="picker" placeholder="Start date" name="start" formControlName="start" [min]="minDate">
+                    <mat-datepicker-toggle matPrefix [for]="picker"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #picker [showSeconds]="true">
+                        
+                    </ngx-mat-datetime-picker>
+                    <mat-error *ngIf="searchForm['controls'].start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+                 </mat-form-field>
+                 
                 
-            <mat-card-subtitle>
-                <span style="visibility: hidden;" >{{data.id}}</span>
-            </mat-card-subtitle>
-            
-       
-        </mat-card-header> 
-
+                
+            </mat-grid-tile>
+            <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                    <input matInput [ngxMatDatetimePicker]="picker2" placeholder="End date" name="end" formControlName="end" [min]="minDate">
+                    <mat-datepicker-toggle matPrefix [for]="picker2"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker #picker2 [showSeconds]="true">
+                        
+                    </ngx-mat-datetime-picker>
+                    <mat-error *ngIf="searchForm['controls'].end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+                 </mat-form-field>
+            </mat-grid-tile>
+          </mat-grid-list>
+          <div>
+            <button mat-raised-button matStepperNext value="submit" [disabled]="searchForm.invalid" color="primary" >Search</button>
+          </div>
+        </form>
+        <div class="container">
+            <div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Sort</mat-label>
+                    <mat-select id="sort" name="sort" (selectionChange)="sort($event)">
+                        <mat-option value="NAME_ASC">Sort by name ascending</mat-option>
+                        <mat-option value="NAME_DESC">Sort by name descending</mat-option>
+                        <mat-option value="CITY_ASC">Sort by city ascending</mat-option>
+                        <mat-option value="CITY_DESC">Sort by city descending</mat-option>
+                        <mat-option value="GRADE_ASC">Sort by grade ascending</mat-option>
+                        <mat-option value="GRADE_DESC">Sort by grade descending</mat-option>
+                        <mat-option value="PRICE_ASC">Sort by price ascending</mat-option>
+                        <mat-option value="PRICE_DESC">Sort by price descending</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            <div id="returnData" [dataSource]="returnData" class="row" *ngFor="let data of returnData;let i=index" class="container center-card">  
+                <a href="#" [routerLink]="['servicePage', data.id]" style="text-decoration:none">                            
+            <mat-card>
+                <mat-card-header>
+                    
+                    <mat-card-title>
+                        <p class="title-paragraph">{{data.name}}</p>
+                        
+                       
+                    </mat-card-title>
+                        
+                    <mat-card-subtitle>
+                        <span style="visibility: hidden;" >{{data.id}}</span>
+                    </mat-card-subtitle>
+                    
+               
+                </mat-card-header> 
         
-        <mat-card-content>
-            <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
-                <mat-grid-tile>
-                    <img src="{{data.image}}" alt="" height="250px" width="500px">
-                </mat-grid-tile>
-                <mat-grid-tile >
-                    <mat-card-content style="text-align: left;">
-                    <div class="content-paragraph">Street: {{ data.streetName}}, {{ data.number}}</div><br>
+                
+                <mat-card-content>
+                    <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
+                        <mat-grid-tile>
+                            <img src="{{data.image}}" alt="" height="250px" width="500px">
+                        </mat-grid-tile>
+                        <mat-grid-tile >
+                            <mat-card-content style="text-align: left;">
+                            <div class="content-paragraph">Street: {{ data.streetName}}, {{ data.number}}</div><br>
+                            
+                            <div class="content-paragraph">City: {{ data.city }}</div><br>
+                            <div class="content-paragraph">State: {{ data.state }}</div><br>
+                            <div class="content-paragraph">Price: {{ data.price }}$/hour </div><br>
+                            <div class="content-paragraph">Grade: {{ data.grade }}</div>
+                            
+                        </mat-card-content>
+                        </mat-grid-tile>
+                    </mat-grid-list>
                     
-                    <div class="content-paragraph">City: {{ data.city }}</div><br>
-                    <div class="content-paragraph">State: {{ data.state }}</div><br>
-                    <div class="content-paragraph">Price: {{ data.price }}$/hour </div><br>
-                    <div class="content-paragraph">Grade: {{ data.grade }}</div>
-                    
+                   
                 </mat-card-content>
-                </mat-grid-tile>
-            </mat-grid-list>
+                
+                <mat-divider></mat-divider>   
+               <mat-card-actions style="text-align: right;">
+                   
+                    <!-- <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="!feedback.approved">Approve</button>
+                    <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="feedback.approved">Deny</button> -->
+                    <!-- <button mat-raised-button color="primary" (click)="getInfos(data.id)">More Info</button> -->
+                </mat-card-actions>
+            </mat-card>
+                </a>
+            <div style="margin-top: 20px;"></div> 
+        </div>
+        </div>
+        </div>
+    </mat-step>
+    <mat-step>
+        <div class="container">
+                <div>
+                    <button mat-button matStepperPrevious (click)="goBack()">Back</button>
+
+                    <mat-form-field appearance="fill">
+                        <mat-label>Sort</mat-label>
+                        <mat-select id="sort" name="sort" (selectionChange)="sort($event)">
+                            <mat-option value="NAME_ASC">Sort by name ascending</mat-option>
+                            <mat-option value="NAME_DESC">Sort by name descending</mat-option>
+                            <mat-option value="CITY_ASC">Sort by city ascending</mat-option>
+                            <mat-option value="CITY_DESC">Sort by city descending</mat-option>
+                            <mat-option value="GRADE_ASC">Sort by grade ascending</mat-option>
+                            <mat-option value="GRADE_DESC">Sort by grade descending</mat-option>
+                            <mat-option value="PRICE_ASC">Sort by price ascending</mat-option>
+                            <mat-option value="PRICE_DESC">Sort by price descending</mat-option>
+                        </mat-select>
+
+                    </mat-form-field>
+                    &nbsp;
+                    &nbsp;
+                    
+                    <div *ngIf="type==='COTTAGE'" >
+                            <div id="returnData2" [dataSource]="returnData2" class="row" *ngFor="let data of returnData2;let i=index" class="container center-card">  
+                                
+                                <mat-card>
+                                    <mat-card-header>
+                                        
+                                        <mat-card-title>
+                                            <p class="title-paragraph">{{data.name}}</p>
+                                            
+                                           
+                                        </mat-card-title>
+                                            
+                                        <mat-card-subtitle>
+                                            <span style="visibility: hidden;" >{{data.id}}</span>
+                                        </mat-card-subtitle>
+                                        
+                                   
+                                    </mat-card-header> 
             
-           
-        </mat-card-content>
+                                    
+                                    <mat-card-content>
+                                        <mat-grid-list cols="2" rowHeight="250px" rowWidth="500px">
+                                            <mat-grid-tile>
+                                                <img src="{{data.image}}" alt="" height="250px" width="500px">
+                                            </mat-grid-tile>
+                                            <mat-grid-tile >
+                                                <mat-card-content style="text-align: left;">
+                                                <div class="content-paragraph">Street: {{ data.streetName}}, {{ data.number}}</div><br>
+                                                
+                                                <div class="content-paragraph">City: {{ data.city }}</div><br>
+                                                <div class="content-paragraph">State: {{ data.state }}</div><br>
+                                                <div class="content-paragraph">Price: {{ data.price }}$/hour </div><br>
+                                                <div class="content-paragraph">Grade: {{ data.grade }}</div>
+                                                
+                                            </mat-card-content>
+                                            </mat-grid-tile>
+                                        </mat-grid-list>
+                                        
+                                       
+                                    </mat-card-content>
+                                    
+                                    <mat-divider></mat-divider>   
+                                   <mat-card-actions style="text-align: right;">
+                                       
+                                        <!-- <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="!feedback.approved">Approve</button>
+                                        <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="feedback.approved">Deny</button> -->
+                                        <button mat-raised-button color="primary" (click)="getInfos(data.id)" matStepperNext *ngIf="role==='ROLE_CLIENT'">More Info</button>
+                                    </mat-card-actions>
+                                </mat-card>
+                                <div style="margin-top: 20px;"></div> 
+                            </div>
+                            </div>
+                            
+                            <br>    
+                    
+            
+                
+            </div>
+        </div>
         
-        <mat-divider></mat-divider>   
-       <mat-card-actions style="text-align: right;">
-           
-            <!-- <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="!feedback.approved">Approve</button>
-            <button mat-raised-button color="accent" id="button" (click)="updateStatus(feedback.id,!feedback.approved, $event.target)" *ngIf="feedback.approved">Deny</button> -->
-            <!-- <button mat-raised-button color="primary" (click)="getInfos(data.id)">More Info</button> -->
-        </mat-card-actions>
-    </mat-card>
-        </a>
-    <div style="margin-top: 20px;"></div> 
-</div>
-</div>
-</div>
+    </mat-step>
+    
+    <mat-step>
+        <div *ngIf="additionalInfos.length == 0" class="container" style="text-align: center;">
+            <h1>
+                No additional services
+            </h1>
+            <button mat-button matStepperPrevious>Back</button>
+
+            <button mat-raised-button color="primary" (click)="reserve()">Reserve</button>
+        </div>
+        <div *ngIf="additionalInfos['length']>0" class="container" style="text-align: center;width: 300px;">
+            <h1>Additional services</h1>
+        <mat-selection-list>
+            <mat-list-option *ngFor="let info of additionalInfos" style="text-align: left;">
+              <pre>{{info.info}}&emsp;&emsp;               {{info.price}}$</pre>
+            </mat-list-option>
+          </mat-selection-list>
+          <button mat-button matStepperPrevious>Back</button>
+
+          <button mat-raised-button color="primary" (click)="reserve()">Reserve</button>
+        </div>
+        
+    </mat-step>
+   
+  </mat-horizontal-stepper>
+
+
+
+

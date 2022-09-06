@@ -235,5 +235,6 @@ insert into penalty_requests (text, client_id, seller_id, status) values ('dada'
 insert into penalty_requests (text, client_id, seller_id, status) values ('cao', 5, 3, 2);
 insert into penalty_requests (text, client_id, seller_id, status) values ('sdad', 5, 3, 2);
 
+insert into delete_requests (message, user_id, status, version) values ('dadas', 6, 2, 0)
 --insert into revisions(grade, text, status, client_id) values (3, 'Cao', 0, null);
 --insert into service_revisions(id, service_id) values (1, 2);

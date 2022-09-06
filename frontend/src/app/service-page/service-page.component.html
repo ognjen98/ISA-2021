@@ -1,6 +1,6 @@
 
-<button mat-raised-button color="primary" (click)="subscribe()">Subscribe</button>
-<button  mat-raised-button color="primary" ><a href="#" [routerLink]="['actionRes']" style="text-decoration:none"> Actions</a></button>
+<button mat-raised-button color="primary" (click)="subscribe()" *ngIf="role==='ROLE_CLIENT'">Subscribe</button>
+<button  mat-raised-button color="primary" ><a href="#" [routerLink]="['actionRes']" style="text-decoration:none" *ngIf="role==='ROLE_CLIENT'"> Actions</a></button>
 
 
 <div id="serRev" [dataSource]="serRev" class="row" *ngFor="let data of serRev;let i=index" class="container center-card">  

@@ -9,6 +9,7 @@ import { ReservationService } from '../service/reservation.service';
 import { RevisionService } from '../service/revision.service';
 import { ServiceService } from '../service/service.service';
 import { SubscriptionService } from '../service/subscription.service';
+import { TokenService } from '../service/token.service';
 
 @Component({
   selector: 'app-service-page',
@@ -25,8 +26,9 @@ export class ServicePageComponent implements OnInit {
   end = new Date();
   serRev: RevisionDTO[] = new Array();
   selRev: RevisionDTO[] = new Array();
+  role: any;
 
-  constructor(private service:ServiceService, private route: ActivatedRoute, private resService: ReservationService, private subService: SubscriptionService, private revService: RevisionService) { }
+  constructor(private tokenService: TokenService, private service:ServiceService, private route: ActivatedRoute, private resService: ReservationService, private subService: SubscriptionService, private revService: RevisionService) { }
 
   ngOnInit(): void {
     this.route.params
@@ -38,8 +40,12 @@ export class ServicePageComponent implements OnInit {
       this.getDiscRes(this.id)
       this.getSelRevisions();
       this.getSerRevisions();
+      this.getRole();
   }
 
+  getRole(){
+    this.role = this.tokenService.getRole();
+  }
 
   getDiscRes(id: number){
     this.service.getDiscountReservations(id).subscribe(
