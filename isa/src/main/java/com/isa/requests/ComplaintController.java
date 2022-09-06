@@ -31,7 +31,7 @@ public class ComplaintController {
 
     @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
     @GetMapping("/getComplaints")
-    public ResponseEntity<List<Complaint>> getComplaints(ComplaintDTO dto, HttpServletRequest request){
+    public ResponseEntity<List<Complaint>> getComplaints(){
         return new ResponseEntity(complaintService.getPendingComplaints(), HttpStatus.OK);
     }
 

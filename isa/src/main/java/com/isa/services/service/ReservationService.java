@@ -540,7 +540,7 @@ public class ReservationService {
         service.getPeriod().addAll(addition);
 
 
-//        serviceRepository.save(service);
+        serviceRepository.save(service);
 
         if(reservation ==null){
             float price = 0;

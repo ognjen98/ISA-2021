@@ -13,6 +13,8 @@ import com.isa.requests.repository.DeleteRequestRepository;
 import com.isa.requests.repository.SellerComplaintRepository;
 import com.isa.requests.repository.ServiceComplaintRepository;
 import com.isa.requests.service.ComplaintService;
+import com.isa.revisions.Revision;
+import com.isa.revisions.repository.RevisionRepository;
 import com.isa.services.*;
 import com.isa.services.dto.ReservationDTO;
 import com.isa.services.dto.SearchDataDTO;
@@ -30,6 +32,8 @@ import com.isa.users.repository.ClientRepository;
 import com.isa.users.repository.ReservationRepository;
 import com.isa.users.repository.SellerRepository;
 import com.isa.users.repository.UserRepository;
+import com.isa.users.service.ClientService;
+import com.isa.users.service.email.EmailSender;
 import org.junit.Before;
 import org.hibernate.dialect.lock.OptimisticEntityLockException;
 import org.junit.Test;
@@ -53,6 +57,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import static com.isa.users.service.ClientService.buildEmail;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class IsaApplicationTests {
@@ -63,6 +69,9 @@ public class IsaApplicationTests {
 
 	@Autowired
 	private ComplaintService complaintService;
+
+	@Autowired
+	RevisionRepository revisionRepository;
 
 	@Autowired
 	ComplaintRepository complaintRepository;
@@ -108,6 +117,9 @@ public class IsaApplicationTests {
 
 	@Autowired
 	private ProductService productService;
+
+	@Autowired
+	EmailSender emailSender;
 
 	@Autowired
 	EntityManager entityManager;
@@ -161,8 +173,8 @@ public class IsaApplicationTests {
 						removal.add(tp);
 						TimePeriod first = new TimePeriod(tp.getStart(), dto.getStart());
 						TimePeriod second = new TimePeriod(dto.getEnd(), tp.getEnd());
-//						timePeriodRepository.save(first);
-//						timePeriodRepository.save(second);
+						timePeriodRepository.save(first);
+						timePeriodRepository.save(second);
 
 						addition.add(first);
 						addition.add(second);
@@ -174,7 +186,7 @@ public class IsaApplicationTests {
 				service.getPeriod().removeAll(removal);
 				service.getPeriod().addAll(addition);
 
-				//try { Thread.sleep(400); } catch (InterruptedException e) {}
+				try { Thread.sleep(400); } catch (InterruptedException e) {}
 				serviceRepository.save(service);
 
 				if(reservation == null){
@@ -286,8 +298,8 @@ public class IsaApplicationTests {
 						removal.add(tp);
 						TimePeriod first = new TimePeriod(tp.getStart(), dto.getStart());
 						TimePeriod second = new TimePeriod(dto.getEnd(), tp.getEnd());
-//						timePeriodRepository.save(first);
-//						timePeriodRepository.save(second);
+						timePeriodRepository.save(first);
+						timePeriodRepository.save(second);
 
 						addition.add(first);
 						addition.add(second);
@@ -378,94 +390,8 @@ public class IsaApplicationTests {
 	}
 
 
-//	@Test(expected = ObjectOptimisticLockingFailureException.class)
-//	public void testComplaint() throws Throwable {
-//
-//		ExecutorService executor = Executors.newFixedThreadPool(2);
-//		Future<?> future1 = executor.submit(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				System.out.println("Startovan Thread 1");
-//
-//				Optional<Complaint> complaint = complaintRepository.findById(1L);
-//
-//				// thread uspavan na 3 sekunde da bi
-//				// drugi thread mogao da izvrsi istu operaciju
-//				if(complaint.get() instanceof ServiceComplaint) {
-//					ServiceComplaint serviceComplaint = (ServiceComplaint) complaint.get();
-//					serviceComplaint.setStatus(1);
-//					try { Thread.sleep(100); } catch (InterruptedException e) {}
-//					serviceComplaintRepository.save(serviceComplaint);
-////            emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
-////                    response), "COM");
-////            emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
-////                    response), "COM");
-//				}
-//				else if(complaint.get() instanceof SellerComplaint) {
-//					SellerComplaint sellerComplaint = (SellerComplaint) complaint.get();
-//					sellerComplaint.setStatus(1);
-//					sellerComplaintRepository.save(sellerComplaint);
-////            emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
-////                    response), "COM");
-////            emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
-////                    response), "COM");
-//				}
-//
-//
-//			}
-//		});
-//		executor.submit(new Runnable() {
-//
-//			@Override
-//			public void run() {
-//				System.out.println("Startovan Thread 2");
-//				Optional<Complaint> complaint = complaintRepository.findById(1L);
-//
-//				// drugi thread mogao da izvrsi istu operaciju
-//				if(complaint.get() instanceof ServiceComplaint) {
-//					ServiceComplaint serviceComplaint = (ServiceComplaint) complaint.get();
-//					serviceComplaint.setStatus(1);
-//
-//					serviceComplaintRepository.save(serviceComplaint);
-////            emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
-////                    response), "COM");
-////            emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
-////                    response), "COM");
-//				}
-//				else if(complaint.get() instanceof SellerComplaint) {
-//					SellerComplaint sellerComplaint = (SellerComplaint) complaint.get();
-//					sellerComplaint.setStatus(1);
-//					sellerComplaintRepository.save(sellerComplaint);
-////            emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
-////                    response), "COM");
-////            emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
-////                    response), "COM");
-//				}
-//			}
-//		});
-//		try {
-//			future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
-//		} catch (ExecutionException e) {
-//			System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
-//			throw e.getCause();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		executor.shutdown();
-//
-//	}
-//
-
-		@Before
-		public void setUp() throws Exception {
-			User user = userRepository.findByEmail("ognjencivcic23@gmail.com");
-			deleteRequestRepository.save(new DeleteRequest("message", user,  2));
-		}
-
-
-		@Test(expected = ObjectOptimisticLockingFailureException.class)
-	public void testDelete() throws Throwable {
+	@Test(expected = ObjectOptimisticLockingFailureException.class)
+	public void testComplaint() throws Throwable {
 
 		ExecutorService executor = Executors.newFixedThreadPool(2);
 		Future<?> future1 = executor.submit(new Runnable() {
@@ -474,13 +400,32 @@ public class IsaApplicationTests {
 			public void run() {
 				System.out.println("Startovan Thread 1");
 
-				Optional<User> user = userRepository.findById(5L);
-				DeleteRequest deleteRequest = deleteRequestRepository.findByUser(user.get());
-				deleteRequest.setStatus(0);
-				try { Thread.sleep(500); } catch (InterruptedException e) {}
+				Optional<Complaint> complaint = complaintRepository.findById(1L);
 
-				deleteRequestRepository.save(deleteRequest);
+				// thread uspavan na 3 sekunde da bi
+				// drugi thread mogao da izvrsi istu operaciju
+				if(complaint.get() instanceof ServiceComplaint) {
+					ServiceComplaint serviceComplaint = (ServiceComplaint) complaint.get();
+					serviceComplaint.setStatus(1);
 
+					emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
+							"response"), "COM");
+					emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+							"response"), "COM");
+					try { Thread.sleep(300); } catch (InterruptedException e) {}
+					serviceComplaintRepository.save(serviceComplaint);
+
+				}
+				else if(complaint.get() instanceof SellerComplaint) {
+					SellerComplaint sellerComplaint = (SellerComplaint) complaint.get();
+					sellerComplaint.setStatus(1);
+					emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
+							"response"), "COM");
+					emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+							"response"), "COM");
+					sellerComplaintRepository.save(sellerComplaint);
+
+				}
 
 
 			}
@@ -490,10 +435,29 @@ public class IsaApplicationTests {
 			@Override
 			public void run() {
 				System.out.println("Startovan Thread 2");
-				Optional<User> user = userRepository.findById(5L);
-				DeleteRequest deleteRequest = deleteRequestRepository.findByUser(user.get());
-				deleteRequest.setStatus(0);
-				deleteRequestRepository.save(deleteRequest);
+				Optional<Complaint> complaint = complaintRepository.findById(1L);
+
+				// drugi thread mogao da izvrsi istu operaciju
+				if(complaint.get() instanceof ServiceComplaint) {
+					ServiceComplaint serviceComplaint = (ServiceComplaint) complaint.get();
+					serviceComplaint.setStatus(1);
+					emailSender.sendEmail(serviceComplaint.getService().getSeller().getEmail(), buildEmail("", "", "COM",
+							"response"), "COM");
+					emailSender.sendEmail(serviceComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+							"response"), "COM");
+					serviceComplaintRepository.save(serviceComplaint);
+
+				}
+				else if(complaint.get() instanceof SellerComplaint) {
+					SellerComplaint sellerComplaint = (SellerComplaint) complaint.get();
+					sellerComplaint.setStatus(1);
+					emailSender.sendEmail(sellerComplaint.getSeller().getEmail(), buildEmail("", "", "COM",
+							"response"), "COM");
+					emailSender.sendEmail(sellerComplaint.getClient().getEmail(), buildEmail("", "", "COM",
+							"response"), "COM");
+					sellerComplaintRepository.save(sellerComplaint);
+
+				}
 			}
 		});
 		try {
@@ -510,5 +474,168 @@ public class IsaApplicationTests {
 
 
 
+
+
+		@Test(expected = ObjectOptimisticLockingFailureException.class)
+	public void testDelete() throws Throwable {
+
+		ExecutorService executor = Executors.newFixedThreadPool(2);
+		Future<?> future1 = executor.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Startovan Thread 1");
+
+				Optional<User> user = userRepository.findById(6L);
+				DeleteRequest deleteRequest = deleteRequestRepository.findByUser(user.get());
+				deleteRequest.setStatus(0);
+				emailSender.sendEmail(user.get().getEmail(), ClientService.buildEmail("", "", "DEL", "reason"), "DEL");
+
+				try { Thread.sleep(500); } catch (InterruptedException e) {}
+
+				deleteRequestRepository.save(deleteRequest);
+
+
+
+			}
+		});
+		executor.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Startovan Thread 2");
+				Optional<User> user = userRepository.findById(6L);
+
+				List<Role> roles = user.get().getRoles();
+				if(roles.get(0).getName().equals("CLIENT")){
+					Client client = (Client) user.get();
+					Set<Reservation> cancelled = client.getCancelledReservations();
+//            user.get().setDeleted(true);
+					List<Reservation> reservations = reservationRepository.getReservationsByClientId(6L);
+					if(reservations != null || reservations.size() != 0) {
+						for (Reservation r : reservations) {
+							if (!cancelled.contains(r)) {
+								com.isa.services.Service s = r.getService();
+								TimePeriod t1 = new TimePeriod();
+								TimePeriod t2 = new TimePeriod();
+								for (TimePeriod tp : s.getPeriod()) {
+									if (r.getStartTime().isEqual(tp.getEnd())) {
+										t1 = tp;
+
+									} else if (r.getEndTime().isEqual(tp.getStart())) {
+										t2 = tp;
+									}
+
+
+								}
+								TimePeriod newPeriod = new TimePeriod(t1.getStart(), t2.getEnd());
+								timePeriodRepository.save(newPeriod);
+
+								s.getPeriod().remove(t1);
+								s.getPeriod().remove(t2);
+								s.getPeriod().add(newPeriod);
+
+								serviceRepository.save(s);
+
+							}
+							r.setReserved(false);
+							r.setCancelled(true);
+							r.setClient(null);
+							if(r.getDiscPrice() == null) {
+								r.setDeleted(true);
+							}
+						}
+					}
+
+//            reservationRepository.deleteAll(reservations);
+					client.setDeleted(true);
+
+				}
+				else if(roles.get(0).getName().equals("COTTAGE_OWNER") || roles.get(0).getName().equals("SHIP_OWNER") || roles.get(0).getName().equals(
+						"INSTRUCTOR")){
+					Seller seller = (Seller) user.get();
+					List<com.isa.services.Service> services = serviceRepository.getServicesBySellerId(seller.getId());
+					if(services != null || services.size() != 0) {
+						for (com.isa.services.Service service : services) {
+
+							List<Reservation> reservations = reservationRepository.getReservationsByServiceId(service.getId());
+							if (reservations == null || reservations.size() == 0) {
+								service.setDeleted(true);
+
+							} else {
+
+							}
+
+
+						}
+					}
+					seller.setDeleted(true);
+
+				}
+				else if(roles.get(0).getName().equals("SYSTEM_ADMIN")){
+					SystemAdmin systemAdmin = (SystemAdmin) user.get();
+					systemAdmin.setDeleted(true);
+				}
+
+				DeleteRequest deleteRequest = deleteRequestRepository.findByUser(user.get());
+				deleteRequest.setStatus(1);
+				emailSender.sendEmail(user.get().getEmail(), ClientService.buildEmail("", "", "DEL", "reason"), "DEL");
+				deleteRequestRepository.save(deleteRequest);
+
+			}
+		});
+		try {
+			future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
+		} catch (ExecutionException e) {
+			System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
+			throw e.getCause();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		executor.shutdown();
+
+	}
+
+
+	@Test(expected = ObjectOptimisticLockingFailureException.class)
+	public void testRevision() throws Throwable {
+
+		ExecutorService executor = Executors.newFixedThreadPool(2);
+		Future<?> future1 = executor.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Startovan Thread 1");
+
+				Optional<Revision> revision = revisionRepository.findById(1L);
+				revision.get().setStatus(0);
+				try { Thread.sleep(200); } catch (InterruptedException e) {}
+
+				revisionRepository.save(revision.get());
+
+
+			}
+		});
+		executor.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				System.out.println("Startovan Thread 2");
+				Optional<Revision> revision = revisionRepository.findById(1L);
+				revision.get().setStatus(0);
+				revisionRepository.save(revision.get());
+			}
+		});
+		try {
+			future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
+		} catch (ExecutionException e) {
+			System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
+			throw e.getCause();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		executor.shutdown();
+
+	}
 
 }

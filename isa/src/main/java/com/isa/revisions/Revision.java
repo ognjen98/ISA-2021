@@ -22,6 +22,9 @@ public class Revision {
     @ManyToOne(fetch = FetchType.EAGER)
     private Client client;
 
+    @Version
+    private Integer version;
+
     public Revision(){}
 
     public Revision(Long id, Integer grade, String text, Integer status, Client client) {
@@ -77,5 +80,13 @@ public class Revision {
 
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }
