@@ -69,12 +69,13 @@ public class ReservationController {
         return new ResponseEntity(reservationService.filter(dto), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/getInfos/{serviceId}")
     public ResponseEntity<Set<AdditionalInfo>> getInfosForService(@PathVariable Long serviceId){
         return new ResponseEntity(reservationService.getAdditionalInfoForService(serviceId), HttpStatus.OK);
     }
 
-//    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @PostMapping("/reserve")
     public ResponseEntity<Reservation> reserve(@RequestBody ReservationDTO dto, HttpServletRequest request){
         if(dto.getStart().equals("") || dto.getStart().equals(null) || dto.getEnd().equals("") || dto.getEnd().equals(null)){
@@ -88,12 +89,14 @@ public class ReservationController {
         return new ResponseEntity(r, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/cancel/{resId}")
     public ResponseEntity<Reservation> cancel(@PathVariable Long resId, HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(reservationService.cancel(resId, email), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/getResForClient")
     public ResponseEntity<List<GetReservationDTO>>  getReservationsForClient(HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
@@ -106,29 +109,34 @@ public class ReservationController {
         return new ResponseEntity(reservationService.defineEarningPercentage(percentage), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
     @PostMapping("/getReport")
     public ResponseEntity<List<DayMonthValueDTO>> getReport(@RequestBody ReportDTO dto){
         return new ResponseEntity(reservationService.getReport(dto),HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/getShipReservations")
     public ResponseEntity getShipReservations(HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(reservationService.getPastShipReservations(email), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/getLessonsReservations")
     public ResponseEntity getLessonsReservations(HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(reservationService.getPastLessonsReservations(email), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/getCottageReservations")
     public ResponseEntity getCottageReservations(HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(reservationService.getPastCottageReservations(email), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/getMisc")
     public ResponseEntity<CPPDTO> getMisc(HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));

@@ -7,6 +7,7 @@ import com.isa.subscriptions.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,18 +23,21 @@ public class SubscriptionController {
     @Autowired
     TokenUtils tokenUtils;
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/addSubscription/{serviceId}")
     public ResponseEntity addSub(@PathVariable Long serviceId, HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(subscriptionService.createSubscription(serviceId, email), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/getSubbedServices")
     public ResponseEntity<List<SubscriptionDTO>> getSubbedServices(HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(subscriptionService.subbedServices(email), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @GetMapping("/cancelSub/{id}")
     public ResponseEntity cancelSub(@PathVariable Long id){
         return new ResponseEntity(subscriptionService.cancelSubscription(id), HttpStatus.OK);

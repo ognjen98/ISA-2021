@@ -7,6 +7,7 @@ import com.isa.security.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,22 +23,26 @@ public class RevisionController {
     @Autowired
     TokenUtils tokenUtils;
 
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @PostMapping("/saveRevision")
     public ResponseEntity saveRevision(@RequestBody RevisionDTO dto, HttpServletRequest request){
         String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
         return new ResponseEntity(revisionService.saveRevision(dto, email), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
     @GetMapping("/approve/{id}")
     public ResponseEntity approve(@PathVariable Long id){
         return new ResponseEntity(revisionService.approve(id), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
     @GetMapping("/reject/{id}")
     public ResponseEntity reject(@PathVariable Long id){
         return new ResponseEntity(revisionService.reject(id), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
     @GetMapping("/getRevisions")
     public ResponseEntity getRevisions(){
         return new ResponseEntity(revisionService.getPendingRevisions(), HttpStatus.OK);
