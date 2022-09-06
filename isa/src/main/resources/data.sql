@@ -47,6 +47,9 @@ values ('Jovan', 'Jokic','jjokic@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxo
 insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
 values ('Marko', 'Jaric','mjaric@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 4, true,false,2);
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted,approved)
+values ('Juzba', 'Juzbasic','ognjen6@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
+'21310', 7, true,false,1);
 
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 3);
@@ -57,6 +60,7 @@ INSERT INTO user_roles (user_id, role_id) VALUES (6, 2);
 INSERT INTO user_roles (user_id, role_id) VALUES (7, 3);
 INSERT INTO user_roles (user_id, role_id) VALUES (8, 4);
 INSERT INTO user_roles (user_id, role_id) VALUES (9, 5);
+INSERT INTO user_roles (user_id, role_id) VALUES (10, 2);
 
 insert into sellers (points,id,grade) values (0, 2, 0.0);
 insert into sellers (points,id,grade) values (0, 3, 0.0);
@@ -69,8 +73,9 @@ insert into sys_admins(id) values (1);
 insert into cottage_owners(id) values (2);
 insert into ship_owners(id) values (3);
 insert into instructors(id) values (4);
-insert into clients(id, penalties, points) values (5, 0, 0);
+insert into clients(id, penalties, points) values (5, 0, 1500);
 insert into clients(id, penalties, points) values (6, 0, 0);
+insert into clients(id, penalties, points) values (10, 0, 0);
 insert into cottage_owners(id) values (7);
 insert into ship_owners(id) values (8);
 insert into instructors(id) values (9);
@@ -188,7 +193,14 @@ insert into reservations (start_time, end_time, cancelled, client_id, service_id
 price, disc_price, max_capacity, deleted)
 values (to_timestamp(1657951200), to_timestamp(1658124000), false, 5, 5, true,0, 5, 50, null,
 3, false);
-
+insert into reservations (start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
+price, disc_price, max_capacity, deleted)
+values (to_timestamp(1662098400), to_timestamp(1662184800), false, 6, 2, true,0, 5, 50, null,
+3, false);
+insert into reservations (start_time, end_time, cancelled, client_id, service_id, reserved, version, address_id,
+price, disc_price, max_capacity, deleted)
+values (to_timestamp(1659506400), to_timestamp(1661234400), false, 6, 5, true,0, 5, 50, null,
+3, false);
 
 insert into services_discount_reservations(service_id, discount_reservations_id) values (1, 1);
 insert into services_discount_reservations(service_id, discount_reservations_id) values (1, 2);

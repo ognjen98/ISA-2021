@@ -14,7 +14,7 @@ public class SchedulingService {
     @Autowired
     ClientRepository clientRepository;
 
-    @Scheduled(cron="0 32 14 18 1/1 *")
+    @Scheduled(cron="0 47 22 6 1/1 *")
     public void resetPenalties(){
         List<Client> clients = clientRepository.findAll();
         for(Client client : clients){

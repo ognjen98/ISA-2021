@@ -51,8 +51,8 @@ public class ComplaintService {
     public String saveComplaint(ComplaintDTO dto, String email) {
         Client client = clientRepository.findByEmail(email);
         com.isa.services.Service service = serviceRepository.getServiceById(dto.getServiceId());
-        ServiceComplaint serRev = serviceComplaintRepository.getServiceComplaintByClient(client);
-        SellerComplaint selRev = sellerComplaintRepository.getSellerComplaintByClient(client);
+        ServiceComplaint serRev = serviceComplaintRepository.getServiceComplaintByClientAndService(client, service);
+        SellerComplaint selRev = sellerComplaintRepository.getSellerComplaintByClientAndSeller(client,service.getSeller());
 
 
         if (dto.getType().equals("SELLER")) {
