@@ -3,6 +3,7 @@ package com.isa.users.controller;
 import com.isa.loyalties.Category;
 import com.isa.loyalties.Points;
 import com.isa.loyalties.dto.CategoryDTO;
+import com.isa.requests.PenaltyRequest;
 import com.isa.security.TokenUtils;
 import com.isa.users.dto.AdminDTO;
 import com.isa.users.dto.UserDTO;
@@ -68,4 +69,18 @@ public class SystemAdminController {
     }
 
 
+    @GetMapping("/getPenalties")
+    public ResponseEntity<List<PenaltyRequest>> getPenalties(){
+        return new ResponseEntity<>(service.getPenaltyRequests(), HttpStatus.OK);
+    }
+
+    @GetMapping("/acceptPenalty/{id}")
+    public ResponseEntity acceptPenalty(@PathVariable Long id){
+        return new ResponseEntity(service.acceptPenalty(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/rejectPenalty/{id}")
+    public ResponseEntity rejectPenalty(@PathVariable Long id){
+        return new ResponseEntity(service.rejectPenalty(id), HttpStatus.OK);
+    }
 }

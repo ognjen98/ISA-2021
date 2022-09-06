@@ -47,6 +47,8 @@ public class EmailService implements EmailSender{
                 helper.setSubject("Registration request rejected");
             else if(type.equals("COM"))
                 helper.setSubject("Complaint answer");
+            else if(type.equals("PEN_ACC") || type.equals("PEN_REJ"))
+                helper.setSubject("Penalty request");
 
             helper.setFrom("ognjencivcic23@gmail.com");
             mailSender.send(mimeMessage);

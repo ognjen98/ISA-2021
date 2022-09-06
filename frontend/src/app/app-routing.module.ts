@@ -20,6 +20,7 @@ import { HomeComponent } from "./home/home/home.component";
 import { LessonReservationsComponent } from "./lesson-reservations/lesson-reservations.component";
 import { LessonsComponent } from "./lessons/lessons.component";
 import { LoginComponent } from "./login/login.component";
+import { PenaltyRequestsComponent } from "./penalty-requests/penalty-requests.component";
 import { PendingReservationsComponent } from "./pending-reservations/pending-reservations.component";
 import { PointsComponent } from "./points/points.component";
 import { RegRequestsComponent } from "./reg-requests/reg-requests.component";
@@ -95,6 +96,9 @@ const routes: Routes = [
       {path: 'revisionTable', component: RevisionTableComponent},
       {path: 'deleteRequests', component: DeleteRequestsComponent},
       {path: 'complaintTable', component: ComplaintTableComponent},
+      {path: 'penalties', component: PenaltyRequestsComponent},
+
+
     ]
   },
   

@@ -5,11 +5,15 @@ import com.isa.loyalties.Points;
 import com.isa.loyalties.dto.CategoryDTO;
 import com.isa.loyalties.repository.CategoryRepository;
 import com.isa.loyalties.repository.PointsRepository;
+import com.isa.requests.PenaltyRequest;
+import com.isa.requests.repository.PenaltyRequestRepository;
+import com.isa.users.Client;
 import com.isa.users.Role;
 import com.isa.users.Seller;
 import com.isa.users.SystemAdmin;
 import com.isa.users.dto.AdminDTO;
 import com.isa.users.dto.UserDTO;
+import com.isa.users.repository.ClientRepository;
 import com.isa.users.repository.RoleRepository;
 import com.isa.users.repository.SellerRepository;
 import com.isa.users.repository.SystemAdminRepository;
@@ -36,19 +40,25 @@ public class SystemAdminService {
     CategoryRepository categoryRepository;
 
     @Autowired
+    PenaltyRequestRepository penaltyRequestRepository;
+
+    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Autowired
+    ClientRepository clientRepository;
+
+    @Autowired
     PointsRepository pointsRepository;
+
+    @Autowired
+    SellerRepository sellerRepository;
 
     @Autowired
     EmailSender emailSender;
 
     @Autowired
     RoleRepository roleRepository;
-
-    @Autowired
-    SellerRepository sellerRepository;
 
     public Boolean checkFirstTimeLogin(String email){
         SystemAdmin systemAdmin = systemAdminRepository.findByEmail(email);
@@ -144,4 +154,39 @@ public class SystemAdminService {
 
 
 
+    @Transactional
+    public List<PenaltyRequest> getPenaltyRequests(){
+        List<PenaltyRequest> penaltyRequests =
+                penaltyRequestRepository.findAll().stream().filter(pr -> pr.getStatus() ==2).collect(Collectors.toList());
+
+        return penaltyRequests;
+    }
+
+    @Transactional
+    public String acceptPenalty(Long id){
+        PenaltyRequest penaltyRequest = penaltyRequestRepository.findById(id).get();
+        Client client = clientRepository.findById(penaltyRequest.getClientId()).get();
+        Seller seller = sellerRepository.findById(penaltyRequest.getSellerId()).get();
+        int penalties = client.getPenalties();
+        penalties = ++penalties;
+        client.setPenalties(penalties);
+        clientRepository.save(client);
+        penaltyRequest.setStatus(1);
+        emailSender.sendEmail(seller.getEmail(), buildEmail("", "", "PEN_ACC", ""), "PEN_ACC");
+        emailSender.sendEmail(client.getEmail(), buildEmail("", "", "PEN_ACC", ""), "PEN_ACC");
+
+        return "Penalty request accepted";
+    }
+
+    @Transactional
+    public String rejectPenalty(Long id){
+        PenaltyRequest penaltyRequest = penaltyRequestRepository.findById(id).get();
+        Client client = clientRepository.findById(penaltyRequest.getClientId()).get();
+        Seller seller = sellerRepository.findById(penaltyRequest.getSellerId()).get();
+        penaltyRequest.setStatus(0);
+        emailSender.sendEmail(seller.getEmail(), buildEmail("", "", "PEN_REJ", ""), "PEN_REJ");
+        emailSender.sendEmail(client.getEmail(), buildEmail("", "", "PEN_REJ", ""), "PEN_REJ");
+
+        return "Penalty request rejected";
+    }
 }

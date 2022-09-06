@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { CPPDTO } from '../model/cppDTO';
 import { UpdateInfoDTO } from '../model/updateInfo';
 import { ReservationService } from '../service/reservation.service';
+import { TokenService } from '../service/token.service';
 import { UpdateInfoService } from '../service/update-info.service';
 
 @Component({
@@ -17,9 +18,9 @@ export class UpdateInfoComponent implements OnInit {
   infoForm: FormGroup;
   dto: CPPDTO;
   changeInfo: UpdateInfoDTO=new UpdateInfoDTO("","","","","","","","");
-  
+  role: any;
   name:string;
-  constructor(private fb: FormBuilder, private service: UpdateInfoService,private  resService: ReservationService) { }
+  constructor(private fb: FormBuilder, private service: UpdateInfoService,private  resService: ReservationService, private tokenService: TokenService) { }
 
   ngOnInit(): void {
     this.getInfo();
@@ -35,7 +36,7 @@ export class UpdateInfoComponent implements OnInit {
     })
     
     this.getMisc();
-
+    this.getRole();
   }
 
   getInfo(){
@@ -86,6 +87,10 @@ export class UpdateInfoComponent implements OnInit {
         this.dto = res;
       }
     )
+  }
+
+  getRole(){
+   this.role = this.tokenService.getRole()
   }
 
 

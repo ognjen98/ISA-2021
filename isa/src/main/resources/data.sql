@@ -20,9 +20,9 @@ INSERT INTO roles (name) VALUES ('COTTAGE_OWNER');
 INSERT INTO roles (name) VALUES ('SHIP_OWNER');
 INSERT INTO roles (name) VALUES ('INSTRUCTOR');
 
-insert into users (name, surname, email, password, mobile, address_id, enabled, deleted, approved)
+insert into users (name, surname, email, password, mobile, address_id, enabled, deleted, approved, first_time_login)
 values ('Ognjen', 'Civcic','ognjen@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW', '21310',
-1, true,false,1);
+1, true,false,1, false);
 insert into users (name, surname, email, password, mobile, address_id, enabled, deleted, approved)
 values ('Stojan', 'Petrovic','ognjen2@gmail.com', '$2a$12$JDACw4E6QeZTrdVhatJfOuNnhxoyKkQQHgvqRWCh5YXBmScvJbGuW',
 '21310', 2, true,false,1);
@@ -230,6 +230,10 @@ insert into earnings (date_time, money) values (to_timestamp(1653372000), 293.0)
 insert into earnings (date_time, money) values (to_timestamp(1656050400), 591.0);
 insert into earnings (date_time, money) values (to_timestamp(1658642400), 3904.0);
 
+
+insert into penalty_requests (text, client_id, seller_id, status) values ('dada', 5, 3, 2);
+insert into penalty_requests (text, client_id, seller_id, status) values ('cao', 5, 3, 2);
+insert into penalty_requests (text, client_id, seller_id, status) values ('sdad', 5, 3, 2);
 
 --insert into revisions(grade, text, status, client_id) values (3, 'Cao', 0, null);
 --insert into service_revisions(id, service_id) values (1, 2);

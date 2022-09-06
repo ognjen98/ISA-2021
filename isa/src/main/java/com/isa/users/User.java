@@ -53,7 +53,7 @@ public class User {
     public User(){}
 
     public User(Long id, String name,String surname, String email, String mobile, String password, List<Role> roles,
-                Boolean enabled, Boolean deleted, Integer approved) {
+                Boolean enabled, Boolean deleted, Integer approved, Boolean firstTimeLogin) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -63,16 +63,18 @@ public class User {
         this.roles = roles;
         this.enabled = enabled;
         this.approved = approved;
+        this.firstTimeLogin = firstTimeLogin;
         this.deleted = deleted;
     }
 
     public User(String name, String surname, String email, Address address, String mobile, String password,
                 List<Role> roles,
-                Boolean enabled, Boolean deleted, Integer approved) {
+                Boolean enabled, Boolean deleted, Integer approved, Boolean firstTimeLogin) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.address = address;
+        this.firstTimeLogin = firstTimeLogin;
         this.mobile = mobile;
         this.password = password;
         this.roles = roles;
@@ -209,5 +211,13 @@ public class User {
 
     public void setApproved(Integer approved) {
         this.approved = approved;
+    }
+
+    public Boolean getFirstTimeLogin() {
+        return firstTimeLogin;
+    }
+
+    public void setFirstTimeLogin(Boolean firstTimeLogin) {
+        this.firstTimeLogin = firstTimeLogin;
     }
 }

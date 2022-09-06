@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AdminDTO } from '../model/adminDTO';
 import { Category } from '../model/category';
+import { PenaltyRequest } from '../model/penaltyRequest';
 import { Points } from '../model/points';
 import { UserDTO } from '../model/userDTO';
 
@@ -44,5 +45,17 @@ export class AdminService {
 
   reject(id:number, message:string){
     return this.http.get(this._APIUrl + "/rejectReg/"+id + "?message="+message);
+  }
+
+  penalties(){
+    return this.http.get<PenaltyRequest[]>(this._APIUrl + "/getPenalties");
+  }
+
+  penaltyAccept(id:number){
+    return this.http.get(this._APIUrl + "/acceptPenalty/"+id)
+  }
+
+  penaltyReject(id:number){
+    return this.http.get(this._APIUrl + "/rejectPenalty/"+id)
   }
 }

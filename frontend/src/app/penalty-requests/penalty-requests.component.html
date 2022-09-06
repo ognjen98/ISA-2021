@@ -1,0 +1,17 @@
+<table class="table">
+    <th> Id </th>
+    <th> Text </th>
+    <th> Client Id </th>
+    <th> Seller Id </th>
+ 
+    <tr *ngFor="let element of data">
+        <td> {{ element.id }} </td>
+        <td> {{ element.text }} </td>
+        <td> {{ element.clientId }} </td>
+        <td> {{ element.sellerId }} </td>
+
+        <td><button mat-raised-button  (click)="accept(element.id)">Accept</button></td>
+        <td><button mat-raised-button  (click)="reject(element.id)">Reject</button></td>
+       
+    </tr>
+</table>

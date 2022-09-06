@@ -1,5 +1,6 @@
 <div class="formBox">
     <h1><b>Personal information</b></h1>
+    <div *ngIf="role === 'ROLE_CLIENT'">
     <div>
         Points: {{dto.points}}
     </div>
@@ -7,7 +8,8 @@
         Category: {{dto.category}}
     </div>
     <div>
-        penalties: {{dto.penalties}}
+        Penalties: {{dto.penalties}}
+    </div>
     </div>
     <form [formGroup]="infoForm" autocomplete="off" #f="ngForm">
         <hr>
