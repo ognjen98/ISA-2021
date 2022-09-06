@@ -78,6 +78,11 @@ export class ActionReservationsComponent implements OnInit {
     let st = this.returnData[i].startTime;
         console.log(st)
     let et = this.returnData[i].endTime;
+    let start = st.toLocaleString("sr-RS")
+    let end = et.toLocaleString("sr-RS")
+      
+    start = this.parseDate(start)
+    end = this.parseDate(end)
     // if(st != null && et != null){
     //   st = st.toLocaleString()
     //   et = et.toLocaleString()
@@ -93,7 +98,7 @@ export class ActionReservationsComponent implements OnInit {
     let city = document.getElementById("city"+i).textContent;
     let addInfo = this.returnData[i].additionalInfos;
 
-    this.resService.reserve(new ReservationDTO(Number(id), st, et, addInfo, this.id, Number(capacity))).subscribe(
+    this.resService.reserve(new ReservationDTO(Number(id), start, end, addInfo, this.id, Number(capacity))).subscribe(
       res => {
 
       }

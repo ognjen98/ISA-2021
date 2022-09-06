@@ -1,5 +1,14 @@
 <div class="formBox">
     <h1><b>Personal information</b></h1>
+    <div>
+        Points: {{dto.points}}
+    </div>
+    <div>
+        Category: {{dto.category}}
+    </div>
+    <div>
+        penalties: {{dto.penalties}}
+    </div>
     <form [formGroup]="infoForm" autocomplete="off" #f="ngForm">
         <hr>
         

@@ -48,7 +48,7 @@ public class Reservation {
     private Address address;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.EAGER)
     private Service service;
 
     @ManyToOne(fetch = FetchType.EAGER)

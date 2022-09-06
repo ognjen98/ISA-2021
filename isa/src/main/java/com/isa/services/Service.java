@@ -46,7 +46,7 @@ public class Service {
     )
     private Set<AdditionalInfo> additionalInfos;
 
-    @ManyToMany(fetch = FetchType.EAGER,  cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @ManyToMany(fetch = FetchType.EAGER,  cascade = {CascadeType.REMOVE})
     @JoinTable(
             name = "services_periods",
             joinColumns = @JoinColumn(name = "service_id"),

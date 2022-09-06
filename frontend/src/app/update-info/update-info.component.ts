@@ -1,7 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CPPDTO } from '../model/cppDTO';
 import { UpdateInfoDTO } from '../model/updateInfo';
+import { ReservationService } from '../service/reservation.service';
 import { UpdateInfoService } from '../service/update-info.service';
 
 @Component({
@@ -13,10 +15,11 @@ export class UpdateInfoComponent implements OnInit {
 
   
   infoForm: FormGroup;
+  dto: CPPDTO;
   changeInfo: UpdateInfoDTO=new UpdateInfoDTO("","","","","","","","");
   
   name:string;
-  constructor(private fb: FormBuilder, private service: UpdateInfoService) { }
+  constructor(private fb: FormBuilder, private service: UpdateInfoService,private  resService: ReservationService) { }
 
   ngOnInit(): void {
     this.getInfo();
@@ -31,6 +34,7 @@ export class UpdateInfoComponent implements OnInit {
       state: ["", [Validators.required]],
     })
     
+    this.getMisc();
 
   }
 
@@ -74,6 +78,14 @@ export class UpdateInfoComponent implements OnInit {
 
       }
     );
+  }
+
+  getMisc(){
+    this.resService.getMisc().subscribe(
+      res => {
+        this.dto = res;
+      }
+    )
   }
 
 

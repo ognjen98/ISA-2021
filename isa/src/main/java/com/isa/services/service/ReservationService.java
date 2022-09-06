@@ -507,6 +507,16 @@ public class ReservationService {
         }
 
 
+        List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
+        for(Reservation res : serviceReservations){
+            if(dto.getId() == null) {
+                if (((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
+                        || ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))) {
+                    return null;
+                }
+            }
+        }
+
         List<TimePeriod> removal = new ArrayList<>();
         List<TimePeriod> addition = new ArrayList<>();
         for(TimePeriod tp: service.getPeriod()){
@@ -582,15 +592,7 @@ public class ReservationService {
             clientRepository.save(client);
             reservation = new Reservation(dto.getStart(), dto.getEnd(), dto.getNoPersons(),
                     dto.getAdditionalInfos(), price, service.getAddress(), service, client, false, true, false);
-            List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
-            for(Reservation res : serviceReservations){
-                if(dto.getId() == null) {
-                    if (((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
-                            || ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))) {
-                        return null;
-                    }
-                }
-            }
+
             reservationRepository.save(reservation);
             return  reservation;
 
@@ -646,15 +648,7 @@ public class ReservationService {
         reservation.setDeleted(false);
 
 //        reservation.get().setClient(client);
-        List<Reservation> serviceReservations = reservationRepository.getReservationsByServiceId(service.getId());
-        for(Reservation res : serviceReservations){
-            if(dto.getId() == null) {
-                if (((dto.getStart().isBefore(res.getStartTime()) || dto.getStart().isEqual(res.getStartTime())) && (dto.getEnd().isAfter(res.getStartTime())))
-                        || ((dto.getStart().isBefore(res.getEndTime())) && (dto.getEnd().isAfter(res.getEndTime()) || dto.getEnd().isEqual(res.getEndTime())))) {
-                    return null;
-                }
-            }
-        }
+
         reservationRepository.save(reservation);
 
         emailSender.sendEmail(client.getEmail(), ClientService.buildEmail("", "", "RES", ""), "RES");
@@ -679,7 +673,7 @@ public class ReservationService {
         if(days <= 3){
             return null;
         }
-        com.isa.services.Service service = reservation.getService();
+        com.isa.services.Service service = serviceRepository.findById(reservation.getService().getId()).get();
 
 
         TimePeriod t1 = new TimePeriod();
@@ -717,7 +711,7 @@ public class ReservationService {
         return "Cancelled successfully";
     }
 
-    @Transactional
+//    @Transactional
     public List<GetReservationDTO> getReservationsForClient(String email){
         Client client = clientRepository.findByEmail(email);
         if(client.getDeleted()){
@@ -959,6 +953,30 @@ public class ReservationService {
         Reservation reservation = reservationRepository.getReservationById(id);
 
         return reservation;
+    }
+
+
+    public CPPDTO getMisc(String email){
+        Client client = clientRepository.findByEmail(email);
+        Integer points = client.getPoints();
+        String category;
+        Category goldClient = categoryRepository.findCategoryByNameAndType("GOLD", "CLIENT");
+        Category silverClient = categoryRepository.findCategoryByNameAndType("SILVER", "CLIENT");
+        Category bronzeClient = categoryRepository.findCategoryByNameAndType("BRONZE", "CLIENT");
+        if(points > goldClient.getPoints()){
+            category = "GOLD";
+        }
+        else if(points  > silverClient.getPoints()){
+            category = "SILVER";
+        }
+        else if(points  > bronzeClient.getPoints()){
+            category = "BRONZE";
+        }
+        else {
+            category = "NONE";
+        }
+        return new CPPDTO(points, category, client.getPenalties());
+
     }
 
 }

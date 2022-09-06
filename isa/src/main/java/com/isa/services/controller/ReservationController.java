@@ -129,5 +129,11 @@ public class ReservationController {
         return new ResponseEntity(reservationService.getPastCottageReservations(email), HttpStatus.OK);
     }
 
+    @GetMapping("/getMisc")
+    public ResponseEntity<CPPDTO> getMisc(HttpServletRequest request){
+        String email = tokenUtils.getUsernameFromToken(tokenUtils.getToken(request));
+        return new ResponseEntity<>(reservationService.getMisc(email), HttpStatus.OK);
+    }
+
 
 }

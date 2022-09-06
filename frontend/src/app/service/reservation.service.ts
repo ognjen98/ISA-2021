@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AdditionalInfo } from '../model/additionalInfo';
+import { CPPDTO } from '../model/cppDTO';
 import { DayMonthValueDTO } from '../model/dayMontValueDTO';
 import { FilterDTO } from '../model/filterDTO';
 import { GetReservationDTO } from '../model/getReservationDTO';
@@ -90,5 +91,9 @@ export class ReservationService {
 
   filter(dto: FilterDTO){
     return this.http.post<InhrShipDTO[]>(this._APIUrl + "/filter", dto);
+  }
+
+  getMisc(){
+    return this.http.get<CPPDTO>(this._APIUrl + "/getMisc");
   }
 }

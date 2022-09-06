@@ -113,7 +113,7 @@ public class ServicesService {
     private Set<DiscountReservationDTO> discountReservationDTOMapper(Set<Reservation> discountReservations){
         Set<DiscountReservationDTO> dtos = new HashSet<>();
         for(Reservation discountReservation: discountReservations){
-            if(discountReservation.getDiscPrice() != null) {
+            if(discountReservation.getDiscPrice() != null && !discountReservation.getReserved()) {
                 DiscountReservationDTO dto = new DiscountReservationDTO(discountReservation.getId(),
                         discountReservation.getStartTime(), discountReservation.getEndTime(),
                         discountReservation.getMaxCapacity(), discountReservation.getPrice(),
